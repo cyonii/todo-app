@@ -1,5 +1,5 @@
-import Project from "./project";
-import ToDo from "./todo";
+import Project from "../models/project";
+import ToDo from "../models/todo";
 
 export default (() => {
   function appendProject(project, active = false) {

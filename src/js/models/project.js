@@ -1,4 +1,4 @@
-import { randomID } from "./utilities";
+import { randomID } from "../utils/utils";
 import EventEmitter from "events";
 import _ from "lodash";
 

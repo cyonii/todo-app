@@ -1,9 +1,9 @@
 import "./index.html";
 import "./scss/bundle.scss";
 import { Pill } from "bootstrap";
-import Project from "./js/project";
-import ToDo from "./js/todo";
-import domWorker from "./js/domWorker";
+import Project from "./js/models/project";
+import ToDo from "./js/models/todo";
+import domWorker from "./js/utils/domWorker";
 
 const projectForm = document.getElementById("projectForm");
 
