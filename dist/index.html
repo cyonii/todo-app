@@ -11,29 +11,36 @@
 <body>
   <header>
     <nav class="navbar navbar-light bg-light">
-      <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="#">
+      <div class="container-lg">
+        <a class="navbar-brand user-select-none d-flex align-items-center mx-auto" href="/">
           <i class="bi bi-card-checklist me-2"></i>
-          <strong>ToDo</strong>
+          <strong>Task Manager</strong>
         </a>
       </div>
     </nav>
   </header>
   <main>
-    <div class="container">
+    <div class="container-lg">
       <div class="row justify-content-center">
+        <!-- Projects column -->
         <div class="col-sm-5 col-lg-3 py-4">
-          <form class="row gx-1">
+          <!-- Form row -->
+          <form class="row gx-1 mb-3" id="projectForm">
             <div class="col-8">
               <label class="visually-hidden" for="project">Project</label>
-              <input type="text" class="form-control" id="project" placeholder="Project name">
+              <input type="text" name="name" class="form-control" placeholder="Project name" required>
             </div>
 
             <div class="col-4">
-              <button type="submit" class="btn btn-primary">Create</button>
+              <button type="submit" class="btn btn-primary w-100">Create</button>
             </div>
           </form>
+
+          <!-- Projects - cards -->
+          <div class="nav flex-column nav-pills" id="project-stack" role="tablist" aria-orientation="vertical"></div>
         </div>
+
+        <!-- ToDo column -->
         <div class="col-sm-7 col-lg-5 py-4">
           <div class="d-flex">
             <button class="btn btn-primary ms-auto">Add task</button>
@@ -42,6 +49,9 @@
       </div>
     </div>
   </main>
+
+
+
 </body>
 
 </html>

@@ -1,10 +1,4 @@
-export class Project {
-  constructor(props) {
-    this.name = props.name;
-  }
-}
-
-export class ToDo {
+export default class {
   constructor(props) {
     this.title = props.title;
     this.description = props.description;
