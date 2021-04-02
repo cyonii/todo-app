@@ -1,7 +1,9 @@
 import _ from "lodash";
+import EventEmitter from "events";
 
-export default class ToDo {
+export default class ToDo extends EventEmitter {
   constructor(props) {
+    super();
     this.title = props.title;
     this.projectId = props.projectId;
     this.description = props.description;
@@ -19,8 +21,14 @@ export default class ToDo {
       if (this.hasOwnProperty(prop)) ownProperties.push(prop);
     }
 
-    storedTodos.push(_.pick(this, ownProperties));
-    localStorage.setItem("todos", JSON.stringify(storedTodos));
+    try {
+      storedTodos.push(_.pick(this, ownProperties));
+      localStorage.setItem("todos", JSON.stringify(storedTodos));
+      this.emit("aftersave", this);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   static getAllByProject(projectId) {

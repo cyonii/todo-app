@@ -16,20 +16,25 @@ if (localStorage.length < 1) {
 
   const newTodo = new ToDo({
     title: "Hello, I am your task manager",
-    projectId: domWorker.getActiveNav().id,
+    projectId: generalProject.id,
     description: "I will help you organize your plan",
     dueDate: new Date(),
     priority: "low",
     notes: "You can delete me when you want",
   });
+
+  newTodo.on("aftersave", (todo) => domWorker.appendTodo(todo));
   newTodo.save();
 } else {
   // Append projects stored on local storage
-  Project.getAll().forEach((data) => {
-    const newProject = new Project(data);
-    const active = newProject.name.match(/general/i) ? true : false;
+  Project.getAll().forEach((project) => {
+    const active = project.name.match(/general/i) ? true : false;
+    domWorker.appendProject(project, active);
+  });
 
-    domWorker.appendProject(newProject, active);
+  // Append todos stored on local storage in the active project's pane
+  ToDo.getAll().forEach((todo) => {
+    domWorker.appendTodo(todo);
   });
 }
 
