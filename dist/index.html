@@ -11,7 +11,7 @@
 <body>
   <header>
     <nav class="navbar navbar-light bg-light">
-      <div class="container-lg">
+      <div class="container-md">
         <a class="navbar-brand user-select-none d-flex align-items-center mx-auto" href="/">
           <i class="bi bi-card-checklist me-2"></i>
           <strong>Task Manager</strong>
@@ -20,19 +20,19 @@
     </nav>
   </header>
   <main>
-    <div class="container-lg">
+    <div class="container-md">
       <div class="row justify-content-center">
         <!-- Projects column -->
         <div class="col-sm-5 col-lg-3 py-4">
           <!-- Form row -->
-          <form class="row gx-1 mb-3" id="projectForm">
+          <form class="row gx-1 mb-2 mb-md-3" id="projectForm">
             <div class="col-8">
               <label class="visually-hidden" for="project">Project</label>
               <input type="text" name="name" class="form-control" placeholder="Project name" required>
             </div>
 
             <div class="col-4">
-              <button type="submit" class="btn btn-primary w-100">Create</button>
+              <button type="submit" class="btn btn-primary w-100"><i class="bi bi-node-plus me-2"></i>Add</button>
             </div>
           </form>
 
@@ -40,18 +40,46 @@
           <div class="nav flex-column nav-pills" id="project-stack" role="tablist" aria-orientation="vertical"></div>
         </div>
 
+        <div class="col-lg-1 d-none d-lg-block"></div>
+
         <!-- ToDo column -->
         <div class="col-sm-7 col-lg-5 py-4">
-          <div class="d-flex">
-            <button class="btn btn-primary ms-auto">Add task</button>
+          <div class="d-flex mb-2 mb-md-3">
+            <button class="btn btn-primary ms-auto">
+              <i class="bi bi-journal-check me-2"></i>New task
+            </button>
+          </div>
+          <div id="todo-stack">
+            <!-- Dummy ToDo -->
+            <div class="card overflow-hidden border-0 shadow-sm mb-3">
+              <div class="card-head">
+                <button
+                  class="btn btn-primary d-flex  align-items-center justify-content-between w-100 text-start fw-light rounded-0"
+                  type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false"
+                  aria-controls="collapseExample">
+                  Hello, I am your task manager <div class="badge bg-secondary">2021-04-15</div>
+                </button>
+              </div>
+              <div class="collapse" id="collapseExample">
+                <div class="card-body rounded-bottom border border-top-0">
+                  <h6 class="card-title fw-bold">Hello, I am your task manager</h6>
+                  <p class="card-text mb-0 text-primary">
+                    I will help you organize your plan
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted fw-light">Due on: 2021-04-15</small>
+                  </p>
+                  <div class="alert alert-secondary border-0 py-1 fw-light mb-0">
+                    <small><i>You can delete me when you want</i></small>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
-
-
-
 </body>
 
 </html>

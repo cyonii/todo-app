@@ -3,14 +3,14 @@ import EventEmitter from "events";
 import _ from "lodash";
 
 export default class Project extends EventEmitter {
-  constructor(name, id = null) {
+  constructor(props) {
     super();
-    this.name = name.trim();
-    this.id = id ? id : randomID();
+    this.name = props.name.trim();
+    this.id = props.id ? props.id : randomID();
   }
 
   exists() {
-    const storedProjects = Project.getStoredProjects(true) || [];
+    const storedProjects = Project.getAll();
     const found = storedProjects.find((project) => {
       return project.name.match(new RegExp(this.name.trim(), "i"));
     });
@@ -24,12 +24,11 @@ export default class Project extends EventEmitter {
 
   save() {
     if (this.isValid()) {
-      const saveData = _.pick(this, ["name", "id"]);
-      const projects = Project.getStoredProjects(true) || [];
+      const storedProjects = Project.getAll();
 
-      projects.push(saveData);
+      storedProjects.push(_.pick(this, ["name", "id"]));
 
-      localStorage.setItem("projects", JSON.stringify(projects));
+      localStorage.setItem("projects", JSON.stringify(storedProjects));
       this.emit("aftersave", this);
       return true;
     }
@@ -40,9 +39,13 @@ export default class Project extends EventEmitter {
     // localStorage.removeItem(this.name);
   }
 
-  static getStoredProjects(parse = false) {
-    const projects = localStorage.getItem("projects");
-    if (projects && parse) return JSON.parse(projects);
-    return projects;
+  static get(id) {
+    const partialData = Project.getAll().find((project) => project.id == id);
+    return new Project(partialData);
+  }
+
+  static getAll() {
+    const partialData = JSON.parse(localStorage.getItem("projects")) || [];
+    return partialData.map((data) => new Project(data));
   }
 }

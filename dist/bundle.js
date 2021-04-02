@@ -8586,7 +8586,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // Module
-var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body>\n  <header>\n    <nav class=\"navbar navbar-light bg-light\">\n      <div class=\"container-lg\">\n        <a class=\"navbar-brand user-select-none d-flex align-items-center mx-auto\" href=\"/\">\n          <i class=\"bi bi-card-checklist me-2\"></i>\n          <strong>Task Manager</strong>\n        </a>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-lg\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control\" placeholder=\"Project name\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\">Create</button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex\">\n            <button class=\"btn btn-primary ms-auto\">Add task</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </main>\n\n\n\n</body>\n\n</html>";
+var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body>\n  <header>\n    <nav class=\"navbar navbar-light bg-light\">\n      <div class=\"container-md\">\n        <a class=\"navbar-brand user-select-none d-flex align-items-center mx-auto\" href=\"/\">\n          <i class=\"bi bi-card-checklist me-2\"></i>\n          <strong>Task Manager</strong>\n        </a>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control\" placeholder=\"Project name\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\"><i class=\"bi bi-node-plus me-2\"></i>Add</button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <div class=\"col-lg-1 d-none d-lg-block\"></div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n          </div>\n          <div id=\"todo-stack\">\n            <!-- Dummy ToDo -->\n            <div class=\"card overflow-hidden border-0 shadow-sm mb-3\">\n              <div class=\"card-head\">\n                <button\n                  class=\"btn btn-primary d-flex  align-items-center justify-content-between w-100 text-start fw-light rounded-0\"\n                  type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#collapseExample\" aria-expanded=\"false\"\n                  aria-controls=\"collapseExample\">\n                  Hello, I am your task manager <div class=\"badge bg-secondary\">2021-04-15</div>\n                </button>\n              </div>\n              <div class=\"collapse\" id=\"collapseExample\">\n                <div class=\"card-body rounded-bottom border border-top-0\">\n                  <h6 class=\"card-title fw-bold\">Hello, I am your task manager</h6>\n                  <p class=\"card-text mb-0 text-primary\">\n                    I will help you organize your plan\n                  </p>\n                  <p class=\"card-text\">\n                    <small class=\"text-muted fw-light\">Due on: 2021-04-15</small>\n                  </p>\n                  <div class=\"alert alert-secondary border-0 py-1 fw-light mb-0\">\n                    <small><i>You can delete me when you want</i></small>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
 
@@ -25828,27 +25828,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./project */ "./src/js/project.js");
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todo */ "./src/js/todo.js");
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((() => {
-  function makeProjectCard(project) {
+  function _makeProjectNav(project) {
     const navBtn = document.createElement("button");
 
     navBtn.classList.add("nav-link", "lead", "text-primay", "text-start");
     navBtn.innerText = project.name;
-    setAttributes(navBtn, {
-      type: "button",
-      id: project.id,
-      "data-bs-toggle": "pill",
-      role: "tab",
-    });
+    setAttributes(navBtn, { id: project.id, "data-bs-toggle": "pill" });
 
     return navBtn;
   }
 
-  function appendProject(project) {
-    const projectStack = document.getElementById("project-stack");
-    const projectCard = makeProjectCard(project);
+  function _makeTodoCard(todo) {
+    const card = document.createElement("div");
+    const cardBody = document.createElement("div");
+    const cardTitle = document.createElement("h6");
 
-    projectStack.appendChild(projectCard);
+    cardTitle.innerText = todo.title;
+    cardBody.appendChild(cardTitle);
+    card.appendChild(cardBody);
+
+    return card;
+  }
+
+  function _projectSwitchEvent(event) {
+    let project = _project__WEBPACK_IMPORTED_MODULE_0__.default.get(event.currentTarget.id);
+    let todos = _todo__WEBPACK_IMPORTED_MODULE_1__.default.getAllByProject(project.id);
+
+    console.log(todos);
+  }
+
+  function appendProject(project, active = false) {
+    const projectStack = document.getElementById("project-stack");
+    const projectNav = _makeProjectNav(project);
+    if (active) projectNav.classList.add("active");
+
+    projectNav.onclick = _projectSwitchEvent;
+    projectStack.appendChild(projectNav);
+  }
+
+  function getActiveNav() {
+    return document.querySelector("#project-stack .nav-link.active");
+  }
+
+  function getProjectNavs() {
+    return document.querySelectorAll("#project-stack .nav-link");
   }
 
   function setAttributes(el, attrs) {
@@ -25857,7 +25886,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 
-  return { appendProject, setAttributes };
+  return { appendProject, getActiveNav, getProjectNavs, setAttributes };
 })());
 
 
@@ -25884,14 +25913,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
-  constructor(name, id = null) {
+  constructor(props) {
     super();
-    this.name = name.trim();
-    this.id = id ? id : (0,_utilities__WEBPACK_IMPORTED_MODULE_0__.randomID)();
+    this.name = props.name.trim();
+    this.id = props.id ? props.id : (0,_utilities__WEBPACK_IMPORTED_MODULE_0__.randomID)();
   }
 
   exists() {
-    const storedProjects = Project.getStoredProjects(true) || [];
+    const storedProjects = Project.getAll();
     const found = storedProjects.find((project) => {
       return project.name.match(new RegExp(this.name.trim(), "i"));
     });
@@ -25905,12 +25934,11 @@ class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
 
   save() {
     if (this.isValid()) {
-      const saveData = lodash__WEBPACK_IMPORTED_MODULE_2___default().pick(this, ["name", "id"]);
-      const projects = Project.getStoredProjects(true) || [];
+      const storedProjects = Project.getAll();
 
-      projects.push(saveData);
+      storedProjects.push(lodash__WEBPACK_IMPORTED_MODULE_2___default().pick(this, ["name", "id"]));
 
-      localStorage.setItem("projects", JSON.stringify(projects));
+      localStorage.setItem("projects", JSON.stringify(storedProjects));
       this.emit("aftersave", this);
       return true;
     }
@@ -25921,10 +25949,14 @@ class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
     // localStorage.removeItem(this.name);
   }
 
-  static getStoredProjects(parse = false) {
-    const projects = localStorage.getItem("projects");
-    if (projects && parse) return JSON.parse(projects);
-    return projects;
+  static get(id) {
+    const partialData = Project.getAll().find((project) => project.id == id);
+    return new Project(partialData);
+  }
+
+  static getAll() {
+    const partialData = JSON.parse(localStorage.getItem("projects")) || [];
+    return partialData.map((data) => new Project(data));
   }
 }
 
@@ -25940,17 +25972,48 @@ class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ ToDo)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (class {
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+
+
+class ToDo {
   constructor(props) {
     this.title = props.title;
+    this.projectId = props.projectId;
     this.description = props.description;
     this.dueDate = props.dueDate;
     this.priority = props.priority;
     this.notes = props.notes;
+    this.completed = props.completed ? props.completed : false;
   }
-});
+
+  save() {
+    const ownProperties = [];
+    const storedTodos = ToDo.getAll();
+
+    for (let prop in this) {
+      if (this.hasOwnProperty(prop)) ownProperties.push(prop);
+    }
+
+    storedTodos.push(lodash__WEBPACK_IMPORTED_MODULE_0___default().pick(this, ownProperties));
+    localStorage.setItem("todos", JSON.stringify(storedTodos));
+  }
+
+  static getAllByProject(projectId) {
+    const filteredTodo = ToDo.getAll().filter((todo) => {
+      if (todo.projectId == projectId) return todo;
+    });
+    return filteredTodo.map((data) => new ToDo(data));
+  }
+
+  static getAll() {
+    const partialData = JSON.parse(localStorage.getItem("todos"));
+
+    return partialData ? partialData.map((data) => new ToDo(data)) : [];
+  }
+}
 
 
 /***/ }),
@@ -26090,35 +26153,37 @@ const projectForm = document.getElementById("projectForm");
 
 // Always add General project if it's unavailable
 if (localStorage.length < 1) {
-  const generalProject = new _js_project__WEBPACK_IMPORTED_MODULE_3__.default("General");
+  const generalProject = new _js_project__WEBPACK_IMPORTED_MODULE_3__.default({ name: "General" });
 
-  generalProject.on("aftersave", (p) => _js_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(p));
+  generalProject.on("aftersave", (proj) => _js_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(proj, true));
   generalProject.save();
+
+  const newTodo = new _js_todo__WEBPACK_IMPORTED_MODULE_4__.default({
+    title: "Hello, I am your task manager",
+    projectId: _js_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getActiveNav().id,
+    description: "I will help you organize your plan",
+    dueDate: new Date(),
+    priority: "low",
+    notes: "You can delete me when you want",
+  });
+  newTodo.save();
 } else {
   // Append projects stored on local storage
-  _js_project__WEBPACK_IMPORTED_MODULE_3__.default.getStoredProjects(true).forEach((project) => {
-    const { name, id } = project;
-    const newProject = new _js_project__WEBPACK_IMPORTED_MODULE_3__.default(name, id);
+  _js_project__WEBPACK_IMPORTED_MODULE_3__.default.getAll().forEach((data) => {
+    const newProject = new _js_project__WEBPACK_IMPORTED_MODULE_3__.default(data);
+    const active = newProject.name.match(/general/i) ? true : false;
 
-    _js_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(newProject);
+    _js_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(newProject, active);
   });
 }
-
-// const newTodo = new ToDo({
-//   title: "Hello, I am your task manager",
-//   description: "I will help you organize your plan",
-//   dueDate: new Date(),
-//   priority: "low",
-//   notes: "You can delete me when you want",
-// });
 
 projectForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const newProject = new _js_project__WEBPACK_IMPORTED_MODULE_3__.default(formData.get("name"));
+  const newProject = new _js_project__WEBPACK_IMPORTED_MODULE_3__.default({ name: formData.get("name") });
 
   if (newProject.save()) {
-    const projects = _js_project__WEBPACK_IMPORTED_MODULE_3__.default.getStoredProjects(true);
+    const projects = _js_project__WEBPACK_IMPORTED_MODULE_3__.default.getAll();
     _js_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(projects[projects.length - 1]);
   }
   event.currentTarget.reset();
