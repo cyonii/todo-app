@@ -20,14 +20,15 @@ export default function (todo) {
     const el = document.createElement('button');
     el.classList.add(
       'btn',
-      'alert-primary',
+      'alert-dark',
       'd-flex',
-      'align-items-center',
+      'align-items-start',
       'justify-content-between',
       'w-100',
       'text-start',
       'fw-light',
-      'rounded-1',
+      'rounded-0',
+      'border-0',
     );
     setAttributes(el, {
       'data-bs-toggle': 'collapse',
