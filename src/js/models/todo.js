@@ -1,6 +1,6 @@
-import _ from "lodash";
-import EventEmitter from "events";
-import { randomID } from "../utils/utils";
+import _ from 'lodash';
+import EventEmitter from 'events';
+import { randomID } from '../utils/utils';
 
 export default class ToDo extends EventEmitter {
   constructor(props) {
@@ -25,8 +25,8 @@ export default class ToDo extends EventEmitter {
 
     try {
       storedTodos.push(_.pick(this, ownProperties));
-      localStorage.setItem("todos", JSON.stringify(storedTodos));
-      this.emit("aftersave", this);
+      localStorage.setItem('todos', JSON.stringify(storedTodos));
+      this.emit('aftersave', this);
       return true;
     } catch (error) {
       return false;
@@ -41,7 +41,7 @@ export default class ToDo extends EventEmitter {
   }
 
   static getAll() {
-    const partialData = JSON.parse(localStorage.getItem("todos"));
+    const partialData = JSON.parse(localStorage.getItem('todos'));
 
     return partialData ? partialData.map((data) => new ToDo(data)) : [];
   }

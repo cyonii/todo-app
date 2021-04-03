@@ -1,5 +1,5 @@
 export function generateRandomStr(length = 1) {
-  const characters = "abcdefghijklmnopqrstuvwxyz".toUpperCase();
+  const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
 
   return characters.charAt(Math.floor(Math.random() * length));
 }

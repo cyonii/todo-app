@@ -30289,11 +30289,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(project) {
-  const navBtn = document.createElement("button");
+  const navBtn = document.createElement('button');
 
-  navBtn.classList.add("nav-link", "lead", "text-primay", "text-start");
+  navBtn.classList.add('nav-link', 'lead', 'text-primay', 'text-start');
   navBtn.innerText = project.name;
-  (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(navBtn, { id: project.id, "data-bs-toggle": "pill" });
+  (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(navBtn, { id: project.id, 'data-bs-toggle': 'pill' });
 
   return navBtn;
 }
@@ -30319,84 +30319,84 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(todo) {
   function _makeCardWrapper() {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
 
-    el.classList.add("card", "border-primary", "overflow-hidden", "shadow-sm", "mb-3");
+    el.classList.add('card', 'border-primary', 'overflow-hidden', 'shadow-sm', 'mb-3');
     return el;
   }
 
   function _makeCardHeader() {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
 
-    el.classList.add("card-header", "border-0", "p-0");
+    el.classList.add('card-header', 'border-0', 'p-0');
     return el;
   }
 
   function _makeCollapseToggler() {
-    const el = document.createElement("button");
+    const el = document.createElement('button');
     el.classList.add(
-      "btn",
-      "alert-primary",
-      "d-flex",
-      "align-items-center",
-      "justify-content-between",
-      "w-100",
-      "text-start",
-      "fw-light",
-      "rounded-1"
+      'btn',
+      'alert-primary',
+      'd-flex',
+      'align-items-center',
+      'justify-content-between',
+      'w-100',
+      'text-start',
+      'fw-light',
+      'rounded-1'
     );
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(el, {
-      "data-bs-toggle": "collapse",
-      "data-bs-target": "#" + todo.id,
+      'data-bs-toggle': 'collapse',
+      'data-bs-target': '#' + todo.id,
     });
     el.innerText = todo.title;
     return el;
   }
 
   function _makeDateBadge() {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
 
-    el.classList.add("badge", "bg-secondary");
-    el.innerText = (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.default)(new Date(todo.dueDate), "dd-mm-yyyy");
+    el.classList.add('badge', 'bg-secondary');
+    el.innerText = (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.default)(new Date(todo.dueDate), 'dd-mm-yyyy');
     return el;
   }
 
   function _makeCollapsible() {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
 
-    el.classList.add("collapse");
+    el.classList.add('collapse');
     el.id = todo.id;
     return el;
   }
 
   function _makeCardBody() {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
 
-    el.classList.add("card-body", "rounded-bottom");
+    el.classList.add('card-body', 'rounded-bottom');
     return el;
   }
 
   function _makeTodoDesc() {
-    const el = document.createElement("p");
+    const el = document.createElement('p');
 
-    el.classList.add("card-text", "mb-0", "text-primary");
+    el.classList.add('card-text', 'mb-0', 'text-primary');
     el.innerText = todo.description;
     return el;
   }
 
   function _makeTodoNotes() {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
 
     el.classList.add(
-      "alert",
-      "alert-secondary",
-      "border-0",
-      "py-0",
-      "fw-light",
-      "mt-3",
-      "mb-0",
-      "fs-sm",
-      "fst-italic"
+      'alert',
+      'alert-secondary',
+      'border-0',
+      'py-0',
+      'fw-light',
+      'mt-3',
+      'mb-0',
+      'fs-sm',
+      'fst-italic'
     );
     el.innerText = todo.notes;
     return el;
@@ -30457,7 +30457,7 @@ class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
   exists() {
     const storedProjects = Project.getAll();
     const found = storedProjects.find((project) => {
-      return project.name.match(new RegExp(this.name.trim(), "i"));
+      return project.name.match(new RegExp(this.name.trim(), 'i'));
     });
 
     return found ? true : false;
@@ -30471,17 +30471,13 @@ class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
     if (this.isValid()) {
       const storedProjects = Project.getAll();
 
-      storedProjects.push(lodash__WEBPACK_IMPORTED_MODULE_2___default().pick(this, ["name", "id"]));
+      storedProjects.push(lodash__WEBPACK_IMPORTED_MODULE_2___default().pick(this, ['name', 'id']));
 
-      localStorage.setItem("projects", JSON.stringify(storedProjects));
-      this.emit("aftersave", this);
+      localStorage.setItem('projects', JSON.stringify(storedProjects));
+      this.emit('aftersave', this);
       return true;
     }
     return false;
-  }
-
-  delete() {
-    // localStorage.removeItem(this.name);
   }
 
   static get(id) {
@@ -30490,7 +30486,7 @@ class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
   }
 
   static getAll() {
-    const partialData = JSON.parse(localStorage.getItem("projects")) || [];
+    const partialData = JSON.parse(localStorage.getItem('projects')) || [];
     return partialData.map((data) => new Project(data));
   }
 }
@@ -30541,8 +30537,8 @@ class ToDo extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
 
     try {
       storedTodos.push(lodash__WEBPACK_IMPORTED_MODULE_0___default().pick(this, ownProperties));
-      localStorage.setItem("todos", JSON.stringify(storedTodos));
-      this.emit("aftersave", this);
+      localStorage.setItem('todos', JSON.stringify(storedTodos));
+      this.emit('aftersave', this);
       return true;
     } catch (error) {
       return false;
@@ -30557,7 +30553,7 @@ class ToDo extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
   }
 
   static getAll() {
-    const partialData = JSON.parse(localStorage.getItem("todos"));
+    const partialData = JSON.parse(localStorage.getItem('todos'));
 
     return partialData ? partialData.map((data) => new ToDo(data)) : [];
   }
@@ -30585,32 +30581,32 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((() => {
-  const getActiveNav = () => document.querySelector("#project-stack .nav-link.active");
-  const getProjectForm = () => document.getElementById("projectForm");
-  const getProjectNavs = () => document.querySelectorAll("#project-stack .nav-link");
-  const getProjectStack = () => document.getElementById("project-stack");
-  const getTodoForm = () => document.getElementById("todoForm");
-  const getTodoModal = () => document.getElementById("todoModal");
-  const getTodoStack = () => document.getElementById("todo-stack");
+  const getActiveNav = () => document.querySelector('#project-stack .nav-link.active');
+  const getProjectForm = () => document.getElementById('projectForm');
+  const getProjectNavs = () => document.querySelectorAll('#project-stack .nav-link');
+  const getProjectStack = () => document.getElementById('project-stack');
+  const getTodoForm = () => document.getElementById('todoForm');
+  const getTodoModal = () => document.getElementById('todoModal');
+  const getTodoStack = () => document.getElementById('todo-stack');
 
   function displayOwnTodos(event) {
     let todos = _models_todo__WEBPACK_IMPORTED_MODULE_0__.default.getAllByProject(event.currentTarget.id);
     const todoStack = getTodoStack();
 
-    todoStack.innerHTML = "";
+    todoStack.innerHTML = '';
     if (todos.length) {
       todos.forEach((todo) => appendTodo(todo));
     } else {
-      const message = document.createElement("p");
-      message.textContent = "No Tasks";
-      message.classList.add("display-4", "text-center", "mt-5", "text-muted");
+      const message = document.createElement('p');
+      message.textContent = 'No Tasks';
+      message.classList.add('display-4', 'text-center', 'mt-5', 'text-muted');
       todoStack.appendChild(message);
     }
   }
 
   function appendProject(project) {
     const projectNav = (0,_components_projectNav__WEBPACK_IMPORTED_MODULE_2__.default)(project);
-    if (project.name.match(/general/i)) projectNav.classList.add("active");
+    if (project.name.match(/general/i)) projectNav.classList.add('active');
 
     projectNav.onclick = displayOwnTodos;
     getProjectStack().appendChild(projectNav);
@@ -30650,7 +30646,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "setAttributes": () => (/* binding */ setAttributes)
 /* harmony export */ });
 function generateRandomStr(length = 1) {
-  const characters = "abcdefghijklmnopqrstuvwxyz".toUpperCase();
+  const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
 
   return characters.charAt(Math.floor(Math.random() * length));
 }
@@ -30790,14 +30786,14 @@ const todoForm = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getTod
 
 // Always add General project if it's unavailable
 if (localStorage.length < 1) {
-  const generalProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({ name: "General" });
+  const generalProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({ name: 'General' });
   const newTodo = new _js_models_todo__WEBPACK_IMPORTED_MODULE_5__.default({
-    title: "Hello, I am your task manager",
+    title: 'Hello, I am your task manager',
     projectId: generalProject.id,
-    description: "I will help you organize your plan",
+    description: 'I will help you organize your plan',
     dueDate: new Date(),
-    priority: "low",
-    notes: "You can delete me when you want",
+    priority: 'low',
+    notes: 'You can delete me when you want',
   });
 
   if (generalProject.save()) _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendProject(generalProject);
@@ -30810,7 +30806,7 @@ if (localStorage.length < 1) {
 projectForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({ name: formData.get("name") });
+  const newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({ name: formData.get('name') });
 
   if (newProject.save()) {
     const projects = _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.getAll();
@@ -30823,12 +30819,12 @@ todoForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
   const todo = new _js_models_todo__WEBPACK_IMPORTED_MODULE_5__.default({
-    title: formData.get("title"),
+    title: formData.get('title'),
     projectId: _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getActiveNav().id,
-    description: formData.get("description"),
-    dueDate: formData.get("dueDate"),
-    priority: formData.get("priority"),
-    notes: formData.get("notes"),
+    description: formData.get('description'),
+    dueDate: formData.get('dueDate'),
+    priority: formData.get('priority'),
+    notes: formData.get('notes'),
   });
   if (todo.save()) {
     _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendTodo(todo);

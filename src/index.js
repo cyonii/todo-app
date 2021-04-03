@@ -1,24 +1,24 @@
-import "./index.html";
-import "./scss/bundle.scss";
-import "bootstrap";
-import Modal from "bootstrap/js/src/modal";
-import Project from "./js/models/project";
-import ToDo from "./js/models/todo";
-import domWorker from "./js/utils/domWorker";
+import './index.html';
+import './scss/bundle.scss';
+import 'bootstrap';
+import Modal from 'bootstrap/js/src/modal';
+import Project from './js/models/project';
+import ToDo from './js/models/todo';
+import domWorker from './js/utils/domWorker';
 
 const projectForm = domWorker.getProjectForm();
 const todoForm = domWorker.getTodoForm();
 
 // Always add General project if it's unavailable
 if (localStorage.length < 1) {
-  const generalProject = new Project({ name: "General" });
+  const generalProject = new Project({ name: 'General' });
   const newTodo = new ToDo({
-    title: "Hello, I am your task manager",
+    title: 'Hello, I am your task manager',
     projectId: generalProject.id,
-    description: "I will help you organize your plan",
+    description: 'I will help you organize your plan',
     dueDate: new Date(),
-    priority: "low",
-    notes: "You can delete me when you want",
+    priority: 'low',
+    notes: 'You can delete me when you want',
   });
 
   if (generalProject.save()) domWorker.appendProject(generalProject);
@@ -31,7 +31,7 @@ if (localStorage.length < 1) {
 projectForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const newProject = new Project({ name: formData.get("name") });
+  const newProject = new Project({ name: formData.get('name') });
 
   if (newProject.save()) {
     const projects = Project.getAll();
@@ -44,12 +44,12 @@ todoForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
   const todo = new ToDo({
-    title: formData.get("title"),
+    title: formData.get('title'),
     projectId: domWorker.getActiveNav().id,
-    description: formData.get("description"),
-    dueDate: formData.get("dueDate"),
-    priority: formData.get("priority"),
-    notes: formData.get("notes"),
+    description: formData.get('description'),
+    dueDate: formData.get('dueDate'),
+    priority: formData.get('priority'),
+    notes: formData.get('notes'),
   });
   if (todo.save()) {
     domWorker.appendTodo(todo);
