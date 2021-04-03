@@ -30,7 +30,7 @@ export default (() => {
       todoStack.appendChild(message);
     }
   }
-  function setActiveTab() {
+  function setActiveTab(project) {
     getActiveTab().classList.remove('active');
     document.getElementById(project.id).classList.add('active');
     displayOwnTodos.call(project);
