@@ -9,9 +9,10 @@ export default class Project {
 
   exists() {
     const storedProjects = Project.getAll();
-    const found = storedProjects.find((project) =>
-      project.name.match(new RegExp(this.name.trim(), 'i')),
-    );
+    const found = storedProjects.find((project) => {
+      const pattern = new RegExp(this.name.trim());
+      return project.name.match(pattern, 'i');
+    });
 
     if (found) return true;
     return false;

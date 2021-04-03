@@ -1,7 +1,7 @@
 import './index.html';
 import './scss/bundle.scss';
-import 'bootstrap';
-import Modal from 'bootstrap/js/src/modal';
+
+import { Modal } from 'bootstrap';
 import Project from './js/models/project';
 import ToDo from './js/models/todo';
 import domWorker from './js/utils/domWorker';

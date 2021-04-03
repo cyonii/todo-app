@@ -31,7 +31,7 @@ export default function (todo) {
     );
     setAttributes(el, {
       'data-bs-toggle': 'collapse',
-      'data-bs-target': '#' + todo.id,
+      'data-bs-target': `#${todo.id}`,
     });
     el.innerText = todo.title;
     return el;

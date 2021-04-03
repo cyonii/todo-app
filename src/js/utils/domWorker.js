@@ -11,8 +11,13 @@ export default (() => {
   const getTodoModal = () => document.getElementById('todoModal');
   const getTodoStack = () => document.getElementById('todo-stack');
 
+  function appendTodo(todo) {
+    const todoStack = getTodoStack();
+    todoStack.appendChild(makeTodoCard(todo));
+  }
+
   function displayOwnTodos(event) {
-    let todos = ToDo.getAllByProject(event.currentTarget.id);
+    const todos = ToDo.getAllByProject(event.currentTarget.id);
     const todoStack = getTodoStack();
 
     todoStack.innerHTML = '';
@@ -32,11 +37,6 @@ export default (() => {
 
     projectNav.onclick = displayOwnTodos;
     getProjectStack().appendChild(projectNav);
-  }
-
-  function appendTodo(todo) {
-    const todoStack = getTodoStack();
-    todoStack.appendChild(makeTodoCard(todo));
   }
 
   return {
