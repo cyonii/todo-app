@@ -3,21 +3,26 @@ import makeTodoCard from '../components/todoCard';
 import makeProjectNav from '../components/projectNav';
 
 export default (() => {
-  const getActiveNav = () => document.querySelector('#project-stack .nav-link.active');
+  const getActiveTab = () => document.querySelector('#project-stack .nav-link.active');
   const getProjectForm = () => document.getElementById('projectForm');
   const getProjectNavs = () => document.querySelectorAll('#project-stack .nav-link');
   const getProjectStack = () => document.getElementById('project-stack');
   const getTodoForm = () => document.getElementById('todoForm');
   const getTodoModal = () => document.getElementById('todoModal');
   const getTodoStack = () => document.getElementById('todo-stack');
+  const setActiveTab = (project) => {
+    getActiveTab().classList.remove('active');
+    document.getElementById(project.id).classList.add('active');
+    displayOwnTodos.call(project);
+  };
 
   function appendTodo(todo) {
     const todoStack = getTodoStack();
     todoStack.appendChild(makeTodoCard(todo));
   }
 
-  function displayOwnTodos(event) {
-    const todos = ToDo.getAllByProject(event.currentTarget.id);
+  function displayOwnTodos() {
+    const todos = ToDo.getAllByProject(this.id);
     const todoStack = getTodoStack();
 
     todoStack.innerHTML = '';
@@ -35,18 +40,20 @@ export default (() => {
     const projectNav = makeProjectNav(project);
     if (project.name.match(/general/i)) projectNav.classList.add('active');
 
-    projectNav.onclick = displayOwnTodos;
+    projectNav.onclick = displayOwnTodos.bind(project, []);
     getProjectStack().appendChild(projectNav);
   }
 
   return {
     appendProject,
     appendTodo,
+    displayOwnTodos,
     getProjectForm,
-    getActiveNav,
+    getActiveTab,
     getProjectNavs,
     getProjectStack,
     getTodoForm,
     getTodoModal,
+    setActiveTab,
   };
 })();

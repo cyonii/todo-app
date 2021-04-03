@@ -25,7 +25,7 @@ if (localStorage.length < 1) {
   if (newTodo.save()) domWorker.appendTodo(newTodo);
 } else {
   Project.getAll().forEach((project) => domWorker.appendProject(project));
-  ToDo.getAllByProject(domWorker.getActiveNav().id).forEach((todo) => domWorker.appendTodo(todo));
+  ToDo.getAllByProject(domWorker.getActiveTab().id).forEach((todo) => domWorker.appendTodo(todo));
 }
 
 projectForm.onsubmit = (event) => {
@@ -34,8 +34,8 @@ projectForm.onsubmit = (event) => {
   const newProject = new Project({ name: formData.get('name') });
 
   if (newProject.save()) {
-    const projects = Project.getAll();
-    domWorker.appendProject(projects[projects.length - 1]);
+    domWorker.appendProject(Project.get(newProject.id));
+    domWorker.setActiveTab(newProject);
   }
   event.currentTarget.reset();
 };
@@ -45,7 +45,7 @@ todoForm.onsubmit = (event) => {
   const formData = new FormData(event.currentTarget);
   const todo = new ToDo({
     title: formData.get('title'),
-    projectId: domWorker.getActiveNav().id,
+    projectId: domWorker.getActiveTab().id,
     description: formData.get('description'),
     dueDate: formData.get('dueDate'),
     priority: formData.get('priority'),
