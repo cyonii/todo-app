@@ -1,10 +1,8 @@
 import _ from 'lodash';
-import EventEmitter from 'events';
 import { randomID } from '../utils/utils';
 
-export default class ToDo extends EventEmitter {
+export default class ToDo {
   constructor(props) {
-    super();
     this.title = props.title;
     this.id = props.id ? props.id : randomID();
     this.projectId = props.projectId;
@@ -15,28 +13,23 @@ export default class ToDo extends EventEmitter {
     this.completed = props.completed ? props.completed : false;
   }
 
+  isValid() {
+    const truthy = (value) => Boolean(value);
+    return Object.values(_.omit(this, ['completed', 'notes'])).every(truthy);
+  }
+
   save() {
-    const ownProperties = [];
-    const storedTodos = ToDo.getAll();
-
-    for (let prop in this) {
-      if (this.hasOwnProperty(prop)) ownProperties.push(prop);
-    }
-
-    try {
-      storedTodos.push(_.pick(this, ownProperties));
+    if (this.isValid()) {
+      const storedTodos = ToDo.getAll();
+      storedTodos.push(this);
       localStorage.setItem('todos', JSON.stringify(storedTodos));
-      this.emit('aftersave', this);
       return true;
-    } catch (error) {
-      return false;
     }
+    return false;
   }
 
   static getAllByProject(projectId) {
-    const filteredTodo = ToDo.getAll().filter((todo) => {
-      if (todo.projectId == projectId) return todo;
-    });
+    const filteredTodo = ToDo.getAll().filter((todo) => todo.projectId === projectId);
     return filteredTodo.map((data) => new ToDo(data));
   }
 

@@ -12523,514 +12523,6 @@ function toDate(argument) {
 
 /***/ }),
 
-/***/ "./node_modules/events/events.js":
-/*!***************************************!*\
-  !*** ./node_modules/events/events.js ***!
-  \***************************************/
-/***/ ((module) => {
-
-"use strict";
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-var R = typeof Reflect === 'object' ? Reflect : null
-var ReflectApply = R && typeof R.apply === 'function'
-  ? R.apply
-  : function ReflectApply(target, receiver, args) {
-    return Function.prototype.apply.call(target, receiver, args);
-  }
-
-var ReflectOwnKeys
-if (R && typeof R.ownKeys === 'function') {
-  ReflectOwnKeys = R.ownKeys
-} else if (Object.getOwnPropertySymbols) {
-  ReflectOwnKeys = function ReflectOwnKeys(target) {
-    return Object.getOwnPropertyNames(target)
-      .concat(Object.getOwnPropertySymbols(target));
-  };
-} else {
-  ReflectOwnKeys = function ReflectOwnKeys(target) {
-    return Object.getOwnPropertyNames(target);
-  };
-}
-
-function ProcessEmitWarning(warning) {
-  if (console && console.warn) console.warn(warning);
-}
-
-var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
-  return value !== value;
-}
-
-function EventEmitter() {
-  EventEmitter.init.call(this);
-}
-module.exports = EventEmitter;
-module.exports.once = once;
-
-// Backwards-compat with node 0.10.x
-EventEmitter.EventEmitter = EventEmitter;
-
-EventEmitter.prototype._events = undefined;
-EventEmitter.prototype._eventsCount = 0;
-EventEmitter.prototype._maxListeners = undefined;
-
-// By default EventEmitters will print a warning if more than 10 listeners are
-// added to it. This is a useful default which helps finding memory leaks.
-var defaultMaxListeners = 10;
-
-function checkListener(listener) {
-  if (typeof listener !== 'function') {
-    throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-  }
-}
-
-Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
-  enumerable: true,
-  get: function() {
-    return defaultMaxListeners;
-  },
-  set: function(arg) {
-    if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
-      throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
-    }
-    defaultMaxListeners = arg;
-  }
-});
-
-EventEmitter.init = function() {
-
-  if (this._events === undefined ||
-      this._events === Object.getPrototypeOf(this)._events) {
-    this._events = Object.create(null);
-    this._eventsCount = 0;
-  }
-
-  this._maxListeners = this._maxListeners || undefined;
-};
-
-// Obviously not all Emitters should be limited to 10. This function allows
-// that to be increased. Set to zero for unlimited.
-EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
-  if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
-    throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
-  }
-  this._maxListeners = n;
-  return this;
-};
-
-function _getMaxListeners(that) {
-  if (that._maxListeners === undefined)
-    return EventEmitter.defaultMaxListeners;
-  return that._maxListeners;
-}
-
-EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
-  return _getMaxListeners(this);
-};
-
-EventEmitter.prototype.emit = function emit(type) {
-  var args = [];
-  for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
-  var doError = (type === 'error');
-
-  var events = this._events;
-  if (events !== undefined)
-    doError = (doError && events.error === undefined);
-  else if (!doError)
-    return false;
-
-  // If there is no 'error' event listener then throw.
-  if (doError) {
-    var er;
-    if (args.length > 0)
-      er = args[0];
-    if (er instanceof Error) {
-      // Note: The comments on the `throw` lines are intentional, they show
-      // up in Node's output if this results in an unhandled exception.
-      throw er; // Unhandled 'error' event
-    }
-    // At least give some kind of context to the user
-    var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
-    err.context = er;
-    throw err; // Unhandled 'error' event
-  }
-
-  var handler = events[type];
-
-  if (handler === undefined)
-    return false;
-
-  if (typeof handler === 'function') {
-    ReflectApply(handler, this, args);
-  } else {
-    var len = handler.length;
-    var listeners = arrayClone(handler, len);
-    for (var i = 0; i < len; ++i)
-      ReflectApply(listeners[i], this, args);
-  }
-
-  return true;
-};
-
-function _addListener(target, type, listener, prepend) {
-  var m;
-  var events;
-  var existing;
-
-  checkListener(listener);
-
-  events = target._events;
-  if (events === undefined) {
-    events = target._events = Object.create(null);
-    target._eventsCount = 0;
-  } else {
-    // To avoid recursion in the case that type === "newListener"! Before
-    // adding it to the listeners, first emit "newListener".
-    if (events.newListener !== undefined) {
-      target.emit('newListener', type,
-                  listener.listener ? listener.listener : listener);
-
-      // Re-assign `events` because a newListener handler could have caused the
-      // this._events to be assigned to a new object
-      events = target._events;
-    }
-    existing = events[type];
-  }
-
-  if (existing === undefined) {
-    // Optimize the case of one listener. Don't need the extra array object.
-    existing = events[type] = listener;
-    ++target._eventsCount;
-  } else {
-    if (typeof existing === 'function') {
-      // Adding the second element, need to change to array.
-      existing = events[type] =
-        prepend ? [listener, existing] : [existing, listener];
-      // If we've already got an array, just append.
-    } else if (prepend) {
-      existing.unshift(listener);
-    } else {
-      existing.push(listener);
-    }
-
-    // Check for listener leak
-    m = _getMaxListeners(target);
-    if (m > 0 && existing.length > m && !existing.warned) {
-      existing.warned = true;
-      // No error code for this since it is a Warning
-      // eslint-disable-next-line no-restricted-syntax
-      var w = new Error('Possible EventEmitter memory leak detected. ' +
-                          existing.length + ' ' + String(type) + ' listeners ' +
-                          'added. Use emitter.setMaxListeners() to ' +
-                          'increase limit');
-      w.name = 'MaxListenersExceededWarning';
-      w.emitter = target;
-      w.type = type;
-      w.count = existing.length;
-      ProcessEmitWarning(w);
-    }
-  }
-
-  return target;
-}
-
-EventEmitter.prototype.addListener = function addListener(type, listener) {
-  return _addListener(this, type, listener, false);
-};
-
-EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-EventEmitter.prototype.prependListener =
-    function prependListener(type, listener) {
-      return _addListener(this, type, listener, true);
-    };
-
-function onceWrapper() {
-  if (!this.fired) {
-    this.target.removeListener(this.type, this.wrapFn);
-    this.fired = true;
-    if (arguments.length === 0)
-      return this.listener.call(this.target);
-    return this.listener.apply(this.target, arguments);
-  }
-}
-
-function _onceWrap(target, type, listener) {
-  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
-  var wrapped = onceWrapper.bind(state);
-  wrapped.listener = listener;
-  state.wrapFn = wrapped;
-  return wrapped;
-}
-
-EventEmitter.prototype.once = function once(type, listener) {
-  checkListener(listener);
-  this.on(type, _onceWrap(this, type, listener));
-  return this;
-};
-
-EventEmitter.prototype.prependOnceListener =
-    function prependOnceListener(type, listener) {
-      checkListener(listener);
-      this.prependListener(type, _onceWrap(this, type, listener));
-      return this;
-    };
-
-// Emits a 'removeListener' event if and only if the listener was removed.
-EventEmitter.prototype.removeListener =
-    function removeListener(type, listener) {
-      var list, events, position, i, originalListener;
-
-      checkListener(listener);
-
-      events = this._events;
-      if (events === undefined)
-        return this;
-
-      list = events[type];
-      if (list === undefined)
-        return this;
-
-      if (list === listener || list.listener === listener) {
-        if (--this._eventsCount === 0)
-          this._events = Object.create(null);
-        else {
-          delete events[type];
-          if (events.removeListener)
-            this.emit('removeListener', type, list.listener || listener);
-        }
-      } else if (typeof list !== 'function') {
-        position = -1;
-
-        for (i = list.length - 1; i >= 0; i--) {
-          if (list[i] === listener || list[i].listener === listener) {
-            originalListener = list[i].listener;
-            position = i;
-            break;
-          }
-        }
-
-        if (position < 0)
-          return this;
-
-        if (position === 0)
-          list.shift();
-        else {
-          spliceOne(list, position);
-        }
-
-        if (list.length === 1)
-          events[type] = list[0];
-
-        if (events.removeListener !== undefined)
-          this.emit('removeListener', type, originalListener || listener);
-      }
-
-      return this;
-    };
-
-EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
-
-EventEmitter.prototype.removeAllListeners =
-    function removeAllListeners(type) {
-      var listeners, events, i;
-
-      events = this._events;
-      if (events === undefined)
-        return this;
-
-      // not listening for removeListener, no need to emit
-      if (events.removeListener === undefined) {
-        if (arguments.length === 0) {
-          this._events = Object.create(null);
-          this._eventsCount = 0;
-        } else if (events[type] !== undefined) {
-          if (--this._eventsCount === 0)
-            this._events = Object.create(null);
-          else
-            delete events[type];
-        }
-        return this;
-      }
-
-      // emit removeListener for all listeners on all events
-      if (arguments.length === 0) {
-        var keys = Object.keys(events);
-        var key;
-        for (i = 0; i < keys.length; ++i) {
-          key = keys[i];
-          if (key === 'removeListener') continue;
-          this.removeAllListeners(key);
-        }
-        this.removeAllListeners('removeListener');
-        this._events = Object.create(null);
-        this._eventsCount = 0;
-        return this;
-      }
-
-      listeners = events[type];
-
-      if (typeof listeners === 'function') {
-        this.removeListener(type, listeners);
-      } else if (listeners !== undefined) {
-        // LIFO order
-        for (i = listeners.length - 1; i >= 0; i--) {
-          this.removeListener(type, listeners[i]);
-        }
-      }
-
-      return this;
-    };
-
-function _listeners(target, type, unwrap) {
-  var events = target._events;
-
-  if (events === undefined)
-    return [];
-
-  var evlistener = events[type];
-  if (evlistener === undefined)
-    return [];
-
-  if (typeof evlistener === 'function')
-    return unwrap ? [evlistener.listener || evlistener] : [evlistener];
-
-  return unwrap ?
-    unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
-}
-
-EventEmitter.prototype.listeners = function listeners(type) {
-  return _listeners(this, type, true);
-};
-
-EventEmitter.prototype.rawListeners = function rawListeners(type) {
-  return _listeners(this, type, false);
-};
-
-EventEmitter.listenerCount = function(emitter, type) {
-  if (typeof emitter.listenerCount === 'function') {
-    return emitter.listenerCount(type);
-  } else {
-    return listenerCount.call(emitter, type);
-  }
-};
-
-EventEmitter.prototype.listenerCount = listenerCount;
-function listenerCount(type) {
-  var events = this._events;
-
-  if (events !== undefined) {
-    var evlistener = events[type];
-
-    if (typeof evlistener === 'function') {
-      return 1;
-    } else if (evlistener !== undefined) {
-      return evlistener.length;
-    }
-  }
-
-  return 0;
-}
-
-EventEmitter.prototype.eventNames = function eventNames() {
-  return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
-};
-
-function arrayClone(arr, n) {
-  var copy = new Array(n);
-  for (var i = 0; i < n; ++i)
-    copy[i] = arr[i];
-  return copy;
-}
-
-function spliceOne(list, index) {
-  for (; index + 1 < list.length; index++)
-    list[index] = list[index + 1];
-  list.pop();
-}
-
-function unwrapListeners(arr) {
-  var ret = new Array(arr.length);
-  for (var i = 0; i < ret.length; ++i) {
-    ret[i] = arr[i].listener || arr[i];
-  }
-  return ret;
-}
-
-function once(emitter, name) {
-  return new Promise(function (resolve, reject) {
-    function errorListener(err) {
-      emitter.removeListener(name, resolver);
-      reject(err);
-    }
-
-    function resolver() {
-      if (typeof emitter.removeListener === 'function') {
-        emitter.removeListener('error', errorListener);
-      }
-      resolve([].slice.call(arguments));
-    };
-
-    eventTargetAgnosticAddListener(emitter, name, resolver, { once: true });
-    if (name !== 'error') {
-      addErrorHandlerIfEventEmitter(emitter, errorListener, { once: true });
-    }
-  });
-}
-
-function addErrorHandlerIfEventEmitter(emitter, handler, flags) {
-  if (typeof emitter.on === 'function') {
-    eventTargetAgnosticAddListener(emitter, 'error', handler, flags);
-  }
-}
-
-function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
-  if (typeof emitter.on === 'function') {
-    if (flags.once) {
-      emitter.once(name, listener);
-    } else {
-      emitter.on(name, listener);
-    }
-  } else if (typeof emitter.addEventListener === 'function') {
-    // EventTarget does not have `error` event semantics like Node
-    // EventEmitters, we do not listen for `error` events here.
-    emitter.addEventListener(name, function wrapListener(arg) {
-      // IE does not have builtin `{ once: true }` support so we
-      // have to do it manually.
-      if (flags.once) {
-        emitter.removeEventListener(name, wrapListener);
-      }
-      listener(arg);
-    });
-  } else {
-    throw new TypeError('The "emitter" argument must be of type EventEmitter. Received type ' + typeof emitter);
-  }
-}
-
-
-/***/ }),
-
 /***/ "./src/index.html":
 /*!************************!*\
   !*** ./src/index.html ***!
@@ -13043,7 +12535,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // Module
-var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body>\n  <header>\n    <nav class=\"navbar navbar-light bg-light\">\n      <div class=\"container-md\">\n        <a class=\"navbar-brand user-select-none d-flex align-items-center mx-auto\" href=\"/\">\n          <i class=\"bi bi-card-checklist me-2\"></i>\n          <strong>Task Manager</strong>\n        </a>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control\" placeholder=\"Project name\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\"><i class=\"bi bi-node-plus me-2\"></i>Add</button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#todoModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Todo modal -->\n            <div class=\"modal fade\" id=\"todoModal\" tabindex=\"-1\" aria-labelledby=\"todoModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content\">\n                  <div class=\"modal-header\">\n                    <h6 class=\"modal-title fw-bold text-muted\" id=\"exampleModalLabel\">Add a new task</h6>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\">\n                    <form id=\"todoForm\">\n                      <div class=\"mb-3\">\n                        <label for=\"title\" class=\"form-label text-primary fw-bold mb-0\">Title</label>\n                        <input type=\"text\" class=\"form-control form-control-sm\" id=\"title\" name=\"title\"\n                          placeholder=\"Task title\" required>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"description\" class=\"form-label text-primary fw-bold mb-0\">Description</label>\n                        <textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"30\" rows=\"4\"\n                          placeholder=\"What is this task about?\" required></textarea>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"dueDate\" class=\"form-label text-primary fw-bold mb-0\">Due Date</label>\n                        <input type=\"date\" class=\"form-control\" id=\"dueDate\" name=\"dueDate\" placeholder=\"Task date\"\n                          required>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"priority\" class=\"form-label text-primary fw-bold mb-0\">Priority</label>\n                        <select id=\"priority\" name class=\"form-select\" required>\n                          <option value=\"low\" selected>Low</option>\n                          <option value=\"mid\">Mid</option>\n                          <option value=\"high\">High</option>\n                        </select>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"notes\" class=\"form-label text-primary fw-bold mb-0\">Notes</label>\n                        <textarea class=\"form-control\" name=\"notes\" id=\"notes\" cols=\"30\" rows=\"2\"\n                          placeholder=\"Do you have any notes about this event?\"></textarea>\n                      </div>\n\n                      <button class=\"btn btn-primary\" type=\"submit\">Add task</button>\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"todo-stack\">\n            <!-- Dummy ToDo -->\n          </div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
+var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body>\n  <header>\n    <nav class=\"navbar navbar-light bg-light\">\n      <div class=\"container-md\">\n        <a class=\"navbar-brand user-select-none d-flex align-items-center mx-auto\" href=\"/\">\n          <i class=\"bi bi-card-checklist me-2\"></i>\n          <strong>Task Manager</strong>\n        </a>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control\" placeholder=\"Project name\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\"><i class=\"bi bi-node-plus me-2\"></i>Add</button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#todoModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Todo modal -->\n            <div class=\"modal fade\" id=\"todoModal\" tabindex=\"-1\" aria-labelledby=\"todoModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content\">\n                  <div class=\"modal-header\">\n                    <h6 class=\"modal-title fw-bold text-muted\" id=\"exampleModalLabel\">Add a new task</h6>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\">\n                    <form id=\"todoForm\">\n                      <div class=\"mb-3\">\n                        <label for=\"title\" class=\"form-label text-primary fw-bold mb-0\">Title</label>\n                        <input type=\"text\" class=\"form-control form-control-sm\" id=\"title\" name=\"title\"\n                          placeholder=\"Task title\" required>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"description\" class=\"form-label text-primary fw-bold mb-0\">Description</label>\n                        <textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"30\" rows=\"4\"\n                          placeholder=\"What is this task about?\" required></textarea>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"dueDate\" class=\"form-label text-primary fw-bold mb-0\">Due Date</label>\n                        <input type=\"date\" class=\"form-control\" id=\"dueDate\" name=\"dueDate\" placeholder=\"Task date\"\n                          required>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"priority\" class=\"form-label text-primary fw-bold mb-0\">Priority</label>\n                        <select id=\"priority\" name=\"priority\" class=\"form-select\" required>\n                          <option value=\"low\" selected>Low</option>\n                          <option value=\"mid\">Mid</option>\n                          <option value=\"high\">High</option>\n                        </select>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"notes\" class=\"form-label text-primary fw-bold mb-0\">Notes</label>\n                        <textarea class=\"form-control\" name=\"notes\" id=\"notes\" cols=\"30\" rows=\"2\"\n                          placeholder=\"Do you have any notes about this event?\"></textarea>\n                      </div>\n\n                      <button class=\"btn btn-primary\" type=\"submit\">Add task</button>\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"todo-stack\">\n            <!-- Dummy ToDo -->\n          </div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
 
@@ -30312,27 +29804,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
 /* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
 
 
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(todo) {
-  function _makeCardWrapper() {
+  function makeCardWrapper() {
     const el = document.createElement('div');
 
     el.classList.add('card', 'border-primary', 'overflow-hidden', 'shadow-sm', 'mb-3');
     return el;
   }
 
-  function _makeCardHeader() {
+  function makeCardHeader() {
     const el = document.createElement('div');
 
     el.classList.add('card-header', 'border-0', 'p-0');
     return el;
   }
 
-  function _makeCollapseToggler() {
+  function makeCollapseToggler() {
     const el = document.createElement('button');
     el.classList.add(
       'btn',
@@ -30343,7 +29835,7 @@ __webpack_require__.r(__webpack_exports__);
       'w-100',
       'text-start',
       'fw-light',
-      'rounded-1'
+      'rounded-1',
     );
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(el, {
       'data-bs-toggle': 'collapse',
@@ -30353,7 +29845,7 @@ __webpack_require__.r(__webpack_exports__);
     return el;
   }
 
-  function _makeDateBadge() {
+  function makeDateBadge() {
     const el = document.createElement('div');
 
     el.classList.add('badge', 'bg-secondary');
@@ -30361,7 +29853,7 @@ __webpack_require__.r(__webpack_exports__);
     return el;
   }
 
-  function _makeCollapsible() {
+  function makeCollapsible() {
     const el = document.createElement('div');
 
     el.classList.add('collapse');
@@ -30369,14 +29861,14 @@ __webpack_require__.r(__webpack_exports__);
     return el;
   }
 
-  function _makeCardBody() {
+  function makeCardBody() {
     const el = document.createElement('div');
 
     el.classList.add('card-body', 'rounded-bottom');
     return el;
   }
 
-  function _makeTodoDesc() {
+  function makeTodoDesc() {
     const el = document.createElement('p');
 
     el.classList.add('card-text', 'mb-0', 'text-primary');
@@ -30384,7 +29876,7 @@ __webpack_require__.r(__webpack_exports__);
     return el;
   }
 
-  function _makeTodoNotes() {
+  function makeTodoNotes() {
     const el = document.createElement('div');
 
     el.classList.add(
@@ -30396,24 +29888,24 @@ __webpack_require__.r(__webpack_exports__);
       'mt-3',
       'mb-0',
       'fs-sm',
-      'fst-italic'
+      'fst-italic',
     );
     el.innerText = todo.notes;
     return el;
   }
 
   function makeTodoCard() {
-    const card = _makeCardWrapper();
-    const cardHeader = _makeCardHeader();
-    const toggler = _makeCollapseToggler();
-    const badge = _makeDateBadge();
-    const collapsible = _makeCollapsible();
-    const cardBody = _makeCardBody();
+    const card = makeCardWrapper();
+    const cardHeader = makeCardHeader();
+    const toggler = makeCollapseToggler();
+    const badge = makeDateBadge();
+    const collapsible = makeCollapsible();
+    const cardBody = makeCardBody();
 
     toggler.appendChild(badge);
     cardHeader.appendChild(toggler);
-    cardBody.appendChild(_makeTodoDesc());
-    cardBody.appendChild(_makeTodoNotes());
+    cardBody.appendChild(makeTodoDesc());
+    cardBody.appendChild(makeTodoNotes());
     collapsible.appendChild(cardBody);
     card.appendChild(cardHeader);
     card.appendChild(collapsible);
@@ -30438,29 +29930,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ Project)
 /* harmony export */ });
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! events */ "./node_modules/events/events.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
 
 
 
-
-class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
+class Project {
   constructor(props) {
-    super();
     this.name = props.name.trim();
-    this.id = props.id ? props.id : (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.randomID)();
+    this.id = props.id ? props.id : (0,_utils_utils__WEBPACK_IMPORTED_MODULE_1__.randomID)();
   }
 
   exists() {
     const storedProjects = Project.getAll();
-    const found = storedProjects.find((project) => {
-      return project.name.match(new RegExp(this.name.trim(), 'i'));
-    });
+    const found = storedProjects.find((project) =>
+      project.name.match(new RegExp(this.name.trim(), 'i')),
+    );
 
-    return found ? true : false;
+    if (found) return true;
+    return false;
   }
 
   isValid() {
@@ -30471,17 +29960,16 @@ class Project extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
     if (this.isValid()) {
       const storedProjects = Project.getAll();
 
-      storedProjects.push(lodash__WEBPACK_IMPORTED_MODULE_2___default().pick(this, ['name', 'id']));
+      storedProjects.push(lodash__WEBPACK_IMPORTED_MODULE_0___default().pick(this, ['name', 'id']));
 
       localStorage.setItem('projects', JSON.stringify(storedProjects));
-      this.emit('aftersave', this);
       return true;
     }
     return false;
   }
 
   static get(id) {
-    const partialData = Project.getAll().find((project) => project.id == id);
+    const partialData = Project.getAll().find((project) => project.id === id);
     return new Project(partialData);
   }
 
@@ -30507,18 +29995,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! events */ "./node_modules/events/events.js");
-/* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
 
 
 
-
-class ToDo extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
+class ToDo {
   constructor(props) {
-    super();
     this.title = props.title;
-    this.id = props.id ? props.id : (0,_utils_utils__WEBPACK_IMPORTED_MODULE_2__.randomID)();
+    this.id = props.id ? props.id : (0,_utils_utils__WEBPACK_IMPORTED_MODULE_1__.randomID)();
     this.projectId = props.projectId;
     this.description = props.description;
     this.dueDate = props.dueDate;
@@ -30527,28 +30011,23 @@ class ToDo extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
     this.completed = props.completed ? props.completed : false;
   }
 
+  isValid() {
+    const truthy = (value) => Boolean(value);
+    return Object.values(lodash__WEBPACK_IMPORTED_MODULE_0___default().omit(this, ['completed', 'notes'])).every(truthy);
+  }
+
   save() {
-    const ownProperties = [];
-    const storedTodos = ToDo.getAll();
-
-    for (let prop in this) {
-      if (this.hasOwnProperty(prop)) ownProperties.push(prop);
-    }
-
-    try {
-      storedTodos.push(lodash__WEBPACK_IMPORTED_MODULE_0___default().pick(this, ownProperties));
+    if (this.isValid()) {
+      const storedTodos = ToDo.getAll();
+      storedTodos.push(this);
       localStorage.setItem('todos', JSON.stringify(storedTodos));
-      this.emit('aftersave', this);
       return true;
-    } catch (error) {
-      return false;
     }
+    return false;
   }
 
   static getAllByProject(projectId) {
-    const filteredTodo = ToDo.getAll().filter((todo) => {
-      if (todo.projectId == projectId) return todo;
-    });
+    const filteredTodo = ToDo.getAll().filter((todo) => todo.projectId === projectId);
     return filteredTodo.map((data) => new ToDo(data));
   }
 
@@ -30658,8 +30137,8 @@ function randomID() {
 }
 
 function setAttributes(el, attrs) {
-  for (var key in attrs) {
-    el.setAttribute(key, attrs[key]);
+  for (const [key, value] of Object.entries(attrs)) {
+    el.setAttribute(key, value);
   }
 }
 

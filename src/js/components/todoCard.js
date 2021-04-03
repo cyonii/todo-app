@@ -1,22 +1,22 @@
-import { setAttributes } from '../utils/utils';
 import { format } from 'date-fns';
+import { setAttributes } from '../utils/utils';
 
 export default function (todo) {
-  function _makeCardWrapper() {
+  function makeCardWrapper() {
     const el = document.createElement('div');
 
     el.classList.add('card', 'border-primary', 'overflow-hidden', 'shadow-sm', 'mb-3');
     return el;
   }
 
-  function _makeCardHeader() {
+  function makeCardHeader() {
     const el = document.createElement('div');
 
     el.classList.add('card-header', 'border-0', 'p-0');
     return el;
   }
 
-  function _makeCollapseToggler() {
+  function makeCollapseToggler() {
     const el = document.createElement('button');
     el.classList.add(
       'btn',
@@ -27,7 +27,7 @@ export default function (todo) {
       'w-100',
       'text-start',
       'fw-light',
-      'rounded-1'
+      'rounded-1',
     );
     setAttributes(el, {
       'data-bs-toggle': 'collapse',
@@ -37,7 +37,7 @@ export default function (todo) {
     return el;
   }
 
-  function _makeDateBadge() {
+  function makeDateBadge() {
     const el = document.createElement('div');
 
     el.classList.add('badge', 'bg-secondary');
@@ -45,7 +45,7 @@ export default function (todo) {
     return el;
   }
 
-  function _makeCollapsible() {
+  function makeCollapsible() {
     const el = document.createElement('div');
 
     el.classList.add('collapse');
@@ -53,14 +53,14 @@ export default function (todo) {
     return el;
   }
 
-  function _makeCardBody() {
+  function makeCardBody() {
     const el = document.createElement('div');
 
     el.classList.add('card-body', 'rounded-bottom');
     return el;
   }
 
-  function _makeTodoDesc() {
+  function makeTodoDesc() {
     const el = document.createElement('p');
 
     el.classList.add('card-text', 'mb-0', 'text-primary');
@@ -68,7 +68,7 @@ export default function (todo) {
     return el;
   }
 
-  function _makeTodoNotes() {
+  function makeTodoNotes() {
     const el = document.createElement('div');
 
     el.classList.add(
@@ -80,24 +80,24 @@ export default function (todo) {
       'mt-3',
       'mb-0',
       'fs-sm',
-      'fst-italic'
+      'fst-italic',
     );
     el.innerText = todo.notes;
     return el;
   }
 
   function makeTodoCard() {
-    const card = _makeCardWrapper();
-    const cardHeader = _makeCardHeader();
-    const toggler = _makeCollapseToggler();
-    const badge = _makeDateBadge();
-    const collapsible = _makeCollapsible();
-    const cardBody = _makeCardBody();
+    const card = makeCardWrapper();
+    const cardHeader = makeCardHeader();
+    const toggler = makeCollapseToggler();
+    const badge = makeDateBadge();
+    const collapsible = makeCollapsible();
+    const cardBody = makeCardBody();
 
     toggler.appendChild(badge);
     cardHeader.appendChild(toggler);
-    cardBody.appendChild(_makeTodoDesc());
-    cardBody.appendChild(_makeTodoNotes());
+    cardBody.appendChild(makeTodoDesc());
+    cardBody.appendChild(makeTodoNotes());
     collapsible.appendChild(cardBody);
     card.appendChild(cardHeader);
     card.appendChild(collapsible);

@@ -1,21 +1,20 @@
-import { randomID } from '../utils/utils';
-import EventEmitter from 'events';
 import _ from 'lodash';
+import { randomID } from '../utils/utils';
 
-export default class Project extends EventEmitter {
+export default class Project {
   constructor(props) {
-    super();
     this.name = props.name.trim();
     this.id = props.id ? props.id : randomID();
   }
 
   exists() {
     const storedProjects = Project.getAll();
-    const found = storedProjects.find((project) => {
-      return project.name.match(new RegExp(this.name.trim(), 'i'));
-    });
+    const found = storedProjects.find((project) =>
+      project.name.match(new RegExp(this.name.trim(), 'i')),
+    );
 
-    return found ? true : false;
+    if (found) return true;
+    return false;
   }
 
   isValid() {
@@ -29,14 +28,13 @@ export default class Project extends EventEmitter {
       storedProjects.push(_.pick(this, ['name', 'id']));
 
       localStorage.setItem('projects', JSON.stringify(storedProjects));
-      this.emit('aftersave', this);
       return true;
     }
     return false;
   }
 
   static get(id) {
-    const partialData = Project.getAll().find((project) => project.id == id);
+    const partialData = Project.getAll().find((project) => project.id === id);
     return new Project(partialData);
   }
 

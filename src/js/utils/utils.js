@@ -11,7 +11,7 @@ export function randomID() {
 }
 
 export function setAttributes(el, attrs) {
-  for (var key in attrs) {
-    el.setAttribute(key, attrs[key]);
+  for (const [key, value] of Object.entries(attrs)) {
+    el.setAttribute(key, value);
   }
 }
