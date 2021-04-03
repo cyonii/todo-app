@@ -1,19 +1,18 @@
 import "./index.html";
 import "./scss/bundle.scss";
-import { Pill } from "bootstrap";
+import "bootstrap";
+import Modal from "bootstrap/js/src/modal";
 import Project from "./js/models/project";
 import ToDo from "./js/models/todo";
 import domWorker from "./js/utils/domWorker";
 
 const projectForm = document.getElementById("projectForm");
+const todoForm = document.getElementById("todoForm");
+const todoModal = new Modal(document.getElementById("todoModal"));
 
 // Always add General project if it's unavailable
 if (localStorage.length < 1) {
   const generalProject = new Project({ name: "General" });
-
-  generalProject.on("aftersave", (proj) => domWorker.appendProject(proj, true));
-  generalProject.save();
-
   const newTodo = new ToDo({
     title: "Hello, I am your task manager",
     projectId: generalProject.id,
@@ -23,19 +22,11 @@ if (localStorage.length < 1) {
     notes: "You can delete me when you want",
   });
 
-  newTodo.on("aftersave", (todo) => domWorker.appendTodo(todo));
-  newTodo.save();
+  if (generalProject.save()) domWorker.appendProject(generalProject);
+  if (newTodo.save()) domWorker.appendTodo(newTodo);
 } else {
-  // Append projects stored on local storage
-  Project.getAll().forEach((project) => {
-    const active = project.name.match(/general/i) ? true : false;
-    domWorker.appendProject(project, active);
-  });
-
-  // Append todos stored on local storage in the active project's pane
-  ToDo.getAll().forEach((todo) => {
-    domWorker.appendTodo(todo);
-  });
+  Project.getAll().forEach((project) => domWorker.appendProject(project));
+  ToDo.getAll().forEach((todo) => domWorker.appendTodo(todo));
 }
 
 projectForm.onsubmit = (event) => {
@@ -48,4 +39,22 @@ projectForm.onsubmit = (event) => {
     domWorker.appendProject(projects[projects.length - 1]);
   }
   event.currentTarget.reset();
+};
+
+todoForm.onsubmit = (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  const todo = new ToDo({
+    title: formData.get("title"),
+    projectId: domWorker.getActiveNav().id,
+    description: formData.get("description"),
+    dueDate: formData.get("dueDate"),
+    priority: formData.get("priority"),
+    notes: formData.get("notes"),
+  });
+  if (todo.save()) {
+    domWorker.appendTodo(todo);
+    todoForm.reset();
+    todoModal.hide();
+  }
 };

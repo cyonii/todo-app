@@ -43,10 +43,59 @@
         <!-- ToDo column -->
         <div class="col-sm-7 col-lg-5 py-4">
           <div class="d-flex mb-2 mb-md-3">
-            <button class="btn btn-primary ms-auto">
+            <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#todoModal">
               <i class="bi bi-journal-check me-2"></i>New task
             </button>
 
+            <!-- Todo modal -->
+            <div class="modal fade" id="todoModal" tabindex="-1" aria-labelledby="todoModal" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centereds modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add a new task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="todoForm">
+                      <div class="mb-3">
+                        <label for="title" class="form-label text-primary fw-bold mb-0">Title</label>
+                        <input type="text" class="form-control form-control-sm" id="title" name="title"
+                          placeholder="Task title" required>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="description" class="form-label text-primary fw-bold mb-0">Description</label>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="4"
+                          placeholder="What is this task about?" required></textarea>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="dueDate" class="form-label text-primary fw-bold mb-0">Due Date</label>
+                        <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Task date"
+                          required>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="priority" class="form-label text-primary fw-bold mb-0">Priority</label>
+                        <select id="priority" name class="form-select" required>
+                          <option value="low" selected>Low</option>
+                          <option value="mid">Mid</option>
+                          <option value="high">High</option>
+                        </select>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="notes" class="form-label text-primary fw-bold mb-0">Notes</label>
+                        <textarea class="form-control" name="notes" id="notes" cols="30" rows="2"
+                          placeholder="Do you have any notes about this event?"></textarea>
+                      </div>
+
+                      <button class="btn btn-primary" type="submit">Add task</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div id="todo-stack">
             <!-- Dummy ToDo -->

@@ -3,8 +3,6 @@ import { format } from "date-fns";
 import { parseISO } from "date-fns/esm";
 
 export default function (todo) {
-  const collapsibleId = `${todo.projectId}-collapse`;
-
   function _makeCardWrapper() {
     const el = document.createElement("div");
 
@@ -34,7 +32,7 @@ export default function (todo) {
     );
     setAttributes(el, {
       "data-bs-toggle": "collapse",
-      "data-bs-target": "#" + collapsibleId,
+      "data-bs-target": "#" + todo.id,
     });
     el.innerText = todo.title;
     return el;
@@ -44,7 +42,7 @@ export default function (todo) {
     const el = document.createElement("div");
 
     el.classList.add("badge", "bg-secondary");
-    el.innerText = format(new Date(todo.dueDate), "dd-mm-yyyy : hh:mm");
+    el.innerText = format(new Date(todo.dueDate), "dd-mm-yyyy");
     return el;
   }
 
@@ -52,7 +50,7 @@ export default function (todo) {
     const el = document.createElement("div");
 
     el.classList.add("collapse");
-    el.id = collapsibleId;
+    el.id = todo.id;
     return el;
   }
 

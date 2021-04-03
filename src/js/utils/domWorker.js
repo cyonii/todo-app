@@ -4,10 +4,10 @@ import { setAttributes } from "../utils/utils";
 import makeTodoCard from "../components/todoCard";
 
 export default (() => {
-  function appendProject(project, active = false) {
+  function appendProject(project) {
     const projectStack = document.getElementById("project-stack");
     const projectNav = _makeProjectNav(project);
-    if (active) projectNav.classList.add("active");
+    if (project.name.match(/general/i)) projectNav.classList.add("active");
 
     projectNav.onclick = _projectSwitchEvent;
     projectStack.appendChild(projectNav);

@@ -1,10 +1,12 @@
 import _ from "lodash";
 import EventEmitter from "events";
+import { randomID } from "../utils/utils";
 
 export default class ToDo extends EventEmitter {
   constructor(props) {
     super();
     this.title = props.title;
+    this.id = props.id ? props.id : randomID();
     this.projectId = props.projectId;
     this.description = props.description;
     this.dueDate = props.dueDate;

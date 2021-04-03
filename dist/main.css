@@ -1345,11 +1345,6 @@ url(fonts/bootstrap-icons.woff) format("woff");
 .bi-zoom-out::before { content: "\f62d"; }
 
 @charset "UTF-8";
-html {
-  font-size: 16px;
-  font-family: sans-serif;
-}
-
 /*!
  * Bootstrap v5.0.0-beta3 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
@@ -12078,6 +12073,25 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+html {
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+::placeholder {
+  font-size: 0.875rem;
+  font-weight: 300;
+}
+
+label {
+  font-size: 14px;
+}
+
+input,
+textarea,
+select {
+  font-weight: 300;
 }
 
 /*# sourceMappingURL=main.css.map*/
