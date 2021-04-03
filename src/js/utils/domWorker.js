@@ -1,44 +1,52 @@
-import Project from "../models/project";
 import ToDo from "../models/todo";
-import { setAttributes } from "../utils/utils";
 import makeTodoCard from "../components/todoCard";
+import makeProjectNav from "../components/projectNav";
 
 export default (() => {
+  const getActiveNav = () => document.querySelector("#project-stack .nav-link.active");
+  const getProjectForm = () => document.getElementById("projectForm");
+  const getProjectNavs = () => document.querySelectorAll("#project-stack .nav-link");
+  const getProjectStack = () => document.getElementById("project-stack");
+  const getTodoForm = () => document.getElementById("todoForm");
+  const getTodoModal = () => document.getElementById("todoModal");
+  const getTodoStack = () => document.getElementById("todo-stack");
+
+  function displayOwnTodos(event) {
+    let todos = ToDo.getAllByProject(event.currentTarget.id);
+    const todoStack = getTodoStack();
+
+    todoStack.innerHTML = "";
+    if (todos.length) {
+      todos.forEach((todo) => appendTodo(todo));
+    } else {
+      const message = document.createElement("p");
+      message.textContent = "No Tasks";
+      message.classList.add("display-4", "text-center", "mt-5", "text-muted");
+      todoStack.appendChild(message);
+    }
+  }
+
   function appendProject(project) {
-    const projectStack = document.getElementById("project-stack");
-    const projectNav = _makeProjectNav(project);
+    const projectNav = makeProjectNav(project);
     if (project.name.match(/general/i)) projectNav.classList.add("active");
 
-    projectNav.onclick = _projectSwitchEvent;
-    projectStack.appendChild(projectNav);
+    projectNav.onclick = displayOwnTodos;
+    getProjectStack().appendChild(projectNav);
   }
 
   function appendTodo(todo) {
-    const todoStack = document.getElementById("todo-stack");
-
+    const todoStack = getTodoStack();
     todoStack.appendChild(makeTodoCard(todo));
   }
 
-  function getActiveNav() {
-    return document.querySelector("#project-stack .nav-link.active");
-  }
-
-  function getProjectNavs() {
-    return document.querySelectorAll("#project-stack .nav-link");
-  }
-
-  function _makeProjectNav(project) {
-    const navBtn = document.createElement("button");
-
-    navBtn.classList.add("nav-link", "lead", "text-primay", "text-start");
-    navBtn.innerText = project.name;
-    setAttributes(navBtn, { id: project.id, "data-bs-toggle": "pill" });
-
-    return navBtn;
-  }
-
-  function _projectSwitchEvent(event) {
-    let todos = ToDo.getAllByProject(event.currentTarget.id);
-  }
-  return { appendProject, appendTodo, getActiveNav, getProjectNavs, setAttributes };
+  return {
+    appendProject,
+    appendTodo,
+    getProjectForm,
+    getActiveNav,
+    getProjectNavs,
+    getProjectStack,
+    getTodoForm,
+    getTodoModal,
+  };
 })();

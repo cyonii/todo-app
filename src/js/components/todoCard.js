@@ -1,6 +1,5 @@
 import { setAttributes } from "../utils/utils";
 import { format } from "date-fns";
-import { parseISO } from "date-fns/esm";
 
 export default function (todo) {
   function _makeCardWrapper() {
@@ -76,8 +75,9 @@ export default function (todo) {
       "alert",
       "alert-secondary",
       "border-0",
-      "py-1",
+      "py-0",
       "fw-light",
+      "mt-3",
       "mb-0",
       "fs-sm",
       "fst-italic"

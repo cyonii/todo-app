@@ -12094,4 +12094,8 @@ select {
   font-weight: 300;
 }
 
+* {
+  transition: 0.3s;
+}
+
 /*# sourceMappingURL=main.css.map*/

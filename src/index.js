@@ -6,9 +6,8 @@ import Project from "./js/models/project";
 import ToDo from "./js/models/todo";
 import domWorker from "./js/utils/domWorker";
 
-const projectForm = document.getElementById("projectForm");
-const todoForm = document.getElementById("todoForm");
-const todoModal = new Modal(document.getElementById("todoModal"));
+const projectForm = domWorker.getProjectForm();
+const todoForm = domWorker.getTodoForm();
 
 // Always add General project if it's unavailable
 if (localStorage.length < 1) {
@@ -26,7 +25,7 @@ if (localStorage.length < 1) {
   if (newTodo.save()) domWorker.appendTodo(newTodo);
 } else {
   Project.getAll().forEach((project) => domWorker.appendProject(project));
-  ToDo.getAll().forEach((todo) => domWorker.appendTodo(todo));
+  ToDo.getAllByProject(domWorker.getActiveNav().id).forEach((todo) => domWorker.appendTodo(todo));
 }
 
 projectForm.onsubmit = (event) => {
@@ -55,6 +54,6 @@ todoForm.onsubmit = (event) => {
   if (todo.save()) {
     domWorker.appendTodo(todo);
     todoForm.reset();
-    todoModal.hide();
+    Modal.getInstance(domWorker.getTodoModal()).hide();
   }
 };

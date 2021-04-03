@@ -8066,6 +8066,1532 @@ defineJQueryPlugin(NAME, Toast);
 
 /***/ }),
 
+/***/ "./node_modules/bootstrap/js/src/base-component.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/bootstrap/js/src/base-component.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _dom_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom/data */ "./node_modules/bootstrap/js/src/dom/data.js");
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0-beta3): base-component.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
+
+
+/**
+ * ------------------------------------------------------------------------
+ * Constants
+ * ------------------------------------------------------------------------
+ */
+
+const VERSION = '5.0.0-beta3'
+
+class BaseComponent {
+  constructor(element) {
+    element = typeof element === 'string' ? document.querySelector(element) : element
+
+    if (!element) {
+      return
+    }
+
+    this._element = element
+    _dom_data__WEBPACK_IMPORTED_MODULE_0__.default.set(this._element, this.constructor.DATA_KEY, this)
+  }
+
+  dispose() {
+    _dom_data__WEBPACK_IMPORTED_MODULE_0__.default.remove(this._element, this.constructor.DATA_KEY)
+    this._element = null
+  }
+
+  /** Static */
+
+  static getInstance(element) {
+    return _dom_data__WEBPACK_IMPORTED_MODULE_0__.default.get(element, this.DATA_KEY)
+  }
+
+  static get VERSION() {
+    return VERSION
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BaseComponent);
+
+
+/***/ }),
+
+/***/ "./node_modules/bootstrap/js/src/dom/data.js":
+/*!***************************************************!*\
+  !*** ./node_modules/bootstrap/js/src/dom/data.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0-beta3): dom/data.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
+/**
+ * ------------------------------------------------------------------------
+ * Constants
+ * ------------------------------------------------------------------------
+ */
+
+const elementMap = new Map()
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  set(element, key, instance) {
+    if (!elementMap.has(element)) {
+      elementMap.set(element, new Map())
+    }
+
+    const instanceMap = elementMap.get(element)
+
+    // make it clear we only want one instance per element
+    // can be removed later when multiple key/instances are fine to be used
+    if (!instanceMap.has(key) && instanceMap.size !== 0) {
+      // eslint-disable-next-line no-console
+      console.error(`Bootstrap doesn't allow more than one instance per element. Bound instance: ${Array.from(instanceMap.keys())[0]}.`)
+      return
+    }
+
+    instanceMap.set(key, instance)
+  },
+
+  get(element, key) {
+    if (elementMap.has(element)) {
+      return elementMap.get(element).get(key) || null
+    }
+
+    return null
+  },
+
+  remove(element, key) {
+    if (!elementMap.has(element)) {
+      return
+    }
+
+    const instanceMap = elementMap.get(element)
+
+    instanceMap.delete(key)
+
+    // free up element references if there are no instances left for an element
+    if (instanceMap.size === 0) {
+      elementMap.delete(element)
+    }
+  }
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/bootstrap/js/src/dom/event-handler.js":
+/*!************************************************************!*\
+  !*** ./node_modules/bootstrap/js/src/dom/event-handler.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/index */ "./node_modules/bootstrap/js/src/util/index.js");
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0-beta3): dom/event-handler.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
+
+
+/**
+ * ------------------------------------------------------------------------
+ * Constants
+ * ------------------------------------------------------------------------
+ */
+
+const namespaceRegex = /[^.]*(?=\..*)\.|.*/
+const stripNameRegex = /\..*/
+const stripUidRegex = /::\d+$/
+const eventRegistry = {} // Events storage
+let uidEvent = 1
+const customEvents = {
+  mouseenter: 'mouseover',
+  mouseleave: 'mouseout'
+}
+const nativeEvents = new Set([
+  'click',
+  'dblclick',
+  'mouseup',
+  'mousedown',
+  'contextmenu',
+  'mousewheel',
+  'DOMMouseScroll',
+  'mouseover',
+  'mouseout',
+  'mousemove',
+  'selectstart',
+  'selectend',
+  'keydown',
+  'keypress',
+  'keyup',
+  'orientationchange',
+  'touchstart',
+  'touchmove',
+  'touchend',
+  'touchcancel',
+  'pointerdown',
+  'pointermove',
+  'pointerup',
+  'pointerleave',
+  'pointercancel',
+  'gesturestart',
+  'gesturechange',
+  'gestureend',
+  'focus',
+  'blur',
+  'change',
+  'reset',
+  'select',
+  'submit',
+  'focusin',
+  'focusout',
+  'load',
+  'unload',
+  'beforeunload',
+  'resize',
+  'move',
+  'DOMContentLoaded',
+  'readystatechange',
+  'error',
+  'abort',
+  'scroll'
+])
+
+/**
+ * ------------------------------------------------------------------------
+ * Private methods
+ * ------------------------------------------------------------------------
+ */
+
+function getUidEvent(element, uid) {
+  return (uid && `${uid}::${uidEvent++}`) || element.uidEvent || uidEvent++
+}
+
+function getEvent(element) {
+  const uid = getUidEvent(element)
+
+  element.uidEvent = uid
+  eventRegistry[uid] = eventRegistry[uid] || {}
+
+  return eventRegistry[uid]
+}
+
+function bootstrapHandler(element, fn) {
+  return function handler(event) {
+    event.delegateTarget = element
+
+    if (handler.oneOff) {
+      EventHandler.off(element, event.type, fn)
+    }
+
+    return fn.apply(element, [event])
+  }
+}
+
+function bootstrapDelegationHandler(element, selector, fn) {
+  return function handler(event) {
+    const domElements = element.querySelectorAll(selector)
+
+    for (let { target } = event; target && target !== this; target = target.parentNode) {
+      for (let i = domElements.length; i--;) {
+        if (domElements[i] === target) {
+          event.delegateTarget = target
+
+          if (handler.oneOff) {
+            // eslint-disable-next-line unicorn/consistent-destructuring
+            EventHandler.off(element, event.type, fn)
+          }
+
+          return fn.apply(target, [event])
+        }
+      }
+    }
+
+    // To please ESLint
+    return null
+  }
+}
+
+function findHandler(events, handler, delegationSelector = null) {
+  const uidEventList = Object.keys(events)
+
+  for (let i = 0, len = uidEventList.length; i < len; i++) {
+    const event = events[uidEventList[i]]
+
+    if (event.originalHandler === handler && event.delegationSelector === delegationSelector) {
+      return event
+    }
+  }
+
+  return null
+}
+
+function normalizeParams(originalTypeEvent, handler, delegationFn) {
+  const delegation = typeof handler === 'string'
+  const originalHandler = delegation ? delegationFn : handler
+
+  // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
+  let typeEvent = originalTypeEvent.replace(stripNameRegex, '')
+  const custom = customEvents[typeEvent]
+
+  if (custom) {
+    typeEvent = custom
+  }
+
+  const isNative = nativeEvents.has(typeEvent)
+
+  if (!isNative) {
+    typeEvent = originalTypeEvent
+  }
+
+  return [delegation, originalHandler, typeEvent]
+}
+
+function addHandler(element, originalTypeEvent, handler, delegationFn, oneOff) {
+  if (typeof originalTypeEvent !== 'string' || !element) {
+    return
+  }
+
+  if (!handler) {
+    handler = delegationFn
+    delegationFn = null
+  }
+
+  const [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn)
+  const events = getEvent(element)
+  const handlers = events[typeEvent] || (events[typeEvent] = {})
+  const previousFn = findHandler(handlers, originalHandler, delegation ? handler : null)
+
+  if (previousFn) {
+    previousFn.oneOff = previousFn.oneOff && oneOff
+
+    return
+  }
+
+  const uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ''))
+  const fn = delegation ?
+    bootstrapDelegationHandler(element, handler, delegationFn) :
+    bootstrapHandler(element, handler)
+
+  fn.delegationSelector = delegation ? handler : null
+  fn.originalHandler = originalHandler
+  fn.oneOff = oneOff
+  fn.uidEvent = uid
+  handlers[uid] = fn
+
+  element.addEventListener(typeEvent, fn, delegation)
+}
+
+function removeHandler(element, events, typeEvent, handler, delegationSelector) {
+  const fn = findHandler(events[typeEvent], handler, delegationSelector)
+
+  if (!fn) {
+    return
+  }
+
+  element.removeEventListener(typeEvent, fn, Boolean(delegationSelector))
+  delete events[typeEvent][fn.uidEvent]
+}
+
+function removeNamespacedHandlers(element, events, typeEvent, namespace) {
+  const storeElementEvent = events[typeEvent] || {}
+
+  Object.keys(storeElementEvent).forEach(handlerKey => {
+    if (handlerKey.includes(namespace)) {
+      const event = storeElementEvent[handlerKey]
+
+      removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector)
+    }
+  })
+}
+
+const EventHandler = {
+  on(element, event, handler, delegationFn) {
+    addHandler(element, event, handler, delegationFn, false)
+  },
+
+  one(element, event, handler, delegationFn) {
+    addHandler(element, event, handler, delegationFn, true)
+  },
+
+  off(element, originalTypeEvent, handler, delegationFn) {
+    if (typeof originalTypeEvent !== 'string' || !element) {
+      return
+    }
+
+    const [delegation, originalHandler, typeEvent] = normalizeParams(originalTypeEvent, handler, delegationFn)
+    const inNamespace = typeEvent !== originalTypeEvent
+    const events = getEvent(element)
+    const isNamespace = originalTypeEvent.startsWith('.')
+
+    if (typeof originalHandler !== 'undefined') {
+      // Simplest case: handler is passed, remove that listener ONLY.
+      if (!events || !events[typeEvent]) {
+        return
+      }
+
+      removeHandler(element, events, typeEvent, originalHandler, delegation ? handler : null)
+      return
+    }
+
+    if (isNamespace) {
+      Object.keys(events).forEach(elementEvent => {
+        removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1))
+      })
+    }
+
+    const storeElementEvent = events[typeEvent] || {}
+    Object.keys(storeElementEvent).forEach(keyHandlers => {
+      const handlerKey = keyHandlers.replace(stripUidRegex, '')
+
+      if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
+        const event = storeElementEvent[keyHandlers]
+
+        removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector)
+      }
+    })
+  },
+
+  trigger(element, event, args) {
+    if (typeof event !== 'string' || !element) {
+      return null
+    }
+
+    const $ = (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.getjQuery)()
+    const typeEvent = event.replace(stripNameRegex, '')
+    const inNamespace = event !== typeEvent
+    const isNative = nativeEvents.has(typeEvent)
+
+    let jQueryEvent
+    let bubbles = true
+    let nativeDispatch = true
+    let defaultPrevented = false
+    let evt = null
+
+    if (inNamespace && $) {
+      jQueryEvent = $.Event(event, args)
+
+      $(element).trigger(jQueryEvent)
+      bubbles = !jQueryEvent.isPropagationStopped()
+      nativeDispatch = !jQueryEvent.isImmediatePropagationStopped()
+      defaultPrevented = jQueryEvent.isDefaultPrevented()
+    }
+
+    if (isNative) {
+      evt = document.createEvent('HTMLEvents')
+      evt.initEvent(typeEvent, bubbles, true)
+    } else {
+      evt = new CustomEvent(event, {
+        bubbles,
+        cancelable: true
+      })
+    }
+
+    // merge custom information in our event
+    if (typeof args !== 'undefined') {
+      Object.keys(args).forEach(key => {
+        Object.defineProperty(evt, key, {
+          get() {
+            return args[key]
+          }
+        })
+      })
+    }
+
+    if (defaultPrevented) {
+      evt.preventDefault()
+    }
+
+    if (nativeDispatch) {
+      element.dispatchEvent(evt)
+    }
+
+    if (evt.defaultPrevented && typeof jQueryEvent !== 'undefined') {
+      jQueryEvent.preventDefault()
+    }
+
+    return evt
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EventHandler);
+
+
+/***/ }),
+
+/***/ "./node_modules/bootstrap/js/src/dom/manipulator.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/bootstrap/js/src/dom/manipulator.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0-beta3): dom/manipulator.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
+function normalizeData(val) {
+  if (val === 'true') {
+    return true
+  }
+
+  if (val === 'false') {
+    return false
+  }
+
+  if (val === Number(val).toString()) {
+    return Number(val)
+  }
+
+  if (val === '' || val === 'null') {
+    return null
+  }
+
+  return val
+}
+
+function normalizeDataKey(key) {
+  return key.replace(/[A-Z]/g, chr => `-${chr.toLowerCase()}`)
+}
+
+const Manipulator = {
+  setDataAttribute(element, key, value) {
+    element.setAttribute(`data-bs-${normalizeDataKey(key)}`, value)
+  },
+
+  removeDataAttribute(element, key) {
+    element.removeAttribute(`data-bs-${normalizeDataKey(key)}`)
+  },
+
+  getDataAttributes(element) {
+    if (!element) {
+      return {}
+    }
+
+    const attributes = {}
+
+    Object.keys(element.dataset)
+      .filter(key => key.startsWith('bs'))
+      .forEach(key => {
+        let pureKey = key.replace(/^bs/, '')
+        pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1, pureKey.length)
+        attributes[pureKey] = normalizeData(element.dataset[key])
+      })
+
+    return attributes
+  },
+
+  getDataAttribute(element, key) {
+    return normalizeData(element.getAttribute(`data-bs-${normalizeDataKey(key)}`))
+  },
+
+  offset(element) {
+    const rect = element.getBoundingClientRect()
+
+    return {
+      top: rect.top + document.body.scrollTop,
+      left: rect.left + document.body.scrollLeft
+    }
+  },
+
+  position(element) {
+    return {
+      top: element.offsetTop,
+      left: element.offsetLeft
+    }
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Manipulator);
+
+
+/***/ }),
+
+/***/ "./node_modules/bootstrap/js/src/dom/selector-engine.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/bootstrap/js/src/dom/selector-engine.js ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0-beta3): dom/selector-engine.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
+/**
+ * ------------------------------------------------------------------------
+ * Constants
+ * ------------------------------------------------------------------------
+ */
+
+const NODE_TEXT = 3
+
+const SelectorEngine = {
+  find(selector, element = document.documentElement) {
+    return [].concat(...Element.prototype.querySelectorAll.call(element, selector))
+  },
+
+  findOne(selector, element = document.documentElement) {
+    return Element.prototype.querySelector.call(element, selector)
+  },
+
+  children(element, selector) {
+    return [].concat(...element.children)
+      .filter(child => child.matches(selector))
+  },
+
+  parents(element, selector) {
+    const parents = []
+
+    let ancestor = element.parentNode
+
+    while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {
+      if (ancestor.matches(selector)) {
+        parents.push(ancestor)
+      }
+
+      ancestor = ancestor.parentNode
+    }
+
+    return parents
+  },
+
+  prev(element, selector) {
+    let previous = element.previousElementSibling
+
+    while (previous) {
+      if (previous.matches(selector)) {
+        return [previous]
+      }
+
+      previous = previous.previousElementSibling
+    }
+
+    return []
+  },
+
+  next(element, selector) {
+    let next = element.nextElementSibling
+
+    while (next) {
+      if (next.matches(selector)) {
+        return [next]
+      }
+
+      next = next.nextElementSibling
+    }
+
+    return []
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectorEngine);
+
+
+/***/ }),
+
+/***/ "./node_modules/bootstrap/js/src/modal.js":
+/*!************************************************!*\
+  !*** ./node_modules/bootstrap/js/src/modal.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _util_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util/index */ "./node_modules/bootstrap/js/src/util/index.js");
+/* harmony import */ var _dom_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dom/data */ "./node_modules/bootstrap/js/src/dom/data.js");
+/* harmony import */ var _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dom/event-handler */ "./node_modules/bootstrap/js/src/dom/event-handler.js");
+/* harmony import */ var _dom_manipulator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dom/manipulator */ "./node_modules/bootstrap/js/src/dom/manipulator.js");
+/* harmony import */ var _dom_selector_engine__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dom/selector-engine */ "./node_modules/bootstrap/js/src/dom/selector-engine.js");
+/* harmony import */ var _base_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./base-component */ "./node_modules/bootstrap/js/src/base-component.js");
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0-beta3): modal.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
+
+
+
+
+
+
+
+/**
+ * ------------------------------------------------------------------------
+ * Constants
+ * ------------------------------------------------------------------------
+ */
+
+const NAME = 'modal'
+const DATA_KEY = 'bs.modal'
+const EVENT_KEY = `.${DATA_KEY}`
+const DATA_API_KEY = '.data-api'
+const ESCAPE_KEY = 'Escape'
+
+const Default = {
+  backdrop: true,
+  keyboard: true,
+  focus: true
+}
+
+const DefaultType = {
+  backdrop: '(boolean|string)',
+  keyboard: 'boolean',
+  focus: 'boolean'
+}
+
+const EVENT_HIDE = `hide${EVENT_KEY}`
+const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY}`
+const EVENT_HIDDEN = `hidden${EVENT_KEY}`
+const EVENT_SHOW = `show${EVENT_KEY}`
+const EVENT_SHOWN = `shown${EVENT_KEY}`
+const EVENT_FOCUSIN = `focusin${EVENT_KEY}`
+const EVENT_RESIZE = `resize${EVENT_KEY}`
+const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY}`
+const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`
+const EVENT_MOUSEUP_DISMISS = `mouseup.dismiss${EVENT_KEY}`
+const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY}`
+const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
+
+const CLASS_NAME_SCROLLBAR_MEASURER = 'modal-scrollbar-measure'
+const CLASS_NAME_BACKDROP = 'modal-backdrop'
+const CLASS_NAME_OPEN = 'modal-open'
+const CLASS_NAME_FADE = 'fade'
+const CLASS_NAME_SHOW = 'show'
+const CLASS_NAME_STATIC = 'modal-static'
+
+const SELECTOR_DIALOG = '.modal-dialog'
+const SELECTOR_MODAL_BODY = '.modal-body'
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="modal"]'
+const SELECTOR_DATA_DISMISS = '[data-bs-dismiss="modal"]'
+const SELECTOR_FIXED_CONTENT = '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top'
+const SELECTOR_STICKY_CONTENT = '.sticky-top'
+
+/**
+ * ------------------------------------------------------------------------
+ * Class Definition
+ * ------------------------------------------------------------------------
+ */
+
+class Modal extends _base_component__WEBPACK_IMPORTED_MODULE_5__.default {
+  constructor(element, config) {
+    super(element)
+
+    this._config = this._getConfig(config)
+    this._dialog = _dom_selector_engine__WEBPACK_IMPORTED_MODULE_4__.default.findOne(SELECTOR_DIALOG, this._element)
+    this._backdrop = null
+    this._isShown = false
+    this._isBodyOverflowing = false
+    this._ignoreBackdropClick = false
+    this._isTransitioning = false
+    this._scrollbarWidth = 0
+  }
+
+  // Getters
+
+  static get Default() {
+    return Default
+  }
+
+  static get DATA_KEY() {
+    return DATA_KEY
+  }
+
+  // Public
+
+  toggle(relatedTarget) {
+    return this._isShown ? this.hide() : this.show(relatedTarget)
+  }
+
+  show(relatedTarget) {
+    if (this._isShown || this._isTransitioning) {
+      return
+    }
+
+    if (this._isAnimated()) {
+      this._isTransitioning = true
+    }
+
+    const showEvent = _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.trigger(this._element, EVENT_SHOW, {
+      relatedTarget
+    })
+
+    if (this._isShown || showEvent.defaultPrevented) {
+      return
+    }
+
+    this._isShown = true
+
+    this._checkScrollbar()
+    this._setScrollbar()
+
+    this._adjustDialog()
+
+    this._setEscapeEvent()
+    this._setResizeEvent()
+
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.on(this._element, EVENT_CLICK_DISMISS, SELECTOR_DATA_DISMISS, event => this.hide(event))
+
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.on(this._dialog, EVENT_MOUSEDOWN_DISMISS, () => {
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(this._element, EVENT_MOUSEUP_DISMISS, event => {
+        if (event.target === this._element) {
+          this._ignoreBackdropClick = true
+        }
+      })
+    })
+
+    this._showBackdrop(() => this._showElement(relatedTarget))
+  }
+
+  hide(event) {
+    if (event) {
+      event.preventDefault()
+    }
+
+    if (!this._isShown || this._isTransitioning) {
+      return
+    }
+
+    const hideEvent = _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.trigger(this._element, EVENT_HIDE)
+
+    if (hideEvent.defaultPrevented) {
+      return
+    }
+
+    this._isShown = false
+    const isAnimated = this._isAnimated()
+
+    if (isAnimated) {
+      this._isTransitioning = true
+    }
+
+    this._setEscapeEvent()
+    this._setResizeEvent()
+
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(document, EVENT_FOCUSIN)
+
+    this._element.classList.remove(CLASS_NAME_SHOW)
+
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(this._element, EVENT_CLICK_DISMISS)
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(this._dialog, EVENT_MOUSEDOWN_DISMISS)
+
+    if (isAnimated) {
+      const transitionDuration = (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.getTransitionDurationFromElement)(this._element)
+
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(this._element, 'transitionend', event => this._hideModal(event))
+      ;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.emulateTransitionEnd)(this._element, transitionDuration)
+    } else {
+      this._hideModal()
+    }
+  }
+
+  dispose() {
+    [window, this._element, this._dialog]
+      .forEach(htmlElement => _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(htmlElement, EVENT_KEY))
+
+    super.dispose()
+
+    /**
+     * `document` has 2 events `EVENT_FOCUSIN` and `EVENT_CLICK_DATA_API`
+     * Do not move `document` in `htmlElements` array
+     * It will remove `EVENT_CLICK_DATA_API` event that should remain
+     */
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(document, EVENT_FOCUSIN)
+
+    this._config = null
+    this._dialog = null
+    this._backdrop = null
+    this._isShown = null
+    this._isBodyOverflowing = null
+    this._ignoreBackdropClick = null
+    this._isTransitioning = null
+    this._scrollbarWidth = null
+  }
+
+  handleUpdate() {
+    this._adjustDialog()
+  }
+
+  // Private
+
+  _getConfig(config) {
+    config = {
+      ...Default,
+      ...config
+    }
+    ;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.typeCheckConfig)(NAME, config, DefaultType)
+    return config
+  }
+
+  _showElement(relatedTarget) {
+    const isAnimated = this._isAnimated()
+    const modalBody = _dom_selector_engine__WEBPACK_IMPORTED_MODULE_4__.default.findOne(SELECTOR_MODAL_BODY, this._dialog)
+
+    if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
+      // Don't move modal's DOM position
+      document.body.appendChild(this._element)
+    }
+
+    this._element.style.display = 'block'
+    this._element.removeAttribute('aria-hidden')
+    this._element.setAttribute('aria-modal', true)
+    this._element.setAttribute('role', 'dialog')
+    this._element.scrollTop = 0
+
+    if (modalBody) {
+      modalBody.scrollTop = 0
+    }
+
+    if (isAnimated) {
+      (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.reflow)(this._element)
+    }
+
+    this._element.classList.add(CLASS_NAME_SHOW)
+
+    if (this._config.focus) {
+      this._enforceFocus()
+    }
+
+    const transitionComplete = () => {
+      if (this._config.focus) {
+        this._element.focus()
+      }
+
+      this._isTransitioning = false
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.trigger(this._element, EVENT_SHOWN, {
+        relatedTarget
+      })
+    }
+
+    if (isAnimated) {
+      const transitionDuration = (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.getTransitionDurationFromElement)(this._dialog)
+
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(this._dialog, 'transitionend', transitionComplete)
+      ;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.emulateTransitionEnd)(this._dialog, transitionDuration)
+    } else {
+      transitionComplete()
+    }
+  }
+
+  _enforceFocus() {
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(document, EVENT_FOCUSIN) // guard against infinite focus loop
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.on(document, EVENT_FOCUSIN, event => {
+      if (document !== event.target &&
+          this._element !== event.target &&
+          !this._element.contains(event.target)) {
+        this._element.focus()
+      }
+    })
+  }
+
+  _setEscapeEvent() {
+    if (this._isShown) {
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.on(this._element, EVENT_KEYDOWN_DISMISS, event => {
+        if (this._config.keyboard && event.key === ESCAPE_KEY) {
+          event.preventDefault()
+          this.hide()
+        } else if (!this._config.keyboard && event.key === ESCAPE_KEY) {
+          this._triggerBackdropTransition()
+        }
+      })
+    } else {
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(this._element, EVENT_KEYDOWN_DISMISS)
+    }
+  }
+
+  _setResizeEvent() {
+    if (this._isShown) {
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.on(window, EVENT_RESIZE, () => this._adjustDialog())
+    } else {
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(window, EVENT_RESIZE)
+    }
+  }
+
+  _hideModal() {
+    this._element.style.display = 'none'
+    this._element.setAttribute('aria-hidden', true)
+    this._element.removeAttribute('aria-modal')
+    this._element.removeAttribute('role')
+    this._isTransitioning = false
+    this._showBackdrop(() => {
+      document.body.classList.remove(CLASS_NAME_OPEN)
+      this._resetAdjustments()
+      this._resetScrollbar()
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.trigger(this._element, EVENT_HIDDEN)
+    })
+  }
+
+  _removeBackdrop() {
+    this._backdrop.parentNode.removeChild(this._backdrop)
+    this._backdrop = null
+  }
+
+  _showBackdrop(callback) {
+    const isAnimated = this._isAnimated()
+    if (this._isShown && this._config.backdrop) {
+      this._backdrop = document.createElement('div')
+      this._backdrop.className = CLASS_NAME_BACKDROP
+
+      if (isAnimated) {
+        this._backdrop.classList.add(CLASS_NAME_FADE)
+      }
+
+      document.body.appendChild(this._backdrop)
+
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.on(this._element, EVENT_CLICK_DISMISS, event => {
+        if (this._ignoreBackdropClick) {
+          this._ignoreBackdropClick = false
+          return
+        }
+
+        if (event.target !== event.currentTarget) {
+          return
+        }
+
+        if (this._config.backdrop === 'static') {
+          this._triggerBackdropTransition()
+        } else {
+          this.hide()
+        }
+      })
+
+      if (isAnimated) {
+        (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.reflow)(this._backdrop)
+      }
+
+      this._backdrop.classList.add(CLASS_NAME_SHOW)
+
+      if (!isAnimated) {
+        callback()
+        return
+      }
+
+      const backdropTransitionDuration = (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.getTransitionDurationFromElement)(this._backdrop)
+
+      _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(this._backdrop, 'transitionend', callback)
+      ;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.emulateTransitionEnd)(this._backdrop, backdropTransitionDuration)
+    } else if (!this._isShown && this._backdrop) {
+      this._backdrop.classList.remove(CLASS_NAME_SHOW)
+
+      const callbackRemove = () => {
+        this._removeBackdrop()
+        callback()
+      }
+
+      if (isAnimated) {
+        const backdropTransitionDuration = (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.getTransitionDurationFromElement)(this._backdrop)
+        _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(this._backdrop, 'transitionend', callbackRemove)
+        ;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.emulateTransitionEnd)(this._backdrop, backdropTransitionDuration)
+      } else {
+        callbackRemove()
+      }
+    } else {
+      callback()
+    }
+  }
+
+  _isAnimated() {
+    return this._element.classList.contains(CLASS_NAME_FADE)
+  }
+
+  _triggerBackdropTransition() {
+    const hideEvent = _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.trigger(this._element, EVENT_HIDE_PREVENTED)
+    if (hideEvent.defaultPrevented) {
+      return
+    }
+
+    const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight
+
+    if (!isModalOverflowing) {
+      this._element.style.overflowY = 'hidden'
+    }
+
+    this._element.classList.add(CLASS_NAME_STATIC)
+    const modalTransitionDuration = (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.getTransitionDurationFromElement)(this._dialog)
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.off(this._element, 'transitionend')
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(this._element, 'transitionend', () => {
+      this._element.classList.remove(CLASS_NAME_STATIC)
+      if (!isModalOverflowing) {
+        _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(this._element, 'transitionend', () => {
+          this._element.style.overflowY = ''
+        })
+        ;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.emulateTransitionEnd)(this._element, modalTransitionDuration)
+      }
+    })
+    ;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.emulateTransitionEnd)(this._element, modalTransitionDuration)
+    this._element.focus()
+  }
+
+  // ----------------------------------------------------------------------
+  // the following methods are used to handle overflowing modals
+  // ----------------------------------------------------------------------
+
+  _adjustDialog() {
+    const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight
+
+    if ((!this._isBodyOverflowing && isModalOverflowing && !(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.isRTL)()) || (this._isBodyOverflowing && !isModalOverflowing && (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.isRTL)())) {
+      this._element.style.paddingLeft = `${this._scrollbarWidth}px`
+    }
+
+    if ((this._isBodyOverflowing && !isModalOverflowing && !(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.isRTL)()) || (!this._isBodyOverflowing && isModalOverflowing && (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.isRTL)())) {
+      this._element.style.paddingRight = `${this._scrollbarWidth}px`
+    }
+  }
+
+  _resetAdjustments() {
+    this._element.style.paddingLeft = ''
+    this._element.style.paddingRight = ''
+  }
+
+  _checkScrollbar() {
+    const rect = document.body.getBoundingClientRect()
+    this._isBodyOverflowing = Math.round(rect.left + rect.right) < window.innerWidth
+    this._scrollbarWidth = this._getScrollbarWidth()
+  }
+
+  _setScrollbar() {
+    if (this._isBodyOverflowing) {
+      this._setElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight', calculatedValue => calculatedValue + this._scrollbarWidth)
+      this._setElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight', calculatedValue => calculatedValue - this._scrollbarWidth)
+      this._setElementAttributes('body', 'paddingRight', calculatedValue => calculatedValue + this._scrollbarWidth)
+    }
+
+    document.body.classList.add(CLASS_NAME_OPEN)
+  }
+
+  _setElementAttributes(selector, styleProp, callback) {
+    _dom_selector_engine__WEBPACK_IMPORTED_MODULE_4__.default.find(selector)
+      .forEach(element => {
+        if (element !== document.body && window.innerWidth > element.clientWidth + this._scrollbarWidth) {
+          return
+        }
+
+        const actualValue = element.style[styleProp]
+        const calculatedValue = window.getComputedStyle(element)[styleProp]
+        _dom_manipulator__WEBPACK_IMPORTED_MODULE_3__.default.setDataAttribute(element, styleProp, actualValue)
+        element.style[styleProp] = callback(Number.parseFloat(calculatedValue)) + 'px'
+      })
+  }
+
+  _resetScrollbar() {
+    this._resetElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight')
+    this._resetElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight')
+    this._resetElementAttributes('body', 'paddingRight')
+  }
+
+  _resetElementAttributes(selector, styleProp) {
+    _dom_selector_engine__WEBPACK_IMPORTED_MODULE_4__.default.find(selector).forEach(element => {
+      const value = _dom_manipulator__WEBPACK_IMPORTED_MODULE_3__.default.getDataAttribute(element, styleProp)
+      if (typeof value === 'undefined' && element === document.body) {
+        element.style[styleProp] = ''
+      } else {
+        _dom_manipulator__WEBPACK_IMPORTED_MODULE_3__.default.removeDataAttribute(element, styleProp)
+        element.style[styleProp] = value
+      }
+    })
+  }
+
+  _getScrollbarWidth() { // thx d.walsh
+    const scrollDiv = document.createElement('div')
+    scrollDiv.className = CLASS_NAME_SCROLLBAR_MEASURER
+    document.body.appendChild(scrollDiv)
+    const scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth
+    document.body.removeChild(scrollDiv)
+    return scrollbarWidth
+  }
+
+  // Static
+
+  static jQueryInterface(config, relatedTarget) {
+    return this.each(function () {
+      let data = _dom_data__WEBPACK_IMPORTED_MODULE_1__.default.get(this, DATA_KEY)
+      const _config = {
+        ...Default,
+        ..._dom_manipulator__WEBPACK_IMPORTED_MODULE_3__.default.getDataAttributes(this),
+        ...(typeof config === 'object' && config ? config : {})
+      }
+
+      if (!data) {
+        data = new Modal(this, _config)
+      }
+
+      if (typeof config === 'string') {
+        if (typeof data[config] === 'undefined') {
+          throw new TypeError(`No method named "${config}"`)
+        }
+
+        data[config](relatedTarget)
+      }
+    })
+  }
+}
+
+/**
+ * ------------------------------------------------------------------------
+ * Data Api implementation
+ * ------------------------------------------------------------------------
+ */
+
+_dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
+  const target = (0,_util_index__WEBPACK_IMPORTED_MODULE_0__.getElementFromSelector)(this)
+
+  if (this.tagName === 'A' || this.tagName === 'AREA') {
+    event.preventDefault()
+  }
+
+  _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(target, EVENT_SHOW, showEvent => {
+    if (showEvent.defaultPrevented) {
+      // only register focus restorer if modal will actually get shown
+      return
+    }
+
+    _dom_event_handler__WEBPACK_IMPORTED_MODULE_2__.default.one(target, EVENT_HIDDEN, () => {
+      if ((0,_util_index__WEBPACK_IMPORTED_MODULE_0__.isVisible)(this)) {
+        this.focus()
+      }
+    })
+  })
+
+  let data = _dom_data__WEBPACK_IMPORTED_MODULE_1__.default.get(target, DATA_KEY)
+  if (!data) {
+    const config = {
+      ..._dom_manipulator__WEBPACK_IMPORTED_MODULE_3__.default.getDataAttributes(target),
+      ..._dom_manipulator__WEBPACK_IMPORTED_MODULE_3__.default.getDataAttributes(this)
+    }
+
+    data = new Modal(target, config)
+  }
+
+  data.toggle(this)
+})
+
+/**
+ * ------------------------------------------------------------------------
+ * jQuery
+ * ------------------------------------------------------------------------
+ * add .Modal to jQuery only if jQuery is present
+ */
+
+;(0,_util_index__WEBPACK_IMPORTED_MODULE_0__.defineJQueryPlugin)(NAME, Modal)
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Modal);
+
+
+/***/ }),
+
+/***/ "./node_modules/bootstrap/js/src/util/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/bootstrap/js/src/util/index.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getUID": () => (/* binding */ getUID),
+/* harmony export */   "getSelectorFromElement": () => (/* binding */ getSelectorFromElement),
+/* harmony export */   "getElementFromSelector": () => (/* binding */ getElementFromSelector),
+/* harmony export */   "getTransitionDurationFromElement": () => (/* binding */ getTransitionDurationFromElement),
+/* harmony export */   "triggerTransitionEnd": () => (/* binding */ triggerTransitionEnd),
+/* harmony export */   "isElement": () => (/* binding */ isElement),
+/* harmony export */   "emulateTransitionEnd": () => (/* binding */ emulateTransitionEnd),
+/* harmony export */   "typeCheckConfig": () => (/* binding */ typeCheckConfig),
+/* harmony export */   "isVisible": () => (/* binding */ isVisible),
+/* harmony export */   "isDisabled": () => (/* binding */ isDisabled),
+/* harmony export */   "findShadowRoot": () => (/* binding */ findShadowRoot),
+/* harmony export */   "noop": () => (/* binding */ noop),
+/* harmony export */   "reflow": () => (/* binding */ reflow),
+/* harmony export */   "getjQuery": () => (/* binding */ getjQuery),
+/* harmony export */   "onDOMContentLoaded": () => (/* binding */ onDOMContentLoaded),
+/* harmony export */   "isRTL": () => (/* binding */ isRTL),
+/* harmony export */   "defineJQueryPlugin": () => (/* binding */ defineJQueryPlugin)
+/* harmony export */ });
+/**
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.0.0-beta3): util/index.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
+ */
+
+const MAX_UID = 1000000
+const MILLISECONDS_MULTIPLIER = 1000
+const TRANSITION_END = 'transitionend'
+
+// Shoutout AngusCroll (https://goo.gl/pxwQGp)
+const toType = obj => {
+  if (obj === null || obj === undefined) {
+    return `${obj}`
+  }
+
+  return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase()
+}
+
+/**
+ * --------------------------------------------------------------------------
+ * Public Util Api
+ * --------------------------------------------------------------------------
+ */
+
+const getUID = prefix => {
+  do {
+    prefix += Math.floor(Math.random() * MAX_UID)
+  } while (document.getElementById(prefix))
+
+  return prefix
+}
+
+const getSelector = element => {
+  let selector = element.getAttribute('data-bs-target')
+
+  if (!selector || selector === '#') {
+    let hrefAttr = element.getAttribute('href')
+
+    // The only valid content that could double as a selector are IDs or classes,
+    // so everything starting with `#` or `.`. If a "real" URL is used as the selector,
+    // `document.querySelector` will rightfully complain it is invalid.
+    // See https://github.com/twbs/bootstrap/issues/32273
+    if (!hrefAttr || (!hrefAttr.includes('#') && !hrefAttr.startsWith('.'))) {
+      return null
+    }
+
+    // Just in case some CMS puts out a full URL with the anchor appended
+    if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {
+      hrefAttr = '#' + hrefAttr.split('#')[1]
+    }
+
+    selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null
+  }
+
+  return selector
+}
+
+const getSelectorFromElement = element => {
+  const selector = getSelector(element)
+
+  if (selector) {
+    return document.querySelector(selector) ? selector : null
+  }
+
+  return null
+}
+
+const getElementFromSelector = element => {
+  const selector = getSelector(element)
+
+  return selector ? document.querySelector(selector) : null
+}
+
+const getTransitionDurationFromElement = element => {
+  if (!element) {
+    return 0
+  }
+
+  // Get transition-duration of the element
+  let { transitionDuration, transitionDelay } = window.getComputedStyle(element)
+
+  const floatTransitionDuration = Number.parseFloat(transitionDuration)
+  const floatTransitionDelay = Number.parseFloat(transitionDelay)
+
+  // Return 0 if element or transition duration is not found
+  if (!floatTransitionDuration && !floatTransitionDelay) {
+    return 0
+  }
+
+  // If multiple durations are defined, take the first
+  transitionDuration = transitionDuration.split(',')[0]
+  transitionDelay = transitionDelay.split(',')[0]
+
+  return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER
+}
+
+const triggerTransitionEnd = element => {
+  element.dispatchEvent(new Event(TRANSITION_END))
+}
+
+const isElement = obj => (obj[0] || obj).nodeType
+
+const emulateTransitionEnd = (element, duration) => {
+  let called = false
+  const durationPadding = 5
+  const emulatedDuration = duration + durationPadding
+
+  function listener() {
+    called = true
+    element.removeEventListener(TRANSITION_END, listener)
+  }
+
+  element.addEventListener(TRANSITION_END, listener)
+  setTimeout(() => {
+    if (!called) {
+      triggerTransitionEnd(element)
+    }
+  }, emulatedDuration)
+}
+
+const typeCheckConfig = (componentName, config, configTypes) => {
+  Object.keys(configTypes).forEach(property => {
+    const expectedTypes = configTypes[property]
+    const value = config[property]
+    const valueType = value && isElement(value) ? 'element' : toType(value)
+
+    if (!new RegExp(expectedTypes).test(valueType)) {
+      throw new TypeError(
+        `${componentName.toUpperCase()}: ` +
+        `Option "${property}" provided type "${valueType}" ` +
+        `but expected type "${expectedTypes}".`
+      )
+    }
+  })
+}
+
+const isVisible = element => {
+  if (!element) {
+    return false
+  }
+
+  if (element.style && element.parentNode && element.parentNode.style) {
+    const elementStyle = getComputedStyle(element)
+    const parentNodeStyle = getComputedStyle(element.parentNode)
+
+    return elementStyle.display !== 'none' &&
+      parentNodeStyle.display !== 'none' &&
+      elementStyle.visibility !== 'hidden'
+  }
+
+  return false
+}
+
+const isDisabled = element => {
+  if (!element || element.nodeType !== Node.ELEMENT_NODE) {
+    return true
+  }
+
+  if (element.classList.contains('disabled')) {
+    return true
+  }
+
+  if (typeof element.disabled !== 'undefined') {
+    return element.disabled
+  }
+
+  return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false'
+}
+
+const findShadowRoot = element => {
+  if (!document.documentElement.attachShadow) {
+    return null
+  }
+
+  // Can find the shadow root otherwise it'll return the document
+  if (typeof element.getRootNode === 'function') {
+    const root = element.getRootNode()
+    return root instanceof ShadowRoot ? root : null
+  }
+
+  if (element instanceof ShadowRoot) {
+    return element
+  }
+
+  // when we don't find a shadow root
+  if (!element.parentNode) {
+    return null
+  }
+
+  return findShadowRoot(element.parentNode)
+}
+
+const noop = () => function () {}
+
+const reflow = element => element.offsetHeight
+
+const getjQuery = () => {
+  const { jQuery } = window
+
+  if (jQuery && !document.body.hasAttribute('data-bs-no-jquery')) {
+    return jQuery
+  }
+
+  return null
+}
+
+const onDOMContentLoaded = callback => {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', callback)
+  } else {
+    callback()
+  }
+}
+
+const isRTL = () => document.documentElement.dir === 'rtl'
+
+const defineJQueryPlugin = (name, plugin) => {
+  onDOMContentLoaded(() => {
+    const $ = getjQuery()
+    /* istanbul ignore if */
+    if ($) {
+      const JQUERY_NO_CONFLICT = $.fn[name]
+      $.fn[name] = plugin.jQueryInterface
+      $.fn[name].Constructor = plugin
+      $.fn[name].noConflict = () => {
+        $.fn[name] = JQUERY_NO_CONFLICT
+        return plugin.jQueryInterface
+      }
+    }
+  })
+}
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/date-fns/esm/_lib/addLeadingZeros/index.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/date-fns/esm/_lib/addLeadingZeros/index.js ***!
@@ -11517,7 +13043,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // Module
-var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body>\n  <header>\n    <nav class=\"navbar navbar-light bg-light\">\n      <div class=\"container-md\">\n        <a class=\"navbar-brand user-select-none d-flex align-items-center mx-auto\" href=\"/\">\n          <i class=\"bi bi-card-checklist me-2\"></i>\n          <strong>Task Manager</strong>\n        </a>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control\" placeholder=\"Project name\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\"><i class=\"bi bi-node-plus me-2\"></i>Add</button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#todoModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Todo modal -->\n            <div class=\"modal fade\" id=\"todoModal\" tabindex=\"-1\" aria-labelledby=\"todoModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content\">\n                  <div class=\"modal-header\">\n                    <h5 class=\"modal-title\" id=\"exampleModalLabel\">Add a new task</h5>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\">\n                    <form id=\"todoForm\">\n                      <div class=\"mb-3\">\n                        <label for=\"title\" class=\"form-label text-primary fw-bold mb-0\">Title</label>\n                        <input type=\"text\" class=\"form-control\" id=\"title\" name=\"title\" placeholder=\"Task title\">\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"description\" class=\"form-label text-primary fw-bold mb-0\">Description</label>\n                        <textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"30\" rows=\"4\"\n                          placeholder=\"What is this task about?\"></textarea>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"dueDate\" class=\"form-label text-primary fw-bold mb-0\">Due Date</label>\n                        <input type=\"date\" class=\"form-control\" id=\"dueDate\" name=\"dueDate\" placeholder=\"Task date\">\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"priority\" class=\"form-label text-primary fw-bold mb-0\">Priority</label>\n                        <select id=\"priority\" name class=\"form-select\">\n                          <option value=\"low\" selected>Low</option>\n                          <option value=\"mid\">Mid</option>\n                          <option value=\"high\">High</option>\n                        </select>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"notes\" class=\"form-label text-primary fw-bold mb-0\">Notes</label>\n                        <textarea class=\"form-control\" name=\"notes\" id=\"notes\" cols=\"30\" rows=\"2\"\n                          placeholder=\"Do you have any notes about this event?\"></textarea>\n                      </div>\n\n                      <button class=\"btn btn-primary\" type=\"submit\">Add task</button>\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"todo-stack\">\n            <!-- Dummy ToDo -->\n          </div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
+var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body>\n  <header>\n    <nav class=\"navbar navbar-light bg-light\">\n      <div class=\"container-md\">\n        <a class=\"navbar-brand user-select-none d-flex align-items-center mx-auto\" href=\"/\">\n          <i class=\"bi bi-card-checklist me-2\"></i>\n          <strong>Task Manager</strong>\n        </a>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control\" placeholder=\"Project name\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\"><i class=\"bi bi-node-plus me-2\"></i>Add</button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#todoModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Todo modal -->\n            <div class=\"modal fade\" id=\"todoModal\" tabindex=\"-1\" aria-labelledby=\"todoModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content\">\n                  <div class=\"modal-header\">\n                    <h6 class=\"modal-title fw-bold text-muted\" id=\"exampleModalLabel\">Add a new task</h6>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\">\n                    <form id=\"todoForm\">\n                      <div class=\"mb-3\">\n                        <label for=\"title\" class=\"form-label text-primary fw-bold mb-0\">Title</label>\n                        <input type=\"text\" class=\"form-control form-control-sm\" id=\"title\" name=\"title\"\n                          placeholder=\"Task title\" required>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"description\" class=\"form-label text-primary fw-bold mb-0\">Description</label>\n                        <textarea class=\"form-control\" name=\"description\" id=\"description\" cols=\"30\" rows=\"4\"\n                          placeholder=\"What is this task about?\" required></textarea>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"dueDate\" class=\"form-label text-primary fw-bold mb-0\">Due Date</label>\n                        <input type=\"date\" class=\"form-control\" id=\"dueDate\" name=\"dueDate\" placeholder=\"Task date\"\n                          required>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"priority\" class=\"form-label text-primary fw-bold mb-0\">Priority</label>\n                        <select id=\"priority\" name class=\"form-select\" required>\n                          <option value=\"low\" selected>Low</option>\n                          <option value=\"mid\">Mid</option>\n                          <option value=\"high\">High</option>\n                        </select>\n                      </div>\n\n                      <div class=\"mb-3\">\n                        <label for=\"notes\" class=\"form-label text-primary fw-bold mb-0\">Notes</label>\n                        <textarea class=\"form-control\" name=\"notes\" id=\"notes\" cols=\"30\" rows=\"2\"\n                          placeholder=\"Do you have any notes about this event?\"></textarea>\n                      </div>\n\n                      <button class=\"btn btn-primary\" type=\"submit\">Add task</button>\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"todo-stack\">\n            <!-- Dummy ToDo -->\n          </div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
 
@@ -28748,6 +30274,33 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/js/components/projectNav.js":
+/*!*****************************************!*\
+  !*** ./src/js/components/projectNav.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+
+
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(project) {
+  const navBtn = document.createElement("button");
+
+  navBtn.classList.add("nav-link", "lead", "text-primay", "text-start");
+  navBtn.innerText = project.name;
+  (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(navBtn, { id: project.id, "data-bs-toggle": "pill" });
+
+  return navBtn;
+}
+
+
+/***/ }),
+
 /***/ "./src/js/components/todoCard.js":
 /*!***************************************!*\
   !*** ./src/js/components/todoCard.js ***!
@@ -28764,10 +30317,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(todo) {
-  const collapsibleId = `${todo.projectId}-collapse`;
-
   function _makeCardWrapper() {
     const el = document.createElement("div");
 
@@ -28797,7 +30347,7 @@ __webpack_require__.r(__webpack_exports__);
     );
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(el, {
       "data-bs-toggle": "collapse",
-      "data-bs-target": "#" + collapsibleId,
+      "data-bs-target": "#" + todo.id,
     });
     el.innerText = todo.title;
     return el;
@@ -28815,7 +30365,7 @@ __webpack_require__.r(__webpack_exports__);
     const el = document.createElement("div");
 
     el.classList.add("collapse");
-    el.id = collapsibleId;
+    el.id = todo.id;
     return el;
   }
 
@@ -28841,8 +30391,9 @@ __webpack_require__.r(__webpack_exports__);
       "alert",
       "alert-secondary",
       "border-0",
-      "py-1",
+      "py-0",
       "fw-light",
+      "mt-3",
       "mb-0",
       "fs-sm",
       "fst-italic"
@@ -28962,6 +30513,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! events */ "./node_modules/events/events.js");
 /* harmony import */ var events__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(events__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+
 
 
 
@@ -28969,6 +30522,7 @@ class ToDo extends (events__WEBPACK_IMPORTED_MODULE_1___default()) {
   constructor(props) {
     super();
     this.title = props.title;
+    this.id = props.id ? props.id : (0,_utils_utils__WEBPACK_IMPORTED_MODULE_2__.randomID)();
     this.projectId = props.projectId;
     this.description = props.description;
     this.dueDate = props.dueDate;
@@ -29023,53 +30577,60 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _models_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/project */ "./src/js/models/project.js");
-/* harmony import */ var _models_todo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/todo */ "./src/js/models/todo.js");
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
-/* harmony import */ var _components_todoCard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/todoCard */ "./src/js/components/todoCard.js");
-
+/* harmony import */ var _models_todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/todo */ "./src/js/models/todo.js");
+/* harmony import */ var _components_todoCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/todoCard */ "./src/js/components/todoCard.js");
+/* harmony import */ var _components_projectNav__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/projectNav */ "./src/js/components/projectNav.js");
 
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((() => {
-  function appendProject(project, active = false) {
-    const projectStack = document.getElementById("project-stack");
-    const projectNav = _makeProjectNav(project);
-    if (active) projectNav.classList.add("active");
+  const getActiveNav = () => document.querySelector("#project-stack .nav-link.active");
+  const getProjectForm = () => document.getElementById("projectForm");
+  const getProjectNavs = () => document.querySelectorAll("#project-stack .nav-link");
+  const getProjectStack = () => document.getElementById("project-stack");
+  const getTodoForm = () => document.getElementById("todoForm");
+  const getTodoModal = () => document.getElementById("todoModal");
+  const getTodoStack = () => document.getElementById("todo-stack");
 
-    projectNav.onclick = _projectSwitchEvent;
-    projectStack.appendChild(projectNav);
+  function displayOwnTodos(event) {
+    let todos = _models_todo__WEBPACK_IMPORTED_MODULE_0__.default.getAllByProject(event.currentTarget.id);
+    const todoStack = getTodoStack();
+
+    todoStack.innerHTML = "";
+    if (todos.length) {
+      todos.forEach((todo) => appendTodo(todo));
+    } else {
+      const message = document.createElement("p");
+      message.textContent = "No Tasks";
+      message.classList.add("display-4", "text-center", "mt-5", "text-muted");
+      todoStack.appendChild(message);
+    }
+  }
+
+  function appendProject(project) {
+    const projectNav = (0,_components_projectNav__WEBPACK_IMPORTED_MODULE_2__.default)(project);
+    if (project.name.match(/general/i)) projectNav.classList.add("active");
+
+    projectNav.onclick = displayOwnTodos;
+    getProjectStack().appendChild(projectNav);
   }
 
   function appendTodo(todo) {
-    const todoStack = document.getElementById("todo-stack");
-
-    todoStack.appendChild((0,_components_todoCard__WEBPACK_IMPORTED_MODULE_3__.default)(todo));
+    const todoStack = getTodoStack();
+    todoStack.appendChild((0,_components_todoCard__WEBPACK_IMPORTED_MODULE_1__.default)(todo));
   }
 
-  function getActiveNav() {
-    return document.querySelector("#project-stack .nav-link.active");
-  }
-
-  function getProjectNavs() {
-    return document.querySelectorAll("#project-stack .nav-link");
-  }
-
-  function _makeProjectNav(project) {
-    const navBtn = document.createElement("button");
-
-    navBtn.classList.add("nav-link", "lead", "text-primay", "text-start");
-    navBtn.innerText = project.name;
-    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_2__.setAttributes)(navBtn, { id: project.id, "data-bs-toggle": "pill" });
-
-    return navBtn;
-  }
-
-  function _projectSwitchEvent(event) {
-    let todos = _models_todo__WEBPACK_IMPORTED_MODULE_1__.default.getAllByProject(event.currentTarget.id);
-  }
-  return { appendProject, appendTodo, getActiveNav, getProjectNavs, setAttributes: _utils_utils__WEBPACK_IMPORTED_MODULE_2__.setAttributes };
+  return {
+    appendProject,
+    appendTodo,
+    getProjectForm,
+    getActiveNav,
+    getProjectNavs,
+    getProjectStack,
+    getTodoForm,
+    getTodoModal,
+  };
 })());
 
 
@@ -29212,9 +30773,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.html */ "./src/index.html");
 /* harmony import */ var _scss_bundle_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scss/bundle.scss */ "./src/scss/bundle.scss");
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-/* harmony import */ var _js_models_project__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/models/project */ "./src/js/models/project.js");
-/* harmony import */ var _js_models_todo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./js/models/todo */ "./src/js/models/todo.js");
-/* harmony import */ var _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./js/utils/domWorker */ "./src/js/utils/domWorker.js");
+/* harmony import */ var bootstrap_js_src_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap/js/src/modal */ "./node_modules/bootstrap/js/src/modal.js");
+/* harmony import */ var _js_models_project__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./js/models/project */ "./src/js/models/project.js");
+/* harmony import */ var _js_models_todo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./js/models/todo */ "./src/js/models/todo.js");
+/* harmony import */ var _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./js/utils/domWorker */ "./src/js/utils/domWorker.js");
 
 
 
@@ -29222,16 +30784,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const projectForm = document.getElementById("projectForm");
+
+const projectForm = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getProjectForm();
+const todoForm = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getTodoForm();
 
 // Always add General project if it's unavailable
 if (localStorage.length < 1) {
-  const generalProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default({ name: "General" });
-
-  generalProject.on("aftersave", (proj) => _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(proj, true));
-  generalProject.save();
-
-  const newTodo = new _js_models_todo__WEBPACK_IMPORTED_MODULE_4__.default({
+  const generalProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({ name: "General" });
+  const newTodo = new _js_models_todo__WEBPACK_IMPORTED_MODULE_5__.default({
     title: "Hello, I am your task manager",
     projectId: generalProject.id,
     description: "I will help you organize your plan",
@@ -29240,31 +30800,41 @@ if (localStorage.length < 1) {
     notes: "You can delete me when you want",
   });
 
-  newTodo.on("aftersave", (todo) => _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendTodo(todo));
-  newTodo.save();
+  if (generalProject.save()) _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendProject(generalProject);
+  if (newTodo.save()) _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendTodo(newTodo);
 } else {
-  // Append projects stored on local storage
-  _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default.getAll().forEach((project) => {
-    const active = project.name.match(/general/i) ? true : false;
-    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(project, active);
-  });
-
-  // Append todos stored on local storage in the active project's pane
-  _js_models_todo__WEBPACK_IMPORTED_MODULE_4__.default.getAll().forEach((todo) => {
-    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendTodo(todo);
-  });
+  _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.getAll().forEach((project) => _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendProject(project));
+  _js_models_todo__WEBPACK_IMPORTED_MODULE_5__.default.getAllByProject(_js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getActiveNav().id).forEach((todo) => _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendTodo(todo));
 }
 
 projectForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default({ name: formData.get("name") });
+  const newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({ name: formData.get("name") });
 
   if (newProject.save()) {
-    const projects = _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default.getAll();
-    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(projects[projects.length - 1]);
+    const projects = _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.getAll();
+    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendProject(projects[projects.length - 1]);
   }
   event.currentTarget.reset();
+};
+
+todoForm.onsubmit = (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  const todo = new _js_models_todo__WEBPACK_IMPORTED_MODULE_5__.default({
+    title: formData.get("title"),
+    projectId: _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getActiveNav().id,
+    description: formData.get("description"),
+    dueDate: formData.get("dueDate"),
+    priority: formData.get("priority"),
+    notes: formData.get("notes"),
+  });
+  if (todo.save()) {
+    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendTodo(todo);
+    todoForm.reset();
+    bootstrap_js_src_modal__WEBPACK_IMPORTED_MODULE_3__.default.getInstance(_js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getTodoModal()).hide();
+  }
 };
 
 })();
