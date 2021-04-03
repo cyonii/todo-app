@@ -10,11 +10,6 @@ export default (() => {
   const getTodoForm = () => document.getElementById('todoForm');
   const getTodoModal = () => document.getElementById('todoModal');
   const getTodoStack = () => document.getElementById('todo-stack');
-  const setActiveTab = (project) => {
-    getActiveTab().classList.remove('active');
-    document.getElementById(project.id).classList.add('active');
-    displayOwnTodos.call(project);
-  };
 
   function appendTodo(todo) {
     const todoStack = getTodoStack();
@@ -34,6 +29,11 @@ export default (() => {
       message.classList.add('display-4', 'text-center', 'mt-5', 'text-muted');
       todoStack.appendChild(message);
     }
+  }
+  function setActiveTab() {
+    getActiveTab().classList.remove('active');
+    document.getElementById(project.id).classList.add('active');
+    displayOwnTodos.call(project);
   }
 
   function appendProject(project) {
