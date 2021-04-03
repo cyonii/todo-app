@@ -13,7 +13,9 @@ export default (() => {
 
   function appendTodo(todo) {
     const todoStack = getTodoStack();
+
     todoStack.appendChild(makeTodoCard(todo));
+    if (todoStack.firstElementChild.tagName === 'P') todoStack.firstElementChild.remove();
   }
 
   function displayOwnTodos() {
@@ -31,8 +33,10 @@ export default (() => {
     }
   }
   function setActiveTab(project) {
+    const newActiveTab = document.getElementById(project.id);
+
     getActiveTab().classList.remove('active');
-    document.getElementById(project.id).classList.add('active');
+    newActiveTab.classList.add('active');
     displayOwnTodos.call(project);
   }
 
