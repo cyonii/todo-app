@@ -8,11 +8,11 @@
   <title>Todo - Task Manager</title>
 <script defer src="bundle.js"></script><link href="main.css" rel="stylesheet"></head>
 
-<body>
+<body class="alert-primary">
   <header>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light bg-primary">
       <div class="container-md">
-        <a class="navbar-brand user-select-none d-flex align-items-center mx-auto" href="/">
+        <a class="navbar-brand text-white user-select-none d-flex align-items-center mx-auto" href="/">
           <i class="bi bi-card-checklist me-2"></i>
           <strong>Task Manager</strong>
         </a>
@@ -28,7 +28,7 @@
           <form class="row gx-1 mb-2 mb-md-3" id="projectForm">
             <div class="col-8">
               <label class="visually-hidden" for="project">Project</label>
-              <input type="text" name="name" class="form-control" placeholder="Project name" required>
+              <input type="text" name="name" class="form-control border-primary" placeholder="Project name" required>
             </div>
 
             <div class="col-4">
