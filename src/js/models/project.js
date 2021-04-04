@@ -35,7 +35,7 @@ export default class Project {
   }
 
   static createDefaultProject(name = 'General') {
-    const project = new Project({ name: name });
+    const project = new Project({ name });
     return project;
   }
 

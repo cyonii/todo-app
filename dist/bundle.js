@@ -28278,17 +28278,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
+/* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/esm/format/index.js");
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
-/* harmony import */ var _models_todo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/todo */ "./src/js/models/todo.js");
-
 
 
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(todo) {
   function makeCardWrapper() {
     const el = document.createElement('div');
-    el.setAttribute('data-todo-card', todo.id);
+    el.setAttribute('data-todo', todo.id);
 
     el.classList.add('card', 'todo-card', 'border-primary', 'overflow-hidden', 'shadow-sm', 'mb-3');
     return el;
@@ -28327,7 +28325,7 @@ __webpack_require__.r(__webpack_exports__);
     const el = document.createElement('div');
 
     el.classList.add('badge', 'bg-secondary');
-    el.innerText = (0,date_fns__WEBPACK_IMPORTED_MODULE_2__.default)(new Date(todo.dueDate), 'dd-mm-yyyy');
+    el.innerText = (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.default)(new Date(todo.dueDate), 'dd-mm-yyyy');
     return el;
   }
 
@@ -28371,19 +28369,16 @@ __webpack_require__.r(__webpack_exports__);
 
   function makeDeleteButton() {
     const el = document.createElement('button');
-    el.innerHTML = `<i class='bi bi-trash-fill'></i>`;
+    el.innerHTML = "<i class='bi bi-trash-fill'></i>";
     el.classList.add('btn', 'text-danger', 'todo-action');
-    el.setAttribute('data-todo-delete', todo.id);
-    el.onclick = (event) => {
-      const todoId = event.currentTarget.getAttribute('data-todo-delete');
-      _models_todo__WEBPACK_IMPORTED_MODULE_1__.default.get(todoId).delete();
-    };
+    el.setAttribute('data-todo', todo.id);
+    el.onclick = _utils_utils__WEBPACK_IMPORTED_MODULE_0__.deleteTask;
     return el;
   }
 
   function makeEditButton() {
     const el = document.createElement('div');
-    el.innerHTML = `<i class='bi bi-pen-fill'></i>`;
+    el.innerHTML = "<i class='bi bi-pen-fill'></i>";
     el.classList.add('btn', 'text-primary', 'todo-action');
     return el;
   }
@@ -28480,7 +28475,7 @@ class Project {
   }
 
   static createDefaultProject(name = 'General') {
-    const project = new Project({ name: name });
+    const project = new Project({ name });
     return project;
   }
 
@@ -28684,8 +28679,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "generateRandomStr": () => (/* binding */ generateRandomStr),
 /* harmony export */   "randomID": () => (/* binding */ randomID),
-/* harmony export */   "setAttributes": () => (/* binding */ setAttributes)
+/* harmony export */   "setAttributes": () => (/* binding */ setAttributes),
+/* harmony export */   "deleteTask": () => (/* binding */ deleteTask)
 /* harmony export */ });
+/* harmony import */ var _models_todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/todo */ "./src/js/models/todo.js");
+
+
 function generateRandomStr(length = 1) {
   const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
 
@@ -28700,6 +28699,11 @@ function randomID() {
 
 function setAttributes(el, attrs) {
   Object.entries(attrs).forEach((entry) => el.setAttribute(entry[0], entry[1]));
+}
+
+function deleteTask(event) {
+  const taskID = event.currentTarget.getAttribute('data-todo');
+  _models_todo__WEBPACK_IMPORTED_MODULE_0__.default.get(taskID).delete();
 }
 
 
