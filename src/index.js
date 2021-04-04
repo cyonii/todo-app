@@ -1,6 +1,5 @@
 import './index.html';
 import './scss/bundle.scss';
-
 import { Modal } from 'bootstrap';
 import Project from './js/models/project';
 import ToDo from './js/models/todo';
@@ -34,7 +33,7 @@ projectForm.onsubmit = (event) => {
   const newProject = new Project({ name: formData.get('name') });
 
   if (newProject.save()) {
-    domWorker.appendProject(Project.get(newProject.id));
+    domWorker.appendProject(newProject);
     domWorker.setActiveTab(newProject);
   }
   event.currentTarget.reset();
