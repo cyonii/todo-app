@@ -34,6 +34,10 @@ export default class Project {
     return false;
   }
 
+  static createDefaultProject(name = 'General') {
+    return new Project({ name: name });
+  }
+
   static get(id) {
     const partialData = Project.getAll().find((project) => project.id === id);
     return new Project(partialData);

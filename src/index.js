@@ -1,3 +1,5 @@
+'use strict';
+
 import './index.html';
 import './scss/bundle.scss';
 import { Modal } from 'bootstrap';
@@ -9,23 +11,16 @@ const projectForm = domWorker.getProjectForm();
 const todoForm = domWorker.getTodoForm();
 const storageClear = document.getElementById('storageClear');
 
-// Always add General project if it's unavailable
+// Always add Default project if it's unavailable
 if (localStorage.length < 1) {
-  const generalProject = new Project({ name: 'General' });
-  const newTodo = new ToDo({
-    title: 'Hello, I am your task manager',
-    projectId: generalProject.id,
-    description: 'I will help you organize your plan',
-    dueDate: new Date(),
-    priority: 'low',
-    notes: 'You can delete me when you want',
-  });
+  const defaultProject = Project.createDefaultProject();
+  const newTodo = ToDo.createWelcomeTodo(defaultProject.id);
 
-  if (generalProject.save()) domWorker.appendProject(generalProject);
+  if (defaultProject.save()) domWorker.appendProject(defaultProject);
   if (newTodo.save()) domWorker.appendTodo(newTodo);
 } else {
   Project.getAll().forEach((project) => domWorker.appendProject(project));
-  ToDo.getAllByProject(domWorker.getActiveTab().id).forEach((todo) => domWorker.appendTodo(todo));
+  domWorker.updateTodoPane();
 }
 
 projectForm.onsubmit = (event) => {
@@ -43,14 +38,7 @@ projectForm.onsubmit = (event) => {
 todoForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const todo = new ToDo({
-    title: formData.get('title'),
-    projectId: domWorker.getActiveTab().id,
-    description: formData.get('description'),
-    dueDate: formData.get('dueDate'),
-    priority: formData.get('priority'),
-    notes: formData.get('notes'),
-  });
+  const todo = ToDo.createFromFormData(formData);
   if (todo.save()) {
     domWorker.appendTodo(todo);
     todoForm.reset();

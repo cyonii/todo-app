@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { randomID } from '../utils/utils';
+import domWorker from '../utils/domWorker';
 
 export default class ToDo {
   constructor(props) {
@@ -28,14 +29,46 @@ export default class ToDo {
     return false;
   }
 
+  delete() {
+    const allTodos = ToDo.getAll();
+
+    allTodos.splice(allTodos.indexOf(this), 1);
+    localStorage.setItem('todos', JSON.stringify(allTodos));
+    domWorker.updateTodoPane.call(domWorker.getActiveTab());
+  }
+
+  static createWelcomeTodo(projectId) {
+    return new ToDo({
+      title: 'Hello, I am your task manager',
+      projectId: projectId,
+      description: 'I will help you organize your plans',
+      dueDate: new Date(),
+      priority: 'low',
+      notes: 'You can delete me when you want',
+    });
+  }
+
+  static createFromFormData(formData) {
+    return new ToDo({
+      title: formData.get('title'),
+      projectId: domWorker.getActiveTab().id,
+      description: formData.get('description'),
+      dueDate: formData.get('dueDate'),
+      priority: formData.get('priority'),
+      notes: formData.get('notes'),
+    });
+  }
+
+  static get(id) {
+    return ToDo.getAll().find((todo) => todo.id == id);
+  }
+
   static getAllByProject(projectId) {
-    const filteredTodo = ToDo.getAll().filter((todo) => todo.projectId === projectId);
-    return filteredTodo.map((data) => new ToDo(data));
+    return ToDo.getAll().filter((todo) => todo.projectId === projectId);
   }
 
   static getAll() {
-    const partialData = JSON.parse(localStorage.getItem('todos'));
-
-    return partialData ? partialData.map((data) => new ToDo(data)) : [];
+    const partial = JSON.parse(localStorage.getItem('todos')) || [];
+    return partial.map((data) => new ToDo(data));
   }
 }

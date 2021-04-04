@@ -9,18 +9,18 @@ export default (() => {
   const getProjectStack = () => document.getElementById('project-stack');
   const getTodoForm = () => document.getElementById('todoForm');
   const getTodoModal = () => document.getElementById('todoModal');
-  const getTodoStack = () => document.getElementById('todo-stack');
+  const getTodoPane = () => document.getElementById('todo-stack');
 
   function appendTodo(todo) {
-    const todoStack = getTodoStack();
+    const todoStack = getTodoPane();
 
     todoStack.appendChild(makeTodoCard(todo));
     if (todoStack.firstElementChild.tagName === 'P') todoStack.firstElementChild.remove();
   }
 
-  function displayOwnTodos() {
-    const todos = ToDo.getAllByProject(this.id);
-    const todoStack = getTodoStack();
+  function updateTodoPane() {
+    const todos = ToDo.getAllByProject(getActiveTab().id);
+    const todoStack = getTodoPane();
 
     todoStack.innerHTML = '';
     if (todos.length) {
@@ -32,26 +32,27 @@ export default (() => {
       todoStack.appendChild(message);
     }
   }
+
   function setActiveTab(project) {
     const newActiveTab = document.getElementById(project.id);
 
     getActiveTab().classList.remove('active');
     newActiveTab.classList.add('active');
-    displayOwnTodos.call(project);
+    updateTodoPane();
   }
 
   function appendProject(project) {
     const projectNav = makeProjectNav(project);
     if (project.name.match(/general/i)) projectNav.classList.add('active');
 
-    projectNav.onclick = displayOwnTodos.bind(project, []);
+    projectNav.onclick = updateTodoPane;
     getProjectStack().appendChild(projectNav);
   }
 
   return {
     appendProject,
     appendTodo,
-    displayOwnTodos,
+    updateTodoPane,
     getProjectForm,
     getActiveTab,
     getProjectNavs,
