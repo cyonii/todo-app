@@ -7,6 +7,7 @@ import domWorker from './js/utils/domWorker';
 
 const projectForm = domWorker.getProjectForm();
 const todoForm = domWorker.getTodoForm();
+const storageClear = document.getElementById('storageClear');
 
 // Always add General project if it's unavailable
 if (localStorage.length < 1) {
@@ -55,4 +56,10 @@ todoForm.onsubmit = (event) => {
     todoForm.reset();
     Modal.getInstance(domWorker.getTodoModal()).hide();
   }
+};
+
+// Clear local storage
+storageClear.onclick = (event) => {
+  localStorage.clear();
+  window.location = '/';
 };

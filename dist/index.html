@@ -11,11 +11,30 @@
 <body class="alert-primary">
   <header>
     <nav class="navbar navbar-light bg-primary">
-      <div class="container-md">
-        <a class="navbar-brand text-white user-select-none d-flex align-items-center mx-auto" href="index.html">
-          <i class="bi bi-card-checklist me-2"></i>
-          <strong>Task Manager</strong>
-        </a>
+      <div class="container-md display-inline">
+        <div class="row justify-content-center">
+          <div class="col-lg-9 col-xl-8">
+            <div class="d-flex justify-content-between">
+              <a class="navbar-brand text-white user-select-none d-flex align-items-center" href="index.html">
+                <i class="bi bi-card-checklist me-2"></i>
+                <strong>Task Manager</strong>
+              </a>
+              <div class="btn-group">
+                <button type="button" class="btn btn-dark py-3 rounded-0 dropdown-toggle" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="bi bi-three-dots"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <button class="dropdown-item fw-bold text-danger" id="storageClear" type="button">
+                      <i class="bi bi-trash me-1"></i>Clear DB
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -28,7 +47,7 @@
           <form class="row gx-1 mb-2 mb-md-3" id="projectForm">
             <div class="col-8">
               <label class="visually-hidden" for="project">Project</label>
-              <input type="text" name="name" class="form-control border-primary" placeholder="Project name" required>
+              <input type="text" name="name" class="form-control border-primary" placeholder="Add new project" required>
             </div>
 
             <div class="col-4">

@@ -12088,6 +12088,17 @@ html {
   transition: 0.3s;
 }
 
+.navbar {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.navbar [class^=container] {
+  display: unset;
+  flex-wrap: unset;
+  align-items: unset;
+  justify-content: unset;
+}
+
 #todoForm .form-floating label {
   height: auto;
   background-color: #fff;
@@ -12100,6 +12111,17 @@ html {
 }
 #todoForm .form-floating textarea#notes {
   height: 80px !important;
+}
+
+button:focus, button:active,
+.btn:focus,
+.btn:active {
+  outline: none;
+  box-shadow: none;
+}
+
+[data-bs-toggle=dropdown]::after {
+  display: none;
 }
 
 /*# sourceMappingURL=main.css.map*/
