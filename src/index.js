@@ -61,5 +61,6 @@ todoForm.onsubmit = (event) => {
 // Clear local storage
 storageClear.onclick = (event) => {
   localStorage.clear();
-  window.location = '/';
+  console.log(document.querySelector('.navbar-brand').href);
+  window.location.reload();
 };
