@@ -12099,6 +12099,28 @@ html {
   justify-content: unset;
 }
 
+.todo-card .todo-notes {
+  padding: 0.125rem 0.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 300;
+  font-style: italic;
+}
+.todo-card .todo-action {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+.todo-card .todo-action:hover, .todo-card .todo-action:active, .todo-card .todo-action:focus {
+  background-color: #e9ecef;
+}
+
 #todoForm .form-floating label {
   height: auto;
   background-color: #fff;
@@ -12111,6 +12133,10 @@ html {
 }
 #todoForm .form-floating textarea#notes {
   height: 80px !important;
+}
+
+.form-check-input[type=checkbox] {
+  cursor: pointer;
 }
 
 button:focus, button:active,
