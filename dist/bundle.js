@@ -28371,7 +28371,7 @@ __webpack_require__.r(__webpack_exports__);
 
   function makeDeleteButton() {
     const el = document.createElement('button');
-    el.innerHTML = `<i class="bi bi-trash-fill"></i>`;
+    el.innerHTML = `<i class='bi bi-trash-fill'></i>`;
     el.classList.add('btn', 'text-danger', 'todo-action');
     el.setAttribute('data-todo-delete', todo.id);
     el.onclick = (event) => {
@@ -28383,7 +28383,7 @@ __webpack_require__.r(__webpack_exports__);
 
   function makeEditButton() {
     const el = document.createElement('div');
-    el.innerHTML = `<i class="bi bi-pen-fill"></i>`;
+    el.innerHTML = `<i class='bi bi-pen-fill'></i>`;
     el.classList.add('btn', 'text-primary', 'todo-action');
     return el;
   }
@@ -28480,7 +28480,8 @@ class Project {
   }
 
   static createDefaultProject(name = 'General') {
-    return new Project({ name: name });
+    const project = new Project({ name: name });
+    return project;
   }
 
   static get(id) {
@@ -28554,7 +28555,7 @@ class ToDo {
   static createWelcomeTodo(projectId) {
     return new ToDo({
       title: 'Hello, I am your task manager',
-      projectId: projectId,
+      projectId,
       description: 'I will help you organize your plans',
       dueDate: new Date(),
       priority: 'low',
@@ -28574,7 +28575,7 @@ class ToDo {
   }
 
   static get(id) {
-    return ToDo.getAll().find((todo) => todo.id == id);
+    return ToDo.getAll().find((todo) => todo.id === id);
   }
 
   static getAllByProject(projectId) {
@@ -28810,8 +28811,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _js_models_project__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/models/project */ "./src/js/models/project.js");
 /* harmony import */ var _js_models_todo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./js/models/todo */ "./src/js/models/todo.js");
 /* harmony import */ var _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./js/utils/domWorker */ "./src/js/utils/domWorker.js");
-
-
 
 
 
