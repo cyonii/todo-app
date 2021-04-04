@@ -28797,9 +28797,9 @@ todoForm.onsubmit = (event) => {
 };
 
 // Clear local storage
-storageClear.onclick = (event) => {
+storageClear.onclick = () => {
   localStorage.clear();
-  window.location = '/';
+  window.location.reload();
 };
 
 })();

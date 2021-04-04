@@ -59,8 +59,7 @@ todoForm.onsubmit = (event) => {
 };
 
 // Clear local storage
-storageClear.onclick = (event) => {
+storageClear.onclick = () => {
   localStorage.clear();
-  console.log(document.querySelector('.navbar-brand').href);
   window.location.reload();
 };
