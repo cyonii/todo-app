@@ -57,37 +57,49 @@
                   </div>
                   <div class="modal-body">
                     <form id="todoForm">
-                      <div class="mb-3">
+                      <!-- <div class="mb-3">
                         <label for="title" class="form-label text-primary fw-bold mb-0">Title</label>
                         <input type="text" class="form-control" id="title" name="title" placeholder="Task title"
                           required>
+                      </div> -->
+
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Task title">
+                        <label class="text-primary" for="title">Title</label>
                       </div>
 
-                      <div class="mb-3">
-                        <label for="description" class="form-label text-primary fw-bold mb-0">Description</label>
-                        <textarea class="form-control" name="description" id="description" cols="30" rows="4"
+                      <div class="form-floating mb-3">
+                        <textarea class="form-control" name="description" id="description"
                           placeholder="What is this task about?" required></textarea>
+                        <label for="description" class="text-primary">Description</label>
                       </div>
 
-                      <div class="mb-3">
-                        <label for="dueDate" class="form-label text-primary fw-bold mb-0">Due Date</label>
-                        <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Task date"
-                          required>
+                      <div class="row gx-1">
+                        <div class="col-6 mb-3">
+                          <div class="form-floating">
+                            <input type="date" class="form-control" id="dueDate" name="dueDate" placeholder="Task date"
+                              required>
+                            <label for="dueDate" class="text-primary">Due Date</label>
+                          </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                          <div class="form-floating">
+                            <select id="priority" name="priority" class="form-select" required>
+                              <option value="low" selected>Low</option>
+                              <option value="mid">Mid</option>
+                              <option value="high">High</option>
+                            </select>
+                            <label for="priority" class="text-primary">Priority</label>
+                          </div>
+                        </div>
                       </div>
 
-                      <div class="mb-3">
-                        <label for="priority" class="form-label text-primary fw-bold mb-0">Priority</label>
-                        <select id="priority" name="priority" class="form-select" required>
-                          <option value="low" selected>Low</option>
-                          <option value="mid">Mid</option>
-                          <option value="high">High</option>
-                        </select>
-                      </div>
-
-                      <div class="mb-3">
-                        <label for="notes" class="form-label text-primary fw-bold mb-0">Notes</label>
-                        <textarea class="form-control" name="notes" id="notes" cols="30" rows="2"
+                      <div class="form-floating mb-3">
+                        <textarea class="form-control" name="notes" id="notes"
                           placeholder="Do you have any notes about this event?"></textarea>
+                        <label for="notes" class="text-primary">Notes</label>
+
                       </div>
 
                       <button class="btn btn-primary" type="submit">Add task</button>
