@@ -88,7 +88,7 @@ export default function (todo) {
 
   function makeDeleteButton() {
     const el = document.createElement('button');
-    el.innerHTML = `<i class="bi bi-trash-fill"></i>`;
+    el.innerHTML = `<i class='bi bi-trash-fill'></i>`;
     el.classList.add('btn', 'text-danger', 'todo-action');
     el.setAttribute('data-todo-delete', todo.id);
     el.onclick = (event) => {
@@ -100,7 +100,7 @@ export default function (todo) {
 
   function makeEditButton() {
     const el = document.createElement('div');
-    el.innerHTML = `<i class="bi bi-pen-fill"></i>`;
+    el.innerHTML = `<i class='bi bi-pen-fill'></i>`;
     el.classList.add('btn', 'text-primary', 'todo-action');
     return el;
   }

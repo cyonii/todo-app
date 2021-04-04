@@ -40,7 +40,7 @@ export default class ToDo {
   static createWelcomeTodo(projectId) {
     return new ToDo({
       title: 'Hello, I am your task manager',
-      projectId: projectId,
+      projectId,
       description: 'I will help you organize your plans',
       dueDate: new Date(),
       priority: 'low',
@@ -60,7 +60,7 @@ export default class ToDo {
   }
 
   static get(id) {
-    return ToDo.getAll().find((todo) => todo.id == id);
+    return ToDo.getAll().find((todo) => todo.id === id);
   }
 
   static getAllByProject(projectId) {

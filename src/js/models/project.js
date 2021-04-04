@@ -35,7 +35,8 @@ export default class Project {
   }
 
   static createDefaultProject(name = 'General') {
-    return new Project({ name: name });
+    const project = new Project({ name: name });
+    return project;
   }
 
   static get(id) {

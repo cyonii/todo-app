@@ -1,5 +1,3 @@
-'use strict';
-
 import './index.html';
 import './scss/bundle.scss';
 import { Modal } from 'bootstrap';
