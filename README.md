@@ -21,13 +21,13 @@ This application is built with the following tools and libraries:
 
 ## Live Demo
 
-You can check out a live demo of this application [here](https://todo-app.github.io)
+You can check out a live demo of this application [here](https://cykalu.me/todo-app/dist/index.html)
 
 ## Getting Started
 
 To get a copy of this application in your local machine up and running please follow this step-by-step instructions below.
 
-##### Prerequisites
+### Prerequisites
 
 Make sure you have [node.js](https://nodejs.org/) installed on your local machine. Open your `terminal` and follow these instructions.
 
