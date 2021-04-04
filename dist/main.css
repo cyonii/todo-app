@@ -12084,18 +12084,22 @@ html {
   font-weight: 300;
 }
 
-label {
-  font-size: 14px;
-}
-
-input,
-textarea,
-select {
-  font-weight: 300;
-}
-
 * {
   transition: 0.3s;
+}
+
+#todoForm .form-floating label {
+  height: auto;
+  background-color: #fff;
+  opacity: 1;
+  padding: 0 0.25rem;
+  margin: 0.5rem 0 0 0.5rem;
+}
+#todoForm .form-floating textarea#description {
+  height: 100px !important;
+}
+#todoForm .form-floating textarea#notes {
+  height: 80px !important;
 }
 
 /*# sourceMappingURL=main.css.map*/
