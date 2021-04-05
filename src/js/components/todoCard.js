@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { setAttributes, deleteTask } from '../utils/utils';
+import { setAttributes } from '../utils/utils';
 
 export default function (todo) {
   function makeCardWrapper() {
@@ -90,7 +90,7 @@ export default function (todo) {
     el.innerHTML = "<i class='bi bi-trash-fill'></i>";
     el.classList.add('btn', 'text-danger', 'todo-action');
     el.setAttribute('data-todo', todo.id);
-    el.onclick = deleteTask;
+    // el.onclick = deleteTask;
     return el;
   }
 

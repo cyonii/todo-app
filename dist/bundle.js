@@ -11009,7 +11009,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // Module
-var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body class=\"alert-primary\">\n  <header>\n    <nav class=\"navbar navbar-light bg-primary\">\n      <div class=\"container-md display-inline\">\n        <div class=\"row justify-content-center\">\n          <div class=\"col-lg-9 col-xl-8\">\n            <div class=\"d-flex justify-content-between\">\n              <a class=\"navbar-brand text-white user-select-none d-flex align-items-center\" href=\"index.html\">\n                <i class=\"bi bi-card-checklist me-2\"></i>\n                <strong>Task Manager</strong>\n              </a>\n              <div class=\"btn-group\">\n                <button type=\"button\" class=\"btn btn-dark py-3 rounded-0 dropdown-toggle\" data-bs-toggle=\"dropdown\"\n                  aria-expanded=\"false\">\n                  <i class=\"bi bi-three-dots\"></i>\n                </button>\n                <ul class=\"dropdown-menu dropdown-menu-end shadow\">\n                  <li>\n                    <button class=\"dropdown-item fw-bold text-danger\" id=\"storageClear\" type=\"button\">\n                      <i class=\"bi bi-trash me-1\"></i>Clear DB\n                    </button>\n                  </li>\n                </ul>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-4 col-xl-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control border-primary\" placeholder=\"Add new project\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\"><i class=\"bi bi-node-plus me-2\"></i>Add</button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#todoModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Todo modal -->\n            <div class=\"modal fade\" id=\"todoModal\" tabindex=\"-1\" aria-labelledby=\"todoModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content\">\n                  <div class=\"modal-header\">\n                    <h6 class=\"modal-title fw-bold text-muted\" id=\"exampleModalLabel\">Add a new task</h6>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\">\n                    <form id=\"todoForm\">\n                      <div class=\"form-floating mb-3\">\n                        <input type=\"text\" class=\"form-control\" id=\"title\" name=\"title\" placeholder=\"Task title\">\n                        <label class=\"text-primary\" for=\"title\">Title</label>\n                      </div>\n\n                      <div class=\"form-floating mb-3\">\n                        <textarea class=\"form-control\" name=\"description\" id=\"description\"\n                          placeholder=\"What is this task about?\" required></textarea>\n                        <label for=\"description\" class=\"text-primary\">Description</label>\n                      </div>\n\n                      <div class=\"row gx-1\">\n                        <div class=\"col-6 mb-3\">\n                          <div class=\"form-floating\">\n                            <input type=\"date\" class=\"form-select w-100\" id=\"dueDate\" name=\"dueDate\"\n                              placeholder=\"Task date\" required>\n                            <label for=\"dueDate\" class=\"text-primary\">Due Date</label>\n                          </div>\n                        </div>\n\n                        <div class=\"col-6 mb-3\">\n                          <div class=\"form-floating\">\n                            <select id=\"priority\" name=\"priority\" class=\"form-select\" required>\n                              <option value=\"low\" selected>Low</option>\n                              <option value=\"mid\">Mid</option>\n                              <option value=\"high\">High</option>\n                            </select>\n                            <label for=\"priority\" class=\"text-primary\">Priority</label>\n                          </div>\n                        </div>\n                      </div>\n\n                      <div class=\"form-floating mb-3\">\n                        <textarea class=\"form-control\" name=\"notes\" id=\"notes\"\n                          placeholder=\"Do you have any notes about this event?\"></textarea>\n                        <label for=\"notes\" class=\"text-primary\">Notes</label>\n\n                      </div>\n\n                      <button class=\"btn btn-primary\" type=\"submit\">Add task</button>\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"todo-stack\"></div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
+var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Todo - Task Manager</title>\n</head>\n\n<body class=\"alert-primary\">\n  <header>\n    <nav class=\"navbar navbar-light bg-primary\">\n      <div class=\"container-md display-inline\">\n        <div class=\"row justify-content-center\">\n          <div class=\"col-lg-9 col-xl-8\">\n            <div class=\"d-flex justify-content-between\">\n              <a class=\"navbar-brand text-white user-select-none d-flex align-items-center\" href=\"index.html\">\n                <i class=\"bi bi-card-checklist me-2\"></i>\n                <strong>Task Manager</strong>\n              </a>\n              <div class=\"btn-group\">\n                <button type=\"button\" class=\"btn btn-dark py-3 rounded-0 dropdown-toggle\" data-bs-toggle=\"dropdown\"\n                  aria-expanded=\"false\">\n                  <i class=\"bi bi-three-dots\"></i>\n                </button>\n                <ul class=\"dropdown-menu dropdown-menu-end shadow\">\n                  <li>\n                    <button class=\"dropdown-item fw-bold text-danger\" id=\"storageClear\" type=\"button\">\n                      <i class=\"bi bi-trash me-1\"></i>Clear DB\n                    </button>\n                  </li>\n                </ul>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-4 col-xl-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control border-primary\" placeholder=\"Add new project\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\">\n                <i class=\"bi bi-node-plus me-2 me-sm-0 me-md-2\"></i>\n                <span class=\"d-sm-none d-md-inline\">Add</span>\n              </button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- ToDo column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#todoModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Todo modal -->\n            <div class=\"modal fade\" id=\"todoModal\" tabindex=\"-1\" aria-labelledby=\"todoModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content\">\n                  <div class=\"modal-header\">\n                    <h6 class=\"modal-title fw-bold text-muted\" id=\"exampleModalLabel\">Add a new task</h6>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\">\n                    <form id=\"todoForm\">\n                      <div class=\"form-floating mb-3\">\n                        <input type=\"text\" class=\"form-control\" id=\"title\" name=\"title\" placeholder=\"Task title\">\n                        <label class=\"text-primary\" for=\"title\">Title</label>\n                      </div>\n\n                      <div class=\"form-floating mb-3\">\n                        <textarea class=\"form-control\" name=\"description\" id=\"description\"\n                          placeholder=\"What is this task about?\" required></textarea>\n                        <label for=\"description\" class=\"text-primary\">Description</label>\n                      </div>\n\n                      <div class=\"row gx-1\">\n                        <div class=\"col-6 mb-3\">\n                          <div class=\"form-floating\">\n                            <input type=\"date\" class=\"form-select w-100\" id=\"dueDate\" name=\"dueDate\"\n                              placeholder=\"Task date\" required>\n                            <label for=\"dueDate\" class=\"text-primary\">Due Date</label>\n                          </div>\n                        </div>\n\n                        <div class=\"col-6 mb-3\">\n                          <div class=\"form-floating\">\n                            <select id=\"priority\" name=\"priority\" class=\"form-select\" required>\n                              <option value=\"low\" selected>Low</option>\n                              <option value=\"mid\">Mid</option>\n                              <option value=\"high\">High</option>\n                            </select>\n                            <label for=\"priority\" class=\"text-primary\">Priority</label>\n                          </div>\n                        </div>\n                      </div>\n\n                      <div class=\"form-floating mb-3\">\n                        <textarea class=\"form-control\" name=\"notes\" id=\"notes\"\n                          placeholder=\"Do you have any notes about this event?\"></textarea>\n                        <label for=\"notes\" class=\"text-primary\">Notes</label>\n\n                      </div>\n\n                      <button class=\"btn btn-primary\" type=\"submit\">Add task</button>\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"todo-stack\"></div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
 
@@ -28240,9 +28240,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/js/components/projectNav.js":
+/***/ "./src/js/components/projectTab.js":
 /*!*****************************************!*\
-  !*** ./src/js/components/projectNav.js ***!
+  !*** ./src/js/components/projectTab.js ***!
   \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -28372,7 +28372,7 @@ __webpack_require__.r(__webpack_exports__);
     el.innerHTML = "<i class='bi bi-trash-fill'></i>";
     el.classList.add('btn', 'text-danger', 'todo-action');
     el.setAttribute('data-todo', todo.id);
-    el.onclick = _utils_utils__WEBPACK_IMPORTED_MODULE_0__.deleteTask;
+    // el.onclick = deleteTask;
     return el;
   }
 
@@ -28438,6 +28438,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todo */ "./src/js/models/todo.js");
+
 
 
 
@@ -28474,6 +28476,10 @@ class Project {
     return false;
   }
 
+  getOwnTasks() {
+    return _todo__WEBPACK_IMPORTED_MODULE_2__.default.getAll().filter((task) => task.projectId === this.id);
+  }
+
   static createDefaultProject(name = 'General') {
     const project = new Project({ name });
     return project;
@@ -28507,8 +28513,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
-/* harmony import */ var _utils_domWorker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/domWorker */ "./src/js/utils/domWorker.js");
-
 
 
 
@@ -28544,7 +28548,6 @@ class ToDo {
 
     allTodos.splice(allTodos.indexOf(this), 1);
     localStorage.setItem('todos', JSON.stringify(allTodos));
-    _utils_domWorker__WEBPACK_IMPORTED_MODULE_2__.default.updateTodoPane.call(_utils_domWorker__WEBPACK_IMPORTED_MODULE_2__.default.getActiveTab());
   }
 
   static createWelcomeTodo(projectId) {
@@ -28561,7 +28564,7 @@ class ToDo {
   static createFromFormData(formData) {
     return new ToDo({
       title: formData.get('title'),
-      projectId: _utils_domWorker__WEBPACK_IMPORTED_MODULE_2__.default.getActiveTab().id,
+      projectId: formData.get('projectId'),
       description: formData.get('description'),
       dueDate: formData.get('dueDate'),
       priority: formData.get('priority'),
@@ -28597,10 +28600,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _models_todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/todo */ "./src/js/models/todo.js");
-/* harmony import */ var _components_todoCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/todoCard */ "./src/js/components/todoCard.js");
-/* harmony import */ var _components_projectNav__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/projectNav */ "./src/js/components/projectNav.js");
-
+/* harmony import */ var _components_todoCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/todoCard */ "./src/js/components/todoCard.js");
+/* harmony import */ var _components_projectTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/projectTab */ "./src/js/components/projectTab.js");
 
 
 
@@ -28614,40 +28615,40 @@ __webpack_require__.r(__webpack_exports__);
   const getTodoPane = () => document.getElementById('todo-stack');
 
   function appendTodo(todo) {
-    const todoStack = getTodoPane();
+    const todoPane = getTodoPane();
 
-    todoStack.appendChild((0,_components_todoCard__WEBPACK_IMPORTED_MODULE_1__.default)(todo));
-    if (todoStack.firstElementChild.tagName === 'P') todoStack.firstElementChild.remove();
+    todoPane.appendChild((0,_components_todoCard__WEBPACK_IMPORTED_MODULE_0__.default)(todo));
+    if (todoPane.firstElementChild.tagName === 'P') todoPane.firstElementChild.remove();
   }
 
-  function updateTodoPane() {
-    const todos = _models_todo__WEBPACK_IMPORTED_MODULE_0__.default.getAllByProject(getActiveTab().id);
-    const todoStack = getTodoPane();
+  function updateTodoPane(todos = []) {
+    const todoPane = getTodoPane();
 
-    todoStack.innerHTML = '';
+    todoPane.innerHTML = '';
     if (todos.length) {
       todos.forEach((todo) => appendTodo(todo));
     } else {
       const message = document.createElement('p');
       message.textContent = 'No Tasks';
       message.classList.add('display-4', 'text-center', 'mt-5', 'text-muted');
-      todoStack.appendChild(message);
+      todoPane.appendChild(message);
     }
   }
 
-  function setActiveTab(project) {
+  function setActiveTab(project, todos) {
     const newActiveTab = document.getElementById(project.id);
 
     getActiveTab().classList.remove('active');
     newActiveTab.classList.add('active');
-    updateTodoPane();
+    updateTodoPane(todos);
   }
 
   function appendProject(project) {
-    const projectNav = (0,_components_projectNav__WEBPACK_IMPORTED_MODULE_2__.default)(project);
+    const projectNav = (0,_components_projectTab__WEBPACK_IMPORTED_MODULE_1__.default)(project);
+
     if (project.name.match(/general/i)) projectNav.classList.add('active');
 
-    projectNav.onclick = updateTodoPane;
+    projectNav.onclick = updateTodoPane.bind(this, project.getOwnTasks());
     getProjectStack().appendChild(projectNav);
   }
 
@@ -28679,12 +28680,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "generateRandomStr": () => (/* binding */ generateRandomStr),
 /* harmony export */   "randomID": () => (/* binding */ randomID),
-/* harmony export */   "setAttributes": () => (/* binding */ setAttributes),
-/* harmony export */   "deleteTask": () => (/* binding */ deleteTask)
+/* harmony export */   "setAttributes": () => (/* binding */ setAttributes)
 /* harmony export */ });
-/* harmony import */ var _models_todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/todo */ "./src/js/models/todo.js");
-
-
 function generateRandomStr(length = 1) {
   const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
 
@@ -28699,11 +28696,6 @@ function randomID() {
 
 function setAttributes(el, attrs) {
   Object.entries(attrs).forEach((entry) => el.setAttribute(entry[0], entry[1]));
-}
-
-function deleteTask(event) {
-  const taskID = event.currentTarget.getAttribute('data-todo');
-  _models_todo__WEBPACK_IMPORTED_MODULE_0__.default.get(taskID).delete();
 }
 
 
@@ -28835,7 +28827,7 @@ if (localStorage.length < 1) {
   if (newTodo.save()) _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendTodo(newTodo);
 } else {
   _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default.getAll().forEach((project) => _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(project));
-  _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.updateTodoPane();
+  _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.updateTodoPane(_js_models_todo__WEBPACK_IMPORTED_MODULE_4__.default.getAllByProject(_js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getActiveTab().id));
 }
 
 projectForm.onsubmit = (event) => {
@@ -28845,7 +28837,7 @@ projectForm.onsubmit = (event) => {
 
   if (newProject.save()) {
     _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(newProject);
-    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.setActiveTab(newProject);
+    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.setActiveTab(newProject, []);
   }
   event.currentTarget.reset();
 };
@@ -28854,6 +28846,8 @@ todoForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
   const todo = _js_models_todo__WEBPACK_IMPORTED_MODULE_4__.default.createFromFormData(formData);
+
+  todo.projectId = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getActiveTab().id;
   if (todo.save()) {
     _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendTodo(todo);
     todoForm.reset();

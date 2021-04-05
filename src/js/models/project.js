@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { randomID } from '../utils/utils';
+import ToDo from './todo';
 
 export default class Project {
   constructor(props) {
@@ -32,6 +33,10 @@ export default class Project {
       return true;
     }
     return false;
+  }
+
+  getOwnTasks() {
+    return ToDo.getAll().filter((task) => task.projectId === this.id);
   }
 
   static createDefaultProject(name = 'General') {

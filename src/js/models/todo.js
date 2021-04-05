@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { randomID } from '../utils/utils';
-import domWorker from '../utils/domWorker';
 
 export default class ToDo {
   constructor(props) {
@@ -34,7 +33,6 @@ export default class ToDo {
 
     allTodos.splice(allTodos.indexOf(this), 1);
     localStorage.setItem('todos', JSON.stringify(allTodos));
-    domWorker.updateTodoPane.call(domWorker.getActiveTab());
   }
 
   static createWelcomeTodo(projectId) {
@@ -51,7 +49,7 @@ export default class ToDo {
   static createFromFormData(formData) {
     return new ToDo({
       title: formData.get('title'),
-      projectId: domWorker.getActiveTab().id,
+      projectId: formData.get('projectId'),
       description: formData.get('description'),
       dueDate: formData.get('dueDate'),
       priority: formData.get('priority'),
