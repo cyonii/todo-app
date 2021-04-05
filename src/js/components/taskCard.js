@@ -65,7 +65,7 @@ export default function (task) {
   function makeTaskDesc() {
     const el = document.createElement('p');
 
-    el.classList.add('card-text', 'mb-0', 'text-primary');
+    el.classList.add('card-text', 'mb-0', 'lh-2', 'fw-light', 'text-primary');
     el.innerText = task.description;
     return el;
   }
