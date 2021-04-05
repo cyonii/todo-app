@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo - Task Manager</title>
+  <title>Task Manager</title>
 </head>
 
 <body class="alert-primary">
@@ -62,15 +62,15 @@
           <div class="nav flex-column nav-pills" id="project-stack" role="tablist" aria-orientation="vertical"></div>
         </div>
 
-        <!-- ToDo column -->
+        <!-- Task column -->
         <div class="col-sm-7 col-lg-5 py-4">
           <div class="d-flex mb-2 mb-md-3">
-            <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#todoModal">
+            <button class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#taskModal">
               <i class="bi bi-journal-check me-2"></i>New task
             </button>
 
-            <!-- Todo modal -->
-            <div class="modal fade" id="todoModal" tabindex="-1" aria-labelledby="todoModal" aria-hidden="true">
+            <!-- Task modal -->
+            <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModal" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centereds modal-dialog-scrollable">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -78,7 +78,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form id="todoForm">
+                    <form id="taskForm">
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="title" name="title" placeholder="Task title">
                         <label class="text-primary" for="title">Title</label>
@@ -125,7 +125,7 @@
               </div>
             </div>
           </div>
-          <div id="todo-stack"></div>
+          <div id="task-pane"></div>
         </div>
       </div>
     </div>

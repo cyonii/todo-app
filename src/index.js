@@ -2,23 +2,23 @@ import './index.html';
 import './scss/bundle.scss';
 import { Modal } from 'bootstrap';
 import Project from './js/models/project';
-import ToDo from './js/models/todo';
+import Task from './js/models/task';
 import domWorker from './js/utils/domWorker';
 
 const projectForm = domWorker.getProjectForm();
-const todoForm = domWorker.getTodoForm();
+const taskForm = domWorker.getTaskForm();
 const storageClear = document.getElementById('storageClear');
 
 // Always add Default project if it's unavailable
 if (localStorage.length < 1) {
   const defaultProject = Project.createDefaultProject();
-  const newTodo = ToDo.createWelcomeTodo(defaultProject.id);
+  const newTask = Task.createWelcomeTask(defaultProject.id);
 
   if (defaultProject.save()) domWorker.appendProject(defaultProject);
-  if (newTodo.save()) domWorker.appendTodo(newTodo);
+  if (newTask.save()) domWorker.appendTask(newTask);
 } else {
   Project.getAll().forEach((project) => domWorker.appendProject(project));
-  domWorker.updateTodoPane(ToDo.getAllByProject(domWorker.getActiveTab().id));
+  domWorker.updateTaskPane(Task.getAllByProject(domWorker.getActiveTab().id));
 }
 
 projectForm.onsubmit = (event) => {
@@ -33,16 +33,16 @@ projectForm.onsubmit = (event) => {
   event.currentTarget.reset();
 };
 
-todoForm.onsubmit = (event) => {
+taskForm.onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const todo = ToDo.createFromFormData(formData);
+  const task = Task.createFromFormData(formData);
 
-  todo.projectId = domWorker.getActiveTab().id;
-  if (todo.save()) {
-    domWorker.appendTodo(todo);
-    todoForm.reset();
-    Modal.getInstance(domWorker.getTodoModal()).hide();
+  task.projectId = domWorker.getActiveTab().id;
+  if (task.save()) {
+    domWorker.appendTask(task);
+    taskForm.reset();
+    Modal.getInstance(domWorker.getTaskModal()).hide();
   }
 };
 

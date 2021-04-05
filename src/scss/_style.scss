@@ -26,8 +26,8 @@ html {
   }
 }
 
-.todo-card {
-  .todo-notes {
+.task-card {
+  .task-notes {
     padding: 0.125rem 0.25rem;
     margin-top: 0.5rem;
     margin-bottom: 0;
@@ -36,7 +36,7 @@ html {
     font-style: italic;
   }
 
-  .todo-action {
+  .task-action {
     width: 2rem;
     height: 2rem;
     display: inline-flex;
@@ -55,7 +55,7 @@ html {
 }
 
 // Form
-#todoForm {
+#taskForm {
   .form-floating {
     label {
       height: auto;

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { randomID } from '../utils/utils';
 
-export default class ToDo {
+export default class Task {
   constructor(props) {
     this.title = props.title;
     this.id = props.id ? props.id : randomID();
@@ -20,23 +20,23 @@ export default class ToDo {
 
   save() {
     if (this.isValid()) {
-      const storedTodos = ToDo.getAll();
-      storedTodos.push(this);
-      localStorage.setItem('todos', JSON.stringify(storedTodos));
+      const storedTasks = Task.getAll();
+      storedTasks.push(this);
+      localStorage.setItem('tasks', JSON.stringify(storedTasks));
       return true;
     }
     return false;
   }
 
   delete() {
-    const allTodos = ToDo.getAll();
+    const allTasks = Task.getAll();
 
-    allTodos.splice(allTodos.indexOf(this), 1);
-    localStorage.setItem('todos', JSON.stringify(allTodos));
+    allTasks.splice(allTasks.indexOf(this), 1);
+    localStorage.setItem('tasks', JSON.stringify(allTasks));
   }
 
-  static createWelcomeTodo(projectId) {
-    return new ToDo({
+  static createWelcomeTask(projectId) {
+    return new Task({
       title: 'Hello, I am your task manager',
       projectId,
       description: 'I will help you organize your plans',
@@ -47,7 +47,7 @@ export default class ToDo {
   }
 
   static createFromFormData(formData) {
-    return new ToDo({
+    return new Task({
       title: formData.get('title'),
       projectId: formData.get('projectId'),
       description: formData.get('description'),
@@ -58,15 +58,15 @@ export default class ToDo {
   }
 
   static get(id) {
-    return ToDo.getAll().find((todo) => todo.id === id);
+    return Task.getAll().find((task) => task.id === id);
   }
 
   static getAllByProject(projectId) {
-    return ToDo.getAll().filter((todo) => todo.projectId === projectId);
+    return Task.getAll().filter((task) => task.projectId === projectId);
   }
 
   static getAll() {
-    const partial = JSON.parse(localStorage.getItem('todos')) || [];
-    return partial.map((data) => new ToDo(data));
+    const partial = JSON.parse(localStorage.getItem('tasks')) || [];
+    return partial.map((data) => new Task(data));
   }
 }

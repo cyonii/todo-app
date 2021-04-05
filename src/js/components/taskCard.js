@@ -1,12 +1,12 @@
 import { format } from 'date-fns';
 import { setAttributes } from '../utils/utils';
 
-export default function (todo) {
+export default function (task) {
   function makeCardWrapper() {
     const el = document.createElement('div');
-    el.setAttribute('data-todo', todo.id);
+    el.setAttribute('data-task', task.id);
 
-    el.classList.add('card', 'todo-card', 'border-primary', 'overflow-hidden', 'shadow-sm', 'mb-3');
+    el.classList.add('card', 'task-card', 'border-primary', 'overflow-hidden', 'shadow-sm', 'mb-3');
     return el;
   }
 
@@ -33,9 +33,9 @@ export default function (todo) {
     );
     setAttributes(el, {
       'data-bs-toggle': 'collapse',
-      'data-bs-target': `#${todo.id}`,
+      'data-bs-target': `#${task.id}`,
     });
-    el.innerText = todo.title;
+    el.innerText = task.title;
     return el;
   }
 
@@ -43,7 +43,7 @@ export default function (todo) {
     const el = document.createElement('div');
 
     el.classList.add('badge', 'bg-secondary');
-    el.innerText = format(new Date(todo.dueDate), 'dd-mm-yyyy');
+    el.innerText = format(new Date(task.dueDate), 'dd-mm-yyyy');
     return el;
   }
 
@@ -51,7 +51,7 @@ export default function (todo) {
     const el = document.createElement('div');
 
     el.classList.add('collapse');
-    el.id = todo.id;
+    el.id = task.id;
     return el;
   }
 
@@ -62,19 +62,19 @@ export default function (todo) {
     return el;
   }
 
-  function makeTodoDesc() {
+  function makeTaskDesc() {
     const el = document.createElement('p');
 
     el.classList.add('card-text', 'mb-0', 'text-primary');
-    el.innerText = todo.description;
+    el.innerText = task.description;
     return el;
   }
 
-  function makeTodoNotes() {
+  function makeTaskNotes() {
     const el = document.createElement('div');
 
-    el.classList.add('alert', 'alert-secondary', 'todo-notes');
-    el.innerText = todo.notes;
+    el.classList.add('alert', 'alert-secondary', 'task-notes');
+    el.innerText = task.notes;
     return el;
   }
 
@@ -88,8 +88,8 @@ export default function (todo) {
   function makeDeleteButton() {
     const el = document.createElement('button');
     el.innerHTML = "<i class='bi bi-trash-fill'></i>";
-    el.classList.add('btn', 'text-danger', 'todo-action');
-    el.setAttribute('data-todo', todo.id);
+    el.classList.add('btn', 'text-danger', 'task-action');
+    el.setAttribute('data-task', task.id);
     // el.onclick = deleteTask;
     return el;
   }
@@ -97,20 +97,20 @@ export default function (todo) {
   function makeEditButton() {
     const el = document.createElement('div');
     el.innerHTML = "<i class='bi bi-pen-fill'></i>";
-    el.classList.add('btn', 'text-primary', 'todo-action');
+    el.classList.add('btn', 'text-primary', 'task-action');
     return el;
   }
 
   function makeStatusChecker() {
     const el = document.createElement('input');
-    el.classList.add('form-check-input', 'todo-actions', 'ms-auto');
+    el.classList.add('form-check-input', 'task-actions', 'ms-auto');
     el.id = 'updateStatus';
     el.setAttribute('type', 'checkbox');
-    if (todo.completed) el.setAttribute('checked', true);
+    if (task.completed) el.setAttribute('checked', true);
     return el;
   }
 
-  function makeTodoCard() {
+  function makeTaskCard() {
     const card = makeCardWrapper();
     const cardHeader = makeCardHeader();
     const toggler = makeCollapseToggler();
@@ -123,8 +123,8 @@ export default function (todo) {
 
     toggler.appendChild(badge);
     cardHeader.appendChild(toggler);
-    cardBody.appendChild(makeTodoDesc());
-    cardBody.appendChild(makeTodoNotes());
+    cardBody.appendChild(makeTaskDesc());
+    cardBody.appendChild(makeTaskNotes());
     cardFooter.appendChild(deleteButton);
     cardFooter.appendChild(editButton);
     cardFooter.appendChild(makeStatusChecker());
@@ -136,5 +136,5 @@ export default function (todo) {
     return card;
   }
 
-  return makeTodoCard();
+  return makeTaskCard();
 }
