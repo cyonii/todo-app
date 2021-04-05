@@ -1,5 +1,6 @@
 import makeTaskCard from '../components/taskCard';
 import makeProjectTab from '../components/projectTab';
+import makeNoTaskNotice from '../components/noTasks';
 
 export default (() => {
   const getActiveTab = () => document.querySelector('#project-stack .nav-link.active');
@@ -14,7 +15,9 @@ export default (() => {
     const taskPane = getTaskPane();
 
     taskPane.appendChild(makeTaskCard(task));
-    if (taskPane.firstElementChild.tagName === 'P') taskPane.firstElementChild.remove();
+    if (!taskPane.firstElementChild.classList.contains('task-card')) {
+      taskPane.firstElementChild.remove();
+    }
   }
 
   function updateTaskPane(tasks = []) {
@@ -24,10 +27,7 @@ export default (() => {
     if (tasks.length) {
       tasks.forEach((task) => appendTask(task));
     } else {
-      const message = document.createElement('p');
-      message.textContent = 'No Tasks';
-      message.classList.add('display-4', 'text-center', 'mt-5', 'text-muted');
-      taskPane.appendChild(message);
+      taskPane.appendChild(makeNoTaskNotice(getActiveTab().id));
     }
   }
 

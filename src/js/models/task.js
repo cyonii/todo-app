@@ -7,7 +7,7 @@ export default class Task {
     this.id = props.id ? props.id : randomID();
     this.projectId = props.projectId;
     this.description = props.description;
-    this.dueDate = props.dueDate;
+    this.dueDate = new Date(props.dueDate);
     this.priority = props.priority;
     this.notes = props.notes;
     this.completed = props.completed ? props.completed : false;
