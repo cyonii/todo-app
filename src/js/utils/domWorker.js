@@ -4,7 +4,7 @@ import makeProjectTab from '../components/projectTab';
 export default (() => {
   const getActiveTab = () => document.querySelector('#project-stack .nav-link.active');
   const getProjectForm = () => document.getElementById('projectForm');
-  const getProjectNavs = () => document.querySelectorAll('#project-stack .nav-link');
+  const getProjectTabs = () => document.querySelectorAll('#project-stack .nav-link');
   const getProjectStack = () => document.getElementById('project-stack');
   const getTaskForm = () => document.getElementById('taskForm');
   const getTaskModal = () => document.getElementById('taskModal');
@@ -54,7 +54,7 @@ export default (() => {
     updateTaskPane,
     getProjectForm,
     getActiveTab,
-    getProjectNavs,
+    getProjectTabs,
     getProjectStack,
     getTaskForm,
     getTaskModal,
