@@ -1,5 +1,5 @@
-import { format } from 'date-fns';
 import { setAttributes } from '../utils/utils';
+import Task from '../models/task';
 
 export default function (task) {
   function makeCardWrapper() {
@@ -43,7 +43,7 @@ export default function (task) {
     const el = document.createElement('div');
 
     el.classList.add('badge', 'bg-secondary');
-    el.innerText = format(new Date(task.dueDate), 'dd-mm-yyyy');
+    el.innerText = task.dueDate.toLocaleDateString();
     return el;
   }
 
@@ -87,10 +87,14 @@ export default function (task) {
 
   function makeDeleteButton() {
     const el = document.createElement('button');
+
     el.innerHTML = "<i class='bi bi-trash-fill'></i>";
     el.classList.add('btn', 'text-danger', 'task-action');
     el.setAttribute('data-task', task.id);
-    // el.onclick = deleteTask;
+    el.onclick = () => {
+      Task.get(task.id).delete();
+      document.querySelector(`[data-task=${task.id}]`).remove();
+    };
     return el;
   }
 
