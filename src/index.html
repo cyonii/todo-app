@@ -72,20 +72,21 @@
             <!-- Task modal -->
             <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModal" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centereds modal-dialog-scrollable">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h6 class="modal-title fw-bold text-muted" id="exampleModalLabel">Add a new task</h6>
+                <div class="modal-content alert-primary py-5">
+                  <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">Add a new task</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
                     <form id="taskForm">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="title" name="title" placeholder="Task title">
+                        <input type="text" class="form-control alert-primary border-0" id="title" name="title"
+                          placeholder="Task title">
                         <label class="text-primary" for="title">Title</label>
                       </div>
 
                       <div class="form-floating mb-3">
-                        <textarea class="form-control" name="description" id="description"
+                        <textarea class="form-control alert-primary border-0" name="description" id="description"
                           placeholder="What is this task about?" required></textarea>
                         <label for="description" class="text-primary">Description</label>
                       </div>
@@ -93,15 +94,15 @@
                       <div class="row gx-1">
                         <div class="col-6 mb-3">
                           <div class="form-floating">
-                            <input type="date" class="form-select w-100" id="dueDate" name="dueDate"
-                              placeholder="Task date" required>
+                            <input type="date" class="form-select alert-primary border-0 w-100" id="dueDate"
+                              name="dueDate" placeholder="Task date" required>
                             <label for="dueDate" class="text-primary">Due Date</label>
                           </div>
                         </div>
 
                         <div class="col-6 mb-3">
                           <div class="form-floating">
-                            <select id="priority" name="priority" class="form-select" required>
+                            <select id="priority" name="priority" class="form-select alert-primary border-0" required>
                               <option value="low" selected>Low</option>
                               <option value="mid">Mid</option>
                               <option value="high">High</option>
@@ -112,7 +113,7 @@
                       </div>
 
                       <div class="form-floating mb-3">
-                        <textarea class="form-control" name="notes" id="notes"
+                        <textarea class="form-control alert-primary border-0" name="notes" id="notes"
                           placeholder="Do you have any notes about this event?"></textarea>
                         <label for="notes" class="text-primary">Notes</label>
 

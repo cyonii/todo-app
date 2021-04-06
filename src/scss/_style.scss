@@ -56,6 +56,16 @@ html {
 
 // Form
 #taskForm {
+  input,
+  select,
+  textarea {
+    &:focus,
+    &:active {
+      background-color: lighten(#d3deeb, 5%);
+      border: 1px solid #d3deeb !important;
+      box-shadow: none;
+    }
+  }
   .form-floating {
     label {
       height: auto;
@@ -63,6 +73,10 @@ html {
       opacity: 1;
       padding: 0 0.25rem;
       margin: 0.5rem 0 0 0.5rem;
+      line-height: normal;
+      border-radius: 2px;
+      font-size: 14px !important;
+      font-weight: bold;
     }
 
     textarea#description {
