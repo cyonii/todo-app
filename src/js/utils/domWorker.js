@@ -1,6 +1,6 @@
 import makeTaskCard from '../components/taskCard';
 import makeProjectTab from '../components/projectTab';
-import makeNoTaskNotice from '../components/noTasks';
+import noTaskNotice from '../components/noTasks';
 
 export default (() => {
   const getActiveTab = () => document.querySelector('#project-stack .nav-link.active');
@@ -20,44 +20,42 @@ export default (() => {
     }
   }
 
-  function updateTaskPane(tasks = []) {
-    const taskPane = getTaskPane();
+  function loadTasks(project) {
+    const tasks = project.getTasks();
 
-    taskPane.innerHTML = '';
+    getTaskPane().innerHTML = '';
     if (tasks.length) {
       tasks.forEach((task) => appendTask(task));
     } else {
-      taskPane.appendChild(makeNoTaskNotice(getActiveTab().id));
+      getTaskPane().appendChild(noTaskNotice(project));
     }
   }
 
-  function setActiveTab(project, tasks) {
+  function setActiveTab(project) {
     const newActiveTab = document.getElementById(project.id);
 
     getActiveTab().classList.remove('active');
     newActiveTab.classList.add('active');
-    updateTaskPane(tasks);
   }
 
   function appendProject(project) {
     const projectNav = makeProjectTab(project);
 
     if (project.name.match(/general/i)) projectNav.classList.add('active');
-
-    projectNav.onclick = updateTaskPane.bind(this, project.getOwnTasks());
+    projectNav.onclick = loadTasks.bind(undefined, project);
     getProjectStack().appendChild(projectNav);
   }
 
   return {
     appendProject,
     appendTask,
-    updateTaskPane,
     getProjectForm,
     getActiveTab,
     getProjectTabs,
     getProjectStack,
     getTaskForm,
     getTaskModal,
+    loadTasks,
     setActiveTab,
   };
 })();

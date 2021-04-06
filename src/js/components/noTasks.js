@@ -1,10 +1,7 @@
-import Project from '../models/project';
-
-export default function (projectId) {
+export default function (project) {
   const wrapper = document.createElement('div');
   const message = document.createElement('p');
   const subText = document.createElement('p');
-  const project = Project.get(projectId);
 
   message.textContent = 'No Tasks';
   message.classList.add('display-4', 'text-center', 'mt-5', 'text-muted');

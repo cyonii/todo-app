@@ -61,7 +61,7 @@ export default class Task {
     return Task.getAll().find((task) => task.id === id);
   }
 
-  static getAllByProject(projectId) {
+  static getByProject(projectId) {
     return Task.getAll().filter((task) => task.projectId === projectId);
   }
 

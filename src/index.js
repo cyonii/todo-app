@@ -18,7 +18,7 @@ if (localStorage.length < 1) {
   if (newTask.save()) domWorker.appendTask(newTask);
 } else {
   Project.getAll().forEach((project) => domWorker.appendProject(project));
-  domWorker.updateTaskPane(Task.getAllByProject(domWorker.getActiveTab().id));
+  domWorker.loadTasks(Project.get(domWorker.getActiveTab().id));
 }
 
 projectForm.onsubmit = (event) => {
@@ -29,6 +29,7 @@ projectForm.onsubmit = (event) => {
   if (newProject.save()) {
     domWorker.appendProject(newProject);
     domWorker.setActiveTab(newProject, []);
+    domWorker.loadTasks(newProject);
   }
   event.currentTarget.reset();
 };

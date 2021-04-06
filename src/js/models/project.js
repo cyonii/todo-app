@@ -35,7 +35,7 @@ export default class Project {
     return false;
   }
 
-  getOwnTasks() {
+  getTasks() {
     return Task.getAll().filter((task) => task.projectId === this.id);
   }
 

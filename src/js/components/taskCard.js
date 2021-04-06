@@ -1,3 +1,4 @@
+import { Modal } from 'bootstrap';
 import { setAttributes } from '../utils/utils';
 import Task from '../models/task';
 
@@ -102,6 +103,10 @@ export default function (task) {
     const el = document.createElement('div');
     el.innerHTML = "<i class='bi bi-pen-fill'></i>";
     el.classList.add('btn', 'text-primary', 'task-action');
+    el.onclick = () => {
+      const getModal = () => document.getElementById('taskModal');
+      Modal.getInstance(getModal()).show();
+    };
     return el;
   }
 
