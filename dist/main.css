@@ -12121,12 +12121,30 @@ html {
   background-color: #e9ecef;
 }
 
+#taskForm input,
+#taskForm select,
+#taskForm textarea {
+  background-color: #d3deeb;
+}
+#taskForm input:focus, #taskForm input:active,
+#taskForm select:focus,
+#taskForm select:active,
+#taskForm textarea:focus,
+#taskForm textarea:active {
+  background-color: #e5ebf3;
+  border: 1px solid #d3deeb !important;
+  box-shadow: none;
+}
 #taskForm .form-floating label {
   height: auto;
   background-color: #fff;
   opacity: 1;
   padding: 0 0.25rem;
   margin: 0.5rem 0 0 0.5rem;
+  line-height: normal;
+  border-radius: 2px;
+  font-size: 14px !important;
+  font-weight: bold;
 }
 #taskForm .form-floating textarea#description {
   height: 100px !important;

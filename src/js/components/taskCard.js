@@ -91,9 +91,9 @@ export default function (task) {
 
     el.innerHTML = "<i class='bi bi-trash-fill'></i>";
     el.classList.add('btn', 'text-danger', 'task-action');
-    el.setAttribute('data-task', task.id);
+    el.setAttribute('data-task-delete', task.id);
     el.onclick = () => {
-      Task.get(task.id).delete();
+      (() => Task.get(task.id).delete())();
       document.querySelector(`[data-task=${task.id}]`).remove();
     };
     return el;
@@ -101,12 +101,12 @@ export default function (task) {
 
   function makeEditButton() {
     const el = document.createElement('div');
+    const taskModal = new Modal(document.getElementById('taskModal'));
+
     el.innerHTML = "<i class='bi bi-pen-fill'></i>";
     el.classList.add('btn', 'text-primary', 'task-action');
-    el.onclick = () => {
-      const getModal = () => document.getElementById('taskModal');
-      Modal.getInstance(getModal()).show();
-    };
+    el.setAttribute('data-task-edit', task.id);
+    el.onclick = taskModal.show.bind(taskModal);
     return el;
   }
 
@@ -119,7 +119,7 @@ export default function (task) {
     return el;
   }
 
-  function makeTaskCard() {
+  return (() => {
     const card = makeCardWrapper();
     const cardHeader = makeCardHeader();
     const toggler = makeCollapseToggler();
@@ -143,7 +143,5 @@ export default function (task) {
     card.appendChild(collapsible);
 
     return card;
-  }
-
-  return makeTaskCard();
+  })();
 }

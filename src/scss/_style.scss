@@ -59,6 +59,8 @@ html {
   input,
   select,
   textarea {
+    background-color: #d3deeb;
+
     &:focus,
     &:active {
       background-color: lighten(#d3deeb, 5%);

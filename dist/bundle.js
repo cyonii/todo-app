@@ -8078,7 +8078,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // Module
-var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Task Manager</title>\n</head>\n\n<body class=\"alert-primary\">\n  <header>\n    <nav class=\"navbar navbar-light bg-primary\">\n      <div class=\"container-md display-inline\">\n        <div class=\"row justify-content-center\">\n          <div class=\"col-lg-9 col-xl-8\">\n            <div class=\"d-flex justify-content-between\">\n              <a class=\"navbar-brand text-white user-select-none d-flex align-items-center\" href=\"index.html\">\n                <i class=\"bi bi-card-checklist me-2\"></i>\n                <strong>Task Manager</strong>\n              </a>\n              <div class=\"btn-group\">\n                <button type=\"button\" class=\"btn btn-dark py-3 rounded-0 dropdown-toggle\" data-bs-toggle=\"dropdown\"\n                  aria-expanded=\"false\">\n                  <i class=\"bi bi-three-dots\"></i>\n                </button>\n                <ul class=\"dropdown-menu dropdown-menu-end shadow\">\n                  <li>\n                    <button class=\"dropdown-item fw-bold text-danger\" id=\"storageClear\" type=\"button\">\n                      <i class=\"bi bi-trash me-1\"></i>Clear DB\n                    </button>\n                  </li>\n                </ul>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-4 col-xl-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control border-primary\" placeholder=\"Add new project\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\">\n                <i class=\"bi bi-node-plus me-2 me-sm-0 me-md-2\"></i>\n                <span class=\"d-sm-none d-md-inline\">Add</span>\n              </button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- Task column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#taskModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Task modal -->\n            <div class=\"modal fade\" id=\"taskModal\" tabindex=\"-1\" aria-labelledby=\"taskModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content\">\n                  <div class=\"modal-header\">\n                    <h6 class=\"modal-title fw-bold text-muted\" id=\"exampleModalLabel\">Add a new task</h6>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\">\n                    <form id=\"taskForm\">\n                      <div class=\"form-floating mb-3\">\n                        <input type=\"text\" class=\"form-control\" id=\"title\" name=\"title\" placeholder=\"Task title\">\n                        <label class=\"text-primary\" for=\"title\">Title</label>\n                      </div>\n\n                      <div class=\"form-floating mb-3\">\n                        <textarea class=\"form-control\" name=\"description\" id=\"description\"\n                          placeholder=\"What is this task about?\" required></textarea>\n                        <label for=\"description\" class=\"text-primary\">Description</label>\n                      </div>\n\n                      <div class=\"row gx-1\">\n                        <div class=\"col-6 mb-3\">\n                          <div class=\"form-floating\">\n                            <input type=\"date\" class=\"form-select w-100\" id=\"dueDate\" name=\"dueDate\"\n                              placeholder=\"Task date\" required>\n                            <label for=\"dueDate\" class=\"text-primary\">Due Date</label>\n                          </div>\n                        </div>\n\n                        <div class=\"col-6 mb-3\">\n                          <div class=\"form-floating\">\n                            <select id=\"priority\" name=\"priority\" class=\"form-select\" required>\n                              <option value=\"low\" selected>Low</option>\n                              <option value=\"mid\">Mid</option>\n                              <option value=\"high\">High</option>\n                            </select>\n                            <label for=\"priority\" class=\"text-primary\">Priority</label>\n                          </div>\n                        </div>\n                      </div>\n\n                      <div class=\"form-floating mb-3\">\n                        <textarea class=\"form-control\" name=\"notes\" id=\"notes\"\n                          placeholder=\"Do you have any notes about this event?\"></textarea>\n                        <label for=\"notes\" class=\"text-primary\">Notes</label>\n\n                      </div>\n\n                      <button class=\"btn btn-primary\" type=\"submit\">Add task</button>\n                    </form>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"task-pane\"></div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
+var code = "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"UTF-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Task Manager</title>\n</head>\n\n<body class=\"alert-primary\">\n  <header>\n    <nav class=\"navbar navbar-light bg-primary\">\n      <div class=\"container-md display-inline\">\n        <div class=\"row justify-content-center\">\n          <div class=\"col-lg-9 col-xl-8\">\n            <div class=\"d-flex justify-content-between\">\n              <a class=\"navbar-brand text-white user-select-none d-flex align-items-center\" href=\"index.html\">\n                <i class=\"bi bi-card-checklist me-2\"></i>\n                <strong>Task Manager</strong>\n              </a>\n              <div class=\"btn-group\">\n                <button type=\"button\" class=\"btn btn-dark py-3 rounded-0 dropdown-toggle\" data-bs-toggle=\"dropdown\"\n                  aria-expanded=\"false\">\n                  <i class=\"bi bi-three-dots\"></i>\n                </button>\n                <ul class=\"dropdown-menu dropdown-menu-end shadow\">\n                  <li>\n                    <button class=\"dropdown-item fw-bold text-danger\" id=\"storageClear\" type=\"button\">\n                      <i class=\"bi bi-trash me-1\"></i>Clear DB\n                    </button>\n                  </li>\n                </ul>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </nav>\n  </header>\n  <main>\n    <div class=\"container-md\">\n      <div class=\"row justify-content-center\">\n        <!-- Projects column -->\n        <div class=\"col-sm-5 col-lg-4 col-xl-3 py-4\">\n          <!-- Form row -->\n          <form class=\"row gx-1 mb-2 mb-md-3\" id=\"projectForm\">\n            <div class=\"col-8\">\n              <label class=\"visually-hidden\" for=\"project\">Project</label>\n              <input type=\"text\" name=\"name\" class=\"form-control border-primary\" placeholder=\"Add new project\" required>\n            </div>\n\n            <div class=\"col-4\">\n              <button type=\"submit\" class=\"btn btn-primary w-100\">\n                <i class=\"bi bi-node-plus me-2 me-sm-0 me-md-2\"></i>\n                <span class=\"d-sm-none d-md-inline\">Add</span>\n              </button>\n            </div>\n          </form>\n\n          <!-- Projects - cards -->\n          <div class=\"nav flex-column nav-pills\" id=\"project-stack\" role=\"tablist\" aria-orientation=\"vertical\"></div>\n        </div>\n\n        <!-- Task column -->\n        <div class=\"col-sm-7 col-lg-5 py-4\">\n          <div class=\"d-flex mb-2 mb-md-3\">\n            <button class=\"btn btn-primary ms-auto\" data-bs-toggle=\"modal\" data-bs-target=\"#taskModal\">\n              <i class=\"bi bi-journal-check me-2\"></i>New task\n            </button>\n\n            <!-- Task modal -->\n            <div class=\"modal fade\" id=\"taskModal\" tabindex=\"-1\" aria-labelledby=\"taskModal\" aria-hidden=\"true\">\n              <div class=\"modal-dialog modal-dialog-centereds modal-dialog-scrollable\">\n                <div class=\"modal-content alert-primary py-5\">\n                  <div class=\"modal-header border-0\">\n                    <h5 class=\"modal-title fw-bold\" id=\"exampleModalLabel\">Add a new task</h5>\n                    <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n                  </div>\n                  <div class=\"modal-body\"></div>\n                </div>\n              </div>\n            </div>\n          </div>\n          <div id=\"task-pane\"></div>\n        </div>\n      </div>\n    </div>\n  </main>\n</body>\n\n</html>";
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (code);
 
@@ -25320,14 +25320,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _models_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/project */ "./src/js/models/project.js");
-
-
-/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(projectId) {
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(project) {
   const wrapper = document.createElement('div');
   const message = document.createElement('p');
   const subText = document.createElement('p');
-  const project = _models_project__WEBPACK_IMPORTED_MODULE_0__.default.get(projectId);
 
   message.textContent = 'No Tasks';
   message.classList.add('display-4', 'text-center', 'mt-5', 'text-muted');
@@ -25391,8 +25387,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
-/* harmony import */ var _models_task__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/task */ "./src/js/models/task.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+/* harmony import */ var _models_task__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../models/task */ "./src/js/models/task.js");
+
 
 
 
@@ -25426,7 +25424,7 @@ __webpack_require__.r(__webpack_exports__);
       'rounded-0',
       'border-0',
     );
-    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(el, {
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_1__.setAttributes)(el, {
       'data-bs-toggle': 'collapse',
       'data-bs-target': `#${task.id}`,
     });
@@ -25485,9 +25483,9 @@ __webpack_require__.r(__webpack_exports__);
 
     el.innerHTML = "<i class='bi bi-trash-fill'></i>";
     el.classList.add('btn', 'text-danger', 'task-action');
-    el.setAttribute('data-task', task.id);
+    el.setAttribute('data-task-delete', task.id);
     el.onclick = () => {
-      _models_task__WEBPACK_IMPORTED_MODULE_1__.default.get(task.id).delete();
+      (() => _models_task__WEBPACK_IMPORTED_MODULE_2__.default.get(task.id).delete())();
       document.querySelector(`[data-task=${task.id}]`).remove();
     };
     return el;
@@ -25495,9 +25493,12 @@ __webpack_require__.r(__webpack_exports__);
 
   function makeEditButton() {
     const el = document.createElement('div');
+    const taskModal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(document.getElementById('taskModal'));
+
     el.innerHTML = "<i class='bi bi-pen-fill'></i>";
     el.classList.add('btn', 'text-primary', 'task-action');
-    el.onclick = (event) => _utils_utils__WEBPACK_IMPORTED_MODULE_0__.setupEdit.call(event, [task]);
+    el.setAttribute('data-task-edit', task.id);
+    el.onclick = taskModal.show.bind(taskModal);
     return el;
   }
 
@@ -25510,7 +25511,7 @@ __webpack_require__.r(__webpack_exports__);
     return el;
   }
 
-  function makeTaskCard() {
+  return (() => {
     const card = makeCardWrapper();
     const cardHeader = makeCardHeader();
     const toggler = makeCollapseToggler();
@@ -25534,9 +25535,180 @@ __webpack_require__.r(__webpack_exports__);
     card.appendChild(collapsible);
 
     return card;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./src/js/components/taskForm.js":
+/*!***************************************!*\
+  !*** ./src/js/components/taskForm.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+
+
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(task = {}) {
+  function makeFormWrapper() {
+    const el = document.createElement('form');
+    el.id = 'taskForm';
+    return el;
   }
 
-  return makeTaskCard();
+  function makeTitileInput() {
+    const wrapper = document.createElement('div', { name: 'js' });
+    const input = document.createElement('input');
+    const label = document.createElement('label');
+
+    wrapper.classList.add('form-floating', 'mb-3');
+    input.id = 'title';
+    input.classList.add('form-control');
+    label.textContent = 'Title';
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(input, {
+      type: 'text',
+      name: 'title',
+      value: task.title ? task.title : '',
+      required: true,
+      placeholder: 'Task title',
+    });
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, { for: 'title' });
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(label);
+
+    return wrapper;
+  }
+
+  function makeDescriptionInput() {
+    const wrapper = document.createElement('div');
+    const textarea = document.createElement('textarea');
+    const label = document.createElement('label');
+
+    wrapper.classList.add('form-floating', 'mb-3');
+    textarea.id = 'description';
+    textarea.classList.add('form-control');
+    label.textContent = 'Description';
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(textarea, {
+      name: 'description',
+      value: task.description ? task.description : '',
+      required: true,
+      placeholder: 'What is this task about?',
+    });
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, { for: 'description' });
+
+    wrapper.appendChild(textarea);
+    wrapper.appendChild(label);
+
+    return wrapper;
+  }
+
+  function makeDateInput() {
+    const wrapper = document.createElement('div');
+    const input = document.createElement('input');
+    const label = document.createElement('label');
+
+    wrapper.classList.add('form-floating', 'col-6', 'mb-3');
+    input.id = 'dueDate';
+    input.classList.add('form-select');
+    label.textContent = 'Due Date';
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(input, {
+      type: 'date',
+      name: 'dueDate',
+      value: task.dueDate ? task.dueDate : '',
+      required: true,
+    });
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, { for: 'dueDate' });
+
+    wrapper.appendChild(input);
+    wrapper.appendChild(label);
+
+    return wrapper;
+  }
+
+  function makePriorityInput() {
+    const wrapper = document.createElement('div');
+    const select = document.createElement('select');
+    const label = document.createElement('label');
+    const priorities = ['low', 'mid', 'high'];
+
+    priorities.forEach((priority) => {
+      const option = document.createElement('option');
+      option.value = priority;
+      option.innerText = priority;
+      if (priority === task.priority) (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(option, { selected: true });
+      select.appendChild(option);
+    });
+
+    wrapper.classList.add('form-floating', 'col-6', 'mb-3');
+    select.id = 'priority';
+    select.classList.add('form-select');
+    label.textContent = 'Priority';
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(select, {
+      type: 'date',
+      name: 'priority',
+      required: true,
+    });
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, { for: 'priority' });
+
+    wrapper.appendChild(select);
+    wrapper.appendChild(label);
+
+    return wrapper;
+  }
+
+  function makeNotesInput() {
+    const wrapper = document.createElement('div');
+    const textarea = document.createElement('textarea');
+    const label = document.createElement('label');
+
+    wrapper.classList.add('form-floating', 'mb-3');
+    textarea.id = 'notes';
+    textarea.classList.add('form-control');
+    label.textContent = 'Notes';
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(textarea, {
+      name: 'notes',
+      value: task.notes ? task.notes : '',
+      placeholder: 'Do you have any notes about this task?',
+    });
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, { for: 'notes' });
+
+    wrapper.appendChild(textarea);
+    wrapper.appendChild(label);
+
+    return wrapper;
+  }
+
+  function makeSubmitButton() {
+    const button = document.createElement('button');
+
+    button.innerText = 'Add task';
+    button.classList.add('btn', 'btn-primary');
+    (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(button, { type: 'submit' });
+
+    return button;
+  }
+
+  return (() => {
+    const form = makeFormWrapper();
+
+    form.appendChild(makeTitileInput());
+    form.appendChild(makeDescriptionInput());
+    form.appendChild(document.createElement('div'));
+    form.lastElementChild.classList.add('row', 'gx-1');
+    form.lastElementChild.appendChild(makeDateInput());
+    form.lastElementChild.appendChild(makePriorityInput());
+    form.appendChild(makeNotesInput());
+    form.appendChild(makeSubmitButton());
+
+    return form;
+  })();
 }
 
 
@@ -25594,7 +25766,7 @@ class Project {
     return false;
   }
 
-  getOwnTasks() {
+  getTasks() {
     return _task__WEBPACK_IMPORTED_MODULE_2__.default.getAll().filter((task) => task.projectId === this.id);
   }
 
@@ -25694,7 +25866,7 @@ class Task {
     return Task.getAll().find((task) => task.id === id);
   }
 
-  static getAllByProject(projectId) {
+  static getByProject(projectId) {
     return Task.getAll().filter((task) => task.projectId === projectId);
   }
 
@@ -25743,44 +25915,42 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 
-  function updateTaskPane(tasks = []) {
-    const taskPane = getTaskPane();
+  function loadTasks(project) {
+    const tasks = project.getTasks();
 
-    taskPane.innerHTML = '';
+    getTaskPane().innerHTML = '';
     if (tasks.length) {
       tasks.forEach((task) => appendTask(task));
     } else {
-      taskPane.appendChild((0,_components_noTasks__WEBPACK_IMPORTED_MODULE_2__.default)(getActiveTab().id));
+      getTaskPane().appendChild((0,_components_noTasks__WEBPACK_IMPORTED_MODULE_2__.default)(project));
     }
   }
 
-  function setActiveTab(project, tasks) {
+  function setActiveTab(project) {
     const newActiveTab = document.getElementById(project.id);
 
     getActiveTab().classList.remove('active');
     newActiveTab.classList.add('active');
-    updateTaskPane(tasks);
   }
 
   function appendProject(project) {
     const projectNav = (0,_components_projectTab__WEBPACK_IMPORTED_MODULE_1__.default)(project);
 
     if (project.name.match(/general/i)) projectNav.classList.add('active');
-
-    projectNav.onclick = updateTaskPane.bind(this, project.getOwnTasks());
+    projectNav.onclick = loadTasks.bind(undefined, project);
     getProjectStack().appendChild(projectNav);
   }
 
   return {
     appendProject,
     appendTask,
-    updateTaskPane,
     getProjectForm,
     getActiveTab,
     getProjectTabs,
     getProjectStack,
     getTaskForm,
     getTaskModal,
+    loadTasks,
     setActiveTab,
   };
 })());
@@ -25799,14 +25969,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "generateRandomStr": () => (/* binding */ generateRandomStr),
 /* harmony export */   "randomID": () => (/* binding */ randomID),
-/* harmony export */   "setAttributes": () => (/* binding */ setAttributes),
-/* harmony export */   "setupEdit": () => (/* binding */ setupEdit)
+/* harmony export */   "setAttributes": () => (/* binding */ setAttributes)
 /* harmony export */ });
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-/* harmony import */ var _domWorker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./domWorker */ "./src/js/utils/domWorker.js");
-
-
-
 function generateRandomStr(length = 1) {
   const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
 
@@ -25821,10 +25985,6 @@ function randomID() {
 
 function setAttributes(el, attrs) {
   Object.entries(attrs).forEach((entry) => el.setAttribute(entry[0], entry[1]));
-}
-
-function setupEdit(task) {
-  bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal.getInstance(_domWorker__WEBPACK_IMPORTED_MODULE_1__.default.getTaskModal()).show();
 }
 
 
@@ -25933,9 +26093,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.html */ "./src/index.html");
 /* harmony import */ var _scss_bundle_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scss/bundle.scss */ "./src/scss/bundle.scss");
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-/* harmony import */ var _js_models_project__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/models/project */ "./src/js/models/project.js");
-/* harmony import */ var _js_models_task__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./js/models/task */ "./src/js/models/task.js");
-/* harmony import */ var _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./js/utils/domWorker */ "./src/js/utils/domWorker.js");
+/* harmony import */ var _js_components_taskForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/components/taskForm */ "./src/js/components/taskForm.js");
+/* harmony import */ var _js_models_project__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./js/models/project */ "./src/js/models/project.js");
+/* harmony import */ var _js_models_task__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./js/models/task */ "./src/js/models/task.js");
+/* harmony import */ var _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./js/utils/domWorker */ "./src/js/utils/domWorker.js");
 
 
 
@@ -25943,46 +26104,67 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const projectForm = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getProjectForm();
-const taskForm = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getTaskForm();
+
+// const getProjectForm = getgetProjectForm();
+const {
+  appendProject,
+  appendTask,
+  getProjectForm,
+  getActiveTab,
+  getTaskForm,
+  getTaskModal,
+  loadTasks,
+  setActiveTab,
+} = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default;
 const storageClear = document.getElementById('storageClear');
 
 // Always add Default project if it's unavailable
 if (localStorage.length < 1) {
-  const defaultProject = _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default.createDefaultProject();
-  const newTask = _js_models_task__WEBPACK_IMPORTED_MODULE_4__.default.createWelcomeTask(defaultProject.id);
+  const defaultProject = _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.createDefaultProject();
+  const newTask = _js_models_task__WEBPACK_IMPORTED_MODULE_5__.default.createWelcomeTask(defaultProject.id);
 
-  if (defaultProject.save()) _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(defaultProject);
-  if (newTask.save()) _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendTask(newTask);
+  if (defaultProject.save()) appendProject(defaultProject);
+  if (newTask.save()) appendTask(newTask);
 } else {
-  _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default.getAll().forEach((project) => _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(project));
-  _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.updateTaskPane(_js_models_task__WEBPACK_IMPORTED_MODULE_4__.default.getAllByProject(_js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getActiveTab().id));
+  _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.getAll().forEach((project) => appendProject(project));
+  loadTasks(_js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.get(getActiveTab().id));
 }
 
-projectForm.onsubmit = (event) => {
+getProjectForm().onsubmit = (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_3__.default({ name: formData.get('name') });
+  const newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({ name: formData.get('name') });
 
   if (newProject.save()) {
-    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendProject(newProject);
-    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.setActiveTab(newProject, []);
+    appendProject(newProject);
+    setActiveTab(newProject, []);
+    loadTasks(newProject);
   }
   event.currentTarget.reset();
 };
 
-taskForm.onsubmit = (event) => {
-  event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  const task = _js_models_task__WEBPACK_IMPORTED_MODULE_4__.default.createFromFormData(formData);
+// When task modal is shown
+getTaskModal().addEventListener('show.bs.modal', () => {
+  const modalBody = getTaskModal().querySelector('.modal-body');
+  modalBody.appendChild((0,_js_components_taskForm__WEBPACK_IMPORTED_MODULE_3__.default)());
 
-  task.projectId = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getActiveTab().id;
-  if (task.save()) {
-    _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.appendTask(task);
-    taskForm.reset();
-    bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal.getInstance(_js_utils_domWorker__WEBPACK_IMPORTED_MODULE_5__.default.getTaskModal()).hide();
-  }
-};
+  getTaskForm().onsubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const task = _js_models_task__WEBPACK_IMPORTED_MODULE_5__.default.createFromFormData(formData);
+    const taskModal = bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal.getInstance(getTaskModal());
+
+    task.projectId = getActiveTab().id;
+    if (task.save()) {
+      appendTask(task);
+      getTaskForm().reset();
+      taskModal.hide();
+    }
+  };
+});
+
+// When task modal is hid
+getTaskModal().addEventListener('hide.bs.modal', () => getTaskForm().remove());
 
 // Clear local storage
 storageClear.onclick = () => {
