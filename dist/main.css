@@ -12131,7 +12131,7 @@ html {
 #taskForm select:active,
 #taskForm textarea:focus,
 #taskForm textarea:active {
-  background-color: #e5ebf3;
+  background-color: #eff4fa;
   border: 1px solid #d3deeb !important;
   box-shadow: none;
 }
