@@ -6,7 +6,8 @@ import Project from './js/models/project';
 import Task from './js/models/task';
 import domWorker from './js/utils/domWorker';
 
-// const getProjectForm = getgetProjectForm();
+const storageClear = document.getElementById('storageClear');
+const newTaskButton = document.getElementById('addNewTask');
 const {
   appendProject,
   appendTask,
@@ -17,7 +18,6 @@ const {
   loadTasks,
   setActiveTab,
 } = domWorker;
-const storageClear = document.getElementById('storageClear');
 
 // Always add Default project if it's unavailable
 if (localStorage.length < 1) {
@@ -44,10 +44,13 @@ getProjectForm().onsubmit = (event) => {
   event.currentTarget.reset();
 };
 
-// When task modal is shown
-getTaskModal().addEventListener('show.bs.modal', () => {
+// Display empty form for new task
+newTaskButton.onclick = () => {
+  const taskModal = new Modal(getTaskModal());
   const modalBody = getTaskModal().querySelector('.modal-body');
+
   modalBody.appendChild(makeTaskForm());
+  taskModal.show();
 
   getTaskForm().onsubmit = (event) => {
     event.preventDefault();
@@ -62,7 +65,7 @@ getTaskModal().addEventListener('show.bs.modal', () => {
       taskModal.hide();
     }
   };
-});
+};
 
 // When task modal is hid
 getTaskModal().addEventListener('hide.bs.modal', () => getTaskForm().remove());
@@ -70,5 +73,10 @@ getTaskModal().addEventListener('hide.bs.modal', () => getTaskForm().remove());
 // Clear local storage
 storageClear.onclick = () => {
   localStorage.clear();
+  window.location.reload();
+};
+
+document.querySelector('.navbar-brand').onclick = (event) => {
+  event.preventDefault();
   window.location.reload();
 };

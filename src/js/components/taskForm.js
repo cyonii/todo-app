@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { setAttributes } from '../utils/utils';
 
 export default function (task = {}) {
@@ -7,19 +8,19 @@ export default function (task = {}) {
     return el;
   }
 
-  function makeTitileInput() {
+  function makeTitleInput() {
     const wrapper = document.createElement('div', { name: 'js' });
     const input = document.createElement('input');
     const label = document.createElement('label');
 
     wrapper.classList.add('form-floating', 'mb-3');
     input.id = 'title';
+    input.value = task.title ? task.title : '';
     input.classList.add('form-control');
     label.textContent = 'Title';
     setAttributes(input, {
       type: 'text',
       name: 'title',
-      value: task.title ? task.title : '',
       required: true,
       placeholder: 'Task title',
     });
@@ -38,11 +39,11 @@ export default function (task = {}) {
 
     wrapper.classList.add('form-floating', 'mb-3');
     textarea.id = 'description';
+    textarea.value = task.description ? task.description : '';
     textarea.classList.add('form-control');
     label.textContent = 'Description';
     setAttributes(textarea, {
       name: 'description',
-      value: task.description ? task.description : '',
       required: true,
       placeholder: 'What is this task about?',
     });
@@ -61,12 +62,12 @@ export default function (task = {}) {
 
     wrapper.classList.add('form-floating', 'col-6', 'mb-3');
     input.id = 'dueDate';
+    input.value = task.dueDate ? format(task.dueDate, 'yyyy-MM-dd') : '';
     input.classList.add('form-select');
     label.textContent = 'Due Date';
     setAttributes(input, {
       type: 'date',
       name: 'dueDate',
-      value: task.dueDate ? task.dueDate : '',
       required: true,
     });
     setAttributes(label, { for: 'dueDate' });
@@ -115,11 +116,11 @@ export default function (task = {}) {
 
     wrapper.classList.add('form-floating', 'mb-3');
     textarea.id = 'notes';
+    textarea.value = task.notes ? task.notes : '';
     textarea.classList.add('form-control');
     label.textContent = 'Notes';
     setAttributes(textarea, {
       name: 'notes',
-      value: task.notes ? task.notes : '',
       placeholder: 'Do you have any notes about this task?',
     });
     setAttributes(label, { for: 'notes' });
@@ -142,14 +143,25 @@ export default function (task = {}) {
 
   return (() => {
     const form = makeFormWrapper();
+    const id = document.createElement('input');
+    const proejectId = document.createElement('input');
 
-    form.appendChild(makeTitileInput());
+    id.name = 'id';
+    id.value = task.id;
+    setAttributes(id, { hidden: true });
+    proejectId.name = 'projectId';
+    proejectId.value = task.projectId;
+    setAttributes(proejectId, { hidden: true });
+
+    form.appendChild(makeTitleInput());
     form.appendChild(makeDescriptionInput());
     form.appendChild(document.createElement('div'));
     form.lastElementChild.classList.add('row', 'gx-1');
     form.lastElementChild.appendChild(makeDateInput());
     form.lastElementChild.appendChild(makePriorityInput());
     form.appendChild(makeNotesInput());
+    form.appendChild(proejectId);
+    form.appendChild(id);
     form.appendChild(makeSubmitButton());
 
     return form;

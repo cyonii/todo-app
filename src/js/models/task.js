@@ -48,6 +48,7 @@ export default class Task {
 
   static createFromFormData(formData) {
     return new Task({
+      id: formData.get('id'),
       title: formData.get('title'),
       projectId: formData.get('projectId'),
       description: formData.get('description'),

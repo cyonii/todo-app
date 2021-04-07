@@ -1,6 +1,8 @@
+import { format } from 'date-fns';
 import { Modal } from 'bootstrap';
 import { setAttributes } from '../utils/utils';
 import Task from '../models/task';
+import makeTaskForm from './taskForm';
 
 export default function (task) {
   function makeCardWrapper() {
@@ -44,7 +46,7 @@ export default function (task) {
     const el = document.createElement('div');
 
     el.classList.add('badge', 'bg-secondary');
-    el.innerText = task.dueDate.toLocaleDateString();
+    el.innerText = format(task.dueDate, 'dd-MM-yyyy');
     return el;
   }
 
@@ -99,14 +101,38 @@ export default function (task) {
     return el;
   }
 
+  function editHandler() {
+    const modalEl = document.getElementById('taskModal');
+    const taskModal = new Modal(modalEl);
+    const modalBody = modalEl.querySelector('.modal-body');
+    const taskForm = makeTaskForm(task);
+
+    taskForm.onsubmit = (event) => {
+      event.preventDefault();
+      const newTask = Task.createFromFormData(new FormData(event.currentTarget));
+      if (newTask.isValid()) {
+        const allTasks = Task.getAll();
+        const toReplace = allTasks.find((t) => t.id === newTask.id);
+
+        allTasks[allTasks.indexOf(toReplace)] = newTask;
+        localStorage.setItem('tasks', JSON.stringify(allTasks));
+        taskForm.reset();
+        taskModal.hide();
+        window.location.reload();
+      }
+    };
+
+    modalBody.appendChild(taskForm);
+    taskModal.show();
+  }
+
   function makeEditButton() {
     const el = document.createElement('div');
-    const taskModal = new Modal(document.getElementById('taskModal'));
 
     el.innerHTML = "<i class='bi bi-pen-fill'></i>";
     el.classList.add('btn', 'text-primary', 'task-action');
     el.setAttribute('data-task-edit', task.id);
-    el.onclick = taskModal.show.bind(taskModal);
+    el.onclick = editHandler;
     return el;
   }
 
