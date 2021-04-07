@@ -1,0 +1,112 @@
+@import 'variables';
+
+html {
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+::placeholder {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-light;
+}
+
+* {
+  transition: 0.3s;
+}
+
+.navbar {
+  padding-top: 0;
+  padding-bottom: 0;
+
+  [class^='container'] {
+    display: unset;
+    flex-wrap: unset;
+    align-items: unset;
+    justify-content: unset;
+  }
+}
+
+.task-card {
+  .task-notes {
+    padding: 0.125rem 0.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .task-action {
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border-radius: 50%;
+    transition: 0.3s;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: darken($light, 5%);
+    }
+  }
+}
+
+// Form
+#taskForm {
+  input,
+  select,
+  textarea {
+    background-color: #d3deeb;
+
+    &:focus,
+    &:active {
+      background-color: #eff4fa;
+      border: 1px solid #d3deeb !important;
+      box-shadow: none;
+    }
+  }
+
+  .form-floating {
+    label {
+      height: auto;
+      background-color: $white;
+      opacity: 1;
+      padding: 0 0.25rem;
+      margin: 0.5rem 0 0 0.5rem;
+      line-height: normal;
+      border-radius: 2px;
+      font-size: 14px !important;
+      font-weight: bold;
+    }
+
+    textarea#description {
+      height: 100px !important;
+    }
+
+    textarea#notes {
+      height: 80px !important;
+    }
+  }
+}
+
+.form-check-input[type='checkbox'] {
+  cursor: pointer;
+}
+
+button,
+.btn {
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+[data-bs-toggle='dropdown'] {
+  &::after {
+    display: none;
+  }
+}
