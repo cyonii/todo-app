@@ -63,11 +63,12 @@ html {
 
     &:focus,
     &:active {
-      background-color: lighten(#d3deeb, 5%);
+      background-color: #eff4fa;
       border: 1px solid #d3deeb !important;
       box-shadow: none;
     }
   }
+
   .form-floating {
     label {
       height: auto;
