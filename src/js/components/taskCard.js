@@ -136,12 +136,11 @@ export default function (task) {
     return el;
   }
 
-  function makeStatusChecker() {
-    const el = document.createElement('input');
-    el.classList.add('form-check-input', 'task-actions', 'ms-auto');
-    el.id = 'updateStatus';
-    el.setAttribute('type', 'checkbox');
-    if (task.completed) el.setAttribute('checked', true);
+  function makePriorityBadge() {
+    const el = document.createElement('div');
+
+    el.innerText = task.priority;
+    el.classList.add('badge', 'alert-dark', 'ms-auto');
     return el;
   }
 
@@ -162,7 +161,7 @@ export default function (task) {
     cardBody.appendChild(makeTaskNotes());
     cardFooter.appendChild(deleteButton);
     cardFooter.appendChild(editButton);
-    cardFooter.appendChild(makeStatusChecker());
+    cardFooter.appendChild(makePriorityBadge());
     collapsible.appendChild(cardBody);
     collapsible.appendChild(cardFooter);
     card.appendChild(cardHeader);
