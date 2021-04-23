@@ -20,7 +20,7 @@ export default class Project {
   }
 
   isValid() {
-    return !this.exists() && this.name;
+    return !this.exists() && Boolean(this.name);
   }
 
   save() {
