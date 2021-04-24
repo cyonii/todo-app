@@ -8,8 +8,8 @@ describe('Project', () => {
   const idPattern = /[A-Z]\d{9,10}/;
 
   beforeEach(() => {
-    validProject = new Project({ name: 'Test Project' });
     localStorage.clear();
+    validProject = new Project({ name: 'Test Project' });
   });
 
   describe('constructor', () => {
@@ -57,8 +57,8 @@ describe('Project', () => {
 
     describe('getTasks', () => {
       beforeEach(() => {
-        new Task({ ...fakeTaskData(), projectId: validProject.id }).save();
-        new Task({ ...fakeTaskData(), projectId: validProject.id }).save();
+        new Task({ ...fakeTaskData, projectId: validProject.id }).save();
+        new Task({ ...fakeTaskData, projectId: validProject.id }).save();
       });
 
       it('returns all tasks saved under a project', () => {
