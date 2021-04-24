@@ -46,18 +46,6 @@ export default class Task {
     });
   }
 
-  static createFromFormData(formData) {
-    return new Task({
-      id: formData.get('id'),
-      title: formData.get('title'),
-      projectId: formData.get('projectId'),
-      description: formData.get('description'),
-      dueDate: formData.get('dueDate'),
-      priority: formData.get('priority'),
-      notes: formData.get('notes'),
-    });
-  }
-
   static get(id) {
     return Task.getAll().find((task) => task.id === id);
   }

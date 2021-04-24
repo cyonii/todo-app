@@ -55,7 +55,15 @@ newTaskButton.onclick = () => {
   getTaskForm().onsubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const task = Task.createFromFormData(formData);
+    const task = new Task({
+      id: formData.get('id'),
+      title: formData.get('title'),
+      projectId: formData.get('projectId'),
+      description: formData.get('description'),
+      dueDate: formData.get('dueDate'),
+      priority: formData.get('priority'),
+      notes: formData.get('notes'),
+    });
     const taskModal = Modal.getInstance(getTaskModal());
 
     task.projectId = getActiveTab().id;
