@@ -1,11 +1,11 @@
 import faker from 'faker';
 import Project from '../../src/js/models/project';
 import Task from '../../src/js/models/task';
-import { fakeTaskData } from '../testData';
+import { fakerTaskData } from '../testData';
 
 describe('Project', () => {
   let validProject;
-  const idPattern = /[A-Z]\d{9,10}/;
+  const idPattern = /^[A-Z]{1}\d{9,10}$/;
 
   beforeEach(() => {
     localStorage.clear();
@@ -57,8 +57,8 @@ describe('Project', () => {
 
     describe('getTasks', () => {
       beforeEach(() => {
-        new Task({ ...fakeTaskData, projectId: validProject.id }).save();
-        new Task({ ...fakeTaskData, projectId: validProject.id }).save();
+        new Task({ ...fakerTaskData, projectId: validProject.id }).save();
+        new Task({ ...fakerTaskData, projectId: validProject.id }).save();
       });
 
       it('returns all tasks saved under a project', () => {
@@ -100,7 +100,7 @@ describe('Project', () => {
       });
 
       it('returns all projects saved on localStorage', () => {
-        expect(Project.getAll().length).toBe(10);
+        expect(Project.getAll().length).toEqual(10);
       });
 
       test('all returned objects are instances of Project', () => {
