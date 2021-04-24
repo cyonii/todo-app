@@ -35,7 +35,7 @@ export default class Task {
     localStorage.setItem('tasks', JSON.stringify(allTasks));
   }
 
-  static createWelcomeTask(projectId) {
+  static createDefault(projectId) {
     return new Task({
       title: 'Hello, I am your task manager',
       projectId,
