@@ -21,7 +21,7 @@ const {
 
 // Always add Default project if it's unavailable
 if (localStorage.length < 1) {
-  const defaultProject = Project.createDefaultProject();
+  const defaultProject = Project.createDefault();
   const newTask = Task.createWelcomeTask(defaultProject.id);
 
   if (defaultProject.save()) appendProject(defaultProject);
