@@ -21,8 +21,8 @@ const {
 
 // Always add Default project if it's unavailable
 if (localStorage.length < 1) {
-  const defaultProject = Project.createDefaultProject();
-  const newTask = Task.createWelcomeTask(defaultProject.id);
+  const defaultProject = Project.createDefault();
+  const newTask = Task.createDefault(defaultProject.id);
 
   if (defaultProject.save()) appendProject(defaultProject);
   if (newTask.save()) appendTask(newTask);
@@ -55,7 +55,15 @@ newTaskButton.onclick = () => {
   getTaskForm().onsubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const task = Task.createFromFormData(formData);
+    const task = new Task({
+      id: formData.get('id'),
+      title: formData.get('title'),
+      projectId: formData.get('projectId'),
+      description: formData.get('description'),
+      dueDate: formData.get('dueDate'),
+      priority: formData.get('priority'),
+      notes: formData.get('notes'),
+    });
     const taskModal = Modal.getInstance(getTaskModal());
 
     task.projectId = getActiveTab().id;

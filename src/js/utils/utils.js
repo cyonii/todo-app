@@ -1,3 +1,5 @@
+export const parser = Range.prototype.createContextualFragment.bind(document.createRange());
+
 export function generateRandomStr(length = 1) {
   const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
 

@@ -53,6 +53,12 @@ Make sure you have [node.js](https://nodejs.org/) installed on your local machin
 
 > **_It's time to get productive_**
 
+## Testing
+
+To run automated tests, in your terminal, change into the directory containing this project and run this command: `npm run test`.
+
+> Note that the test command has a `--watch` flag, this will keep the test terminal live and listening, and will re-run the tests once a file's content is changed.
+
 ## Usage
 
 **To add new projects:** type in the name of the project in the project form and click "Add", you should see the new project appear under the your list of projects.
