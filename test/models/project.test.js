@@ -57,8 +57,8 @@ describe('Project', () => {
 
     describe('getTasks', () => {
       beforeEach(() => {
-        new Task({ ...fakerTaskData, projectId: validProject.id }).save();
-        new Task({ ...fakerTaskData, projectId: validProject.id }).save();
+        new Task({ ...fakerTaskData(), projectId: validProject.id }).save();
+        new Task({ ...fakerTaskData(), projectId: validProject.id }).save();
       });
 
       it('returns all tasks saved under a project', () => {

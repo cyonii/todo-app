@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-exports.fakerTaskData = (() => {
+exports.fakerTaskData = () => {
   const priorities = ['low', 'mid', 'high'];
   return {
     title: faker.lorem.sentence(),
@@ -9,4 +9,4 @@ exports.fakerTaskData = (() => {
     priority: priorities[Math.floor(Math.random() * priorities.length)],
     notes: faker.lorem.paragraph(1),
   };
-})();
+};

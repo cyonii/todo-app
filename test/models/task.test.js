@@ -12,7 +12,7 @@ describe(Task, () => {
 
     defaultProject = Project.createDefault();
     defaultProject.save();
-    validTask = new Task({ ...fakerTaskData, projectId: defaultProject.id });
+    validTask = new Task({ ...fakerTaskData(), projectId: defaultProject.id });
   });
 
   describe('constructor', () => {
@@ -79,7 +79,7 @@ describe(Task, () => {
     describe('getByProject', () => {
       it('returns all tasks saved under the passed project ID', () => {
         for (let i = 0; i < 10; i += 1) {
-          new Task({ ...fakerTaskData, projectId: defaultProject.id }).save();
+          new Task({ ...fakerTaskData(), projectId: defaultProject.id }).save();
         }
 
         const tasks = Task.getByProject(defaultProject.id);
@@ -91,7 +91,7 @@ describe(Task, () => {
     describe('getAll', () => {
       it('returns all tasks saved on localStorage', () => {
         for (let i = 0; i < 15; i += 1) {
-          new Task({ ...fakerTaskData, projectId: defaultProject.id }).save();
+          new Task({ ...fakerTaskData(), projectId: defaultProject.id }).save();
         }
 
         const tasks = Task.getAll();
