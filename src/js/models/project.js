@@ -20,7 +20,7 @@ export default class Project {
   }
 
   isValid() {
-    return !this.exists() && this.name;
+    return !this.exists() && Boolean(this.name);
   }
 
   save() {
@@ -39,7 +39,7 @@ export default class Project {
     return Task.getAll().filter((task) => task.projectId === this.id);
   }
 
-  static createDefaultProject(name = 'General') {
+  static createDefault(name = 'General') {
     const project = new Project({ name });
     return project;
   }

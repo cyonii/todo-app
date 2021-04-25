@@ -35,7 +35,7 @@ export default class Task {
     localStorage.setItem('tasks', JSON.stringify(allTasks));
   }
 
-  static createWelcomeTask(projectId) {
+  static createDefault(projectId) {
     return new Task({
       title: 'Hello, I am your task manager',
       projectId,
@@ -43,18 +43,6 @@ export default class Task {
       dueDate: new Date(),
       priority: 'low',
       notes: 'You can delete me when you want',
-    });
-  }
-
-  static createFromFormData(formData) {
-    return new Task({
-      id: formData.get('id'),
-      title: formData.get('title'),
-      projectId: formData.get('projectId'),
-      description: formData.get('description'),
-      dueDate: formData.get('dueDate'),
-      priority: formData.get('priority'),
-      notes: formData.get('notes'),
     });
   }
 
