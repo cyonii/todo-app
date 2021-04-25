@@ -1,11 +1,10 @@
 import Task from '../../src/js/models/task';
 import Project from '../../src/js/models/project';
-import { fakerTaskData } from '../testData';
+import { IDPattern, fakerTaskData } from '../testData';
 
 describe(Task, () => {
   let validTask = null;
   let defaultProject = null;
-  const idPattern = /^[A-Z]{1}\d{9,10}$/;
 
   beforeEach(() => {
     localStorage.clear();
@@ -17,7 +16,7 @@ describe(Task, () => {
 
   describe('constructor', () => {
     it('creates a new Task', () => {
-      expect(validTask.id).toMatch(idPattern);
+      expect(validTask.id).toMatch(IDPattern);
       expect(validTask instanceof Task).toBe(true);
     });
   });
@@ -64,7 +63,7 @@ describe(Task, () => {
         const task = Task.createDefault(defaultProject.id);
 
         expect(task.title).toBe('Hello, I am your task manager');
-        expect(task.id).toMatch(idPattern);
+        expect(task.id).toMatch(IDPattern);
         expect(task instanceof Task).toBe(true);
       });
     });

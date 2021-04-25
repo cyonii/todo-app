@@ -1,11 +1,10 @@
 import faker from 'faker';
 import Project from '../../src/js/models/project';
 import Task from '../../src/js/models/task';
-import { fakerTaskData } from '../testData';
+import { IDPattern, fakerTaskData } from '../testData';
 
 describe('Project', () => {
   let validProject;
-  const idPattern = /^[A-Z]{1}\d{9,10}$/;
 
   beforeEach(() => {
     localStorage.clear();
@@ -14,7 +13,7 @@ describe('Project', () => {
 
   describe('constructor', () => {
     it('creates a project instance', () => {
-      expect(validProject.id).toMatch(idPattern);
+      expect(validProject.id).toMatch(IDPattern);
       expect(validProject instanceof Project).toBe(true);
     });
   });
@@ -76,7 +75,7 @@ describe('Project', () => {
       it('creates General (default) project', () => {
         const defaultProject = Project.createDefault();
         expect(defaultProject.name).toBe('General');
-        expect(defaultProject.id).toMatch(idPattern);
+        expect(defaultProject.id).toMatch(IDPattern);
       });
     });
 

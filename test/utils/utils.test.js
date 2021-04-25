@@ -1,4 +1,5 @@
 import * as utils from '../../src/js/utils/utils';
+import { IDPattern } from '../testData';
 
 describe('parser', () => {
   it('returns a parsed html from strings', () => {
@@ -16,7 +17,7 @@ describe('generateRandomStr', () => {
 
 describe('randomID', () => {
   it('generates a random ID matching pattern', () => {
-    expect(utils.randomID()).toMatch(/^[A-Z]{1}\d{8,10}$/);
+    expect(utils.randomID()).toMatch(IDPattern);
   });
 });
 
