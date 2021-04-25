@@ -3105,18 +3105,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(project) {
-  const wrapper = document.createElement('div');
-  const message = document.createElement('p');
-  const subText = document.createElement('p');
-  message.textContent = 'No Tasks';
-  message.classList.add('display-4', 'text-center', 'mt-5', 'text-muted');
-  subText.textContent = `${project.name}`;
-  subText.classList.add('alert-dark', 'd-flex', 'mx-auto', 'mb-0', 'px-3', 'py-1', 'fw-bold', 'font-sm', 'text-muted');
-  wrapper.classList.add('d-flex', 'flex-column', 'align-items-center');
-  wrapper.appendChild(message);
-  wrapper.appendChild(subText);
-  return wrapper;
+  var rawHTML = "\n    <div class=\"d-flex flex-column align-items-center\">\n      <p class=\"display-4 text-center mt-5 text-muted\">No Tasks</p>\n      <p class=\"alert-dark d-flex mx-auto mb-0 px-3 py-1 fw-bold font-sm text-muted\">".concat(project.name, "</p>\n    </div>\n  ");
+  return (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.parser)(rawHTML);
 }
 
 /***/ }),
@@ -3135,7 +3128,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(project) {
-  const navBtn = document.createElement('button');
+  var navBtn = document.createElement('button');
   navBtn.classList.add('nav-link', 'lead', 'text-primay', 'text-start');
   navBtn.innerText = project.name;
   (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(navBtn, {
@@ -3170,97 +3163,101 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(task) {
   function makeCardWrapper() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.setAttribute('data-task', task.id);
     el.classList.add('card', 'task-card', 'border-primary', 'overflow-hidden', 'shadow-sm', 'mb-3');
     return el;
   }
 
   function makeCardHeader() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.classList.add('card-header', 'border-0', 'p-0');
     return el;
   }
 
   function makeCollapseToggler() {
-    const el = document.createElement('button');
+    var el = document.createElement('button');
     el.classList.add('btn', 'alert-dark', 'd-flex', 'align-items-start', 'justify-content-between', 'w-100', 'text-start', 'fw-light', 'rounded-0', 'border-0');
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_1__.setAttributes)(el, {
       'data-bs-toggle': 'collapse',
-      'data-bs-target': `#${task.id}`
+      'data-bs-target': "#".concat(task.id)
     });
     el.innerText = task.title;
     return el;
   }
 
   function makeDateBadge() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.classList.add('badge', 'bg-secondary');
     el.innerText = (0,date_fns__WEBPACK_IMPORTED_MODULE_4__.default)(task.dueDate, 'dd-MM-yyyy');
     return el;
   }
 
   function makeCollapsible() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.classList.add('collapse');
     el.id = task.id;
     return el;
   }
 
   function makeCardBody() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.classList.add('card-body', 'rounded-bottom');
     return el;
   }
 
   function makeTaskDesc() {
-    const el = document.createElement('p');
+    var el = document.createElement('p');
     el.classList.add('card-text', 'mb-0', 'lh-2', 'fw-light', 'text-primary');
     el.innerText = task.description;
     return el;
   }
 
   function makeTaskNotes() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.classList.add('alert', 'alert-secondary', 'task-notes');
     el.innerText = task.notes;
     return el;
   }
 
   function makeCardFooter() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.classList.add('card-footer', 'py-1', 'd-flex', 'align-items-center');
     return el;
   }
 
   function makeDeleteButton() {
-    const el = document.createElement('button');
+    var el = document.createElement('button');
     el.innerHTML = "<i class='bi bi-trash-fill'></i>";
     el.classList.add('btn', 'text-danger', 'task-action');
     el.setAttribute('data-task-delete', task.id);
 
-    el.onclick = () => {
-      (() => _models_task__WEBPACK_IMPORTED_MODULE_2__.default.get(task.id).delete())();
+    el.onclick = function () {
+      (function () {
+        return _models_task__WEBPACK_IMPORTED_MODULE_2__.default.get(task.id)["delete"]();
+      })();
 
-      document.querySelector(`[data-task=${task.id}]`).remove();
+      document.querySelector("[data-task=".concat(task.id, "]")).remove();
     };
 
     return el;
   }
 
   function editHandler() {
-    const modalEl = document.getElementById('taskModal');
-    const taskModal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(modalEl);
-    const modalBody = modalEl.querySelector('.modal-body');
-    const taskForm = (0,_taskForm__WEBPACK_IMPORTED_MODULE_3__.default)(task);
+    var modalEl = document.getElementById('taskModal');
+    var taskModal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(modalEl);
+    var modalBody = modalEl.querySelector('.modal-body');
+    var taskForm = (0,_taskForm__WEBPACK_IMPORTED_MODULE_3__.default)(task);
 
-    taskForm.onsubmit = event => {
+    taskForm.onsubmit = function (event) {
       event.preventDefault();
-      const newTask = _models_task__WEBPACK_IMPORTED_MODULE_2__.default.createFromFormData(new FormData(event.currentTarget));
+      var newTask = _models_task__WEBPACK_IMPORTED_MODULE_2__.default.createFromFormData(new FormData(event.currentTarget));
 
       if (newTask.isValid()) {
-        const allTasks = _models_task__WEBPACK_IMPORTED_MODULE_2__.default.getAll();
-        const toReplace = allTasks.find(t => t.id === newTask.id);
+        var allTasks = _models_task__WEBPACK_IMPORTED_MODULE_2__.default.getAll();
+        var toReplace = allTasks.find(function (t) {
+          return t.id === newTask.id;
+        });
         allTasks[allTasks.indexOf(toReplace)] = newTask;
         localStorage.setItem('tasks', JSON.stringify(allTasks));
         taskForm.reset();
@@ -3274,7 +3271,7 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function makeEditButton() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.innerHTML = "<i class='bi bi-pen-fill'></i>";
     el.classList.add('btn', 'text-primary', 'task-action');
     el.setAttribute('data-task-edit', task.id);
@@ -3283,22 +3280,22 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function makePriorityBadge() {
-    const el = document.createElement('div');
+    var el = document.createElement('div');
     el.innerText = task.priority;
     el.classList.add('badge', 'alert-dark', 'ms-auto');
     return el;
   }
 
-  return (() => {
-    const card = makeCardWrapper();
-    const cardHeader = makeCardHeader();
-    const toggler = makeCollapseToggler();
-    const badge = makeDateBadge();
-    const collapsible = makeCollapsible();
-    const cardBody = makeCardBody();
-    const cardFooter = makeCardFooter();
-    const deleteButton = makeDeleteButton();
-    const editButton = makeEditButton();
+  return function () {
+    var card = makeCardWrapper();
+    var cardHeader = makeCardHeader();
+    var toggler = makeCollapseToggler();
+    var badge = makeDateBadge();
+    var collapsible = makeCollapsible();
+    var cardBody = makeCardBody();
+    var cardFooter = makeCardFooter();
+    var deleteButton = makeDeleteButton();
+    var editButton = makeEditButton();
     toggler.appendChild(badge);
     cardHeader.appendChild(toggler);
     cardBody.appendChild(makeTaskDesc());
@@ -3311,7 +3308,7 @@ __webpack_require__.r(__webpack_exports__);
     card.appendChild(cardHeader);
     card.appendChild(collapsible);
     return card;
-  })();
+  }();
 }
 
 /***/ }),
@@ -3331,19 +3328,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
 
 
-/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(task = {}) {
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {
+  var task = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
   function makeFormWrapper() {
-    const el = document.createElement('form');
+    var el = document.createElement('form');
     el.id = 'taskForm';
     return el;
   }
 
   function makeTitleInput() {
-    const wrapper = document.createElement('div', {
+    var wrapper = document.createElement('div', {
       name: 'js'
     });
-    const input = document.createElement('input');
-    const label = document.createElement('label');
+    var input = document.createElement('input');
+    var label = document.createElement('label');
     wrapper.classList.add('form-floating', 'mb-3');
     input.id = 'title';
     input.value = task.title ? task.title : '';
@@ -3356,7 +3355,7 @@ __webpack_require__.r(__webpack_exports__);
       placeholder: 'Task title'
     });
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, {
-      for: 'title'
+      "for": 'title'
     });
     wrapper.appendChild(input);
     wrapper.appendChild(label);
@@ -3364,9 +3363,9 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function makeDescriptionInput() {
-    const wrapper = document.createElement('div');
-    const textarea = document.createElement('textarea');
-    const label = document.createElement('label');
+    var wrapper = document.createElement('div');
+    var textarea = document.createElement('textarea');
+    var label = document.createElement('label');
     wrapper.classList.add('form-floating', 'mb-3');
     textarea.id = 'description';
     textarea.value = task.description ? task.description : '';
@@ -3378,7 +3377,7 @@ __webpack_require__.r(__webpack_exports__);
       placeholder: 'What is this task about?'
     });
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, {
-      for: 'description'
+      "for": 'description'
     });
     wrapper.appendChild(textarea);
     wrapper.appendChild(label);
@@ -3386,9 +3385,9 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function makeDateInput() {
-    const wrapper = document.createElement('div');
-    const input = document.createElement('input');
-    const label = document.createElement('label');
+    var wrapper = document.createElement('div');
+    var input = document.createElement('input');
+    var label = document.createElement('label');
     wrapper.classList.add('form-floating', 'col-6', 'mb-3');
     input.id = 'dueDate';
     input.value = task.dueDate ? (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.default)(task.dueDate, 'yyyy-MM-dd') : '';
@@ -3400,7 +3399,7 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     });
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, {
-      for: 'dueDate'
+      "for": 'dueDate'
     });
     wrapper.appendChild(input);
     wrapper.appendChild(label);
@@ -3408,12 +3407,12 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function makePriorityInput() {
-    const wrapper = document.createElement('div');
-    const select = document.createElement('select');
-    const label = document.createElement('label');
-    const priorities = ['low', 'mid', 'high'];
-    priorities.forEach(priority => {
-      const option = document.createElement('option');
+    var wrapper = document.createElement('div');
+    var select = document.createElement('select');
+    var label = document.createElement('label');
+    var priorities = ['low', 'mid', 'high'];
+    priorities.forEach(function (priority) {
+      var option = document.createElement('option');
       option.value = priority;
       option.innerText = priority;
       if (priority === task.priority) (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(option, {
@@ -3431,7 +3430,7 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     });
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, {
-      for: 'priority'
+      "for": 'priority'
     });
     wrapper.appendChild(select);
     wrapper.appendChild(label);
@@ -3439,9 +3438,9 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function makeNotesInput() {
-    const wrapper = document.createElement('div');
-    const textarea = document.createElement('textarea');
-    const label = document.createElement('label');
+    var wrapper = document.createElement('div');
+    var textarea = document.createElement('textarea');
+    var label = document.createElement('label');
     wrapper.classList.add('form-floating', 'mb-3');
     textarea.id = 'notes';
     textarea.value = task.notes ? task.notes : '';
@@ -3452,7 +3451,7 @@ __webpack_require__.r(__webpack_exports__);
       placeholder: 'Do you have any notes about this task?'
     });
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(label, {
-      for: 'notes'
+      "for": 'notes'
     });
     wrapper.appendChild(textarea);
     wrapper.appendChild(label);
@@ -3460,7 +3459,7 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function makeSubmitButton() {
-    const button = document.createElement('button');
+    var button = document.createElement('button');
     button.innerText = 'Add task';
     button.classList.add('btn', 'btn-primary');
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(button, {
@@ -3469,10 +3468,10 @@ __webpack_require__.r(__webpack_exports__);
     return button;
   }
 
-  return (() => {
-    const form = makeFormWrapper();
-    const id = document.createElement('input');
-    const proejectId = document.createElement('input');
+  return function () {
+    var form = makeFormWrapper();
+    var id = document.createElement('input');
+    var proejectId = document.createElement('input');
     id.name = 'id';
     id.value = task.id;
     (0,_utils_utils__WEBPACK_IMPORTED_MODULE_0__.setAttributes)(id, {
@@ -3494,7 +3493,7 @@ __webpack_require__.r(__webpack_exports__);
     form.appendChild(id);
     form.appendChild(makeSubmitButton());
     return form;
-  })();
+  }();
 }
 
 /***/ }),
@@ -3514,62 +3513,94 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
 /* harmony import */ var _task__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./task */ "./src/js/models/task.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
 
-class Project {
-  constructor(props) {
+
+
+var Project = /*#__PURE__*/function () {
+  function Project(props) {
+    _classCallCheck(this, Project);
+
     this.name = props.name.trim();
     this.id = props.id ? props.id : (0,_utils_utils__WEBPACK_IMPORTED_MODULE_1__.randomID)();
   }
 
-  exists() {
-    const storedProjects = Project.getAll();
-    const found = storedProjects.find(project => {
-      const pattern = new RegExp(this.name.trim());
-      return project.name.match(pattern, 'i');
-    });
-    if (found) return true;
-    return false;
-  }
+  _createClass(Project, [{
+    key: "exists",
+    value: function exists() {
+      var _this = this;
 
-  isValid() {
-    return !this.exists() && this.name;
-  }
-
-  save() {
-    if (this.isValid()) {
-      const storedProjects = Project.getAll();
-      storedProjects.push(lodash__WEBPACK_IMPORTED_MODULE_0___default().pick(this, ['name', 'id']));
-      localStorage.setItem('projects', JSON.stringify(storedProjects));
-      return true;
+      var storedProjects = Project.getAll();
+      var found = storedProjects.find(function (project) {
+        var pattern = new RegExp(_this.name.trim());
+        return project.name.match(pattern, 'i');
+      });
+      if (found) return true;
+      return false;
     }
+  }, {
+    key: "isValid",
+    value: function isValid() {
+      return !this.exists() && Boolean(this.name);
+    }
+  }, {
+    key: "save",
+    value: function save() {
+      if (this.isValid()) {
+        var storedProjects = Project.getAll();
+        storedProjects.push(lodash__WEBPACK_IMPORTED_MODULE_0___default().pick(this, ['name', 'id']));
+        localStorage.setItem('projects', JSON.stringify(storedProjects));
+        return true;
+      }
 
-    return false;
-  }
+      return false;
+    }
+  }, {
+    key: "getTasks",
+    value: function getTasks() {
+      var _this2 = this;
 
-  getTasks() {
-    return _task__WEBPACK_IMPORTED_MODULE_2__.default.getAll().filter(task => task.projectId === this.id);
-  }
+      return _task__WEBPACK_IMPORTED_MODULE_2__.default.getAll().filter(function (task) {
+        return task.projectId === _this2.id;
+      });
+    }
+  }], [{
+    key: "createDefault",
+    value: function createDefault() {
+      var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'General';
+      var project = new Project({
+        name: name
+      });
+      return project;
+    }
+  }, {
+    key: "get",
+    value: function get(id) {
+      var partialData = Project.getAll().find(function (project) {
+        return project.id === id;
+      });
+      return new Project(partialData);
+    }
+  }, {
+    key: "getAll",
+    value: function getAll() {
+      var partialData = JSON.parse(localStorage.getItem('projects')) || [];
+      return partialData.map(function (data) {
+        return new Project(data);
+      });
+    }
+  }]);
 
-  static createDefaultProject(name = 'General') {
-    const project = new Project({
-      name
-    });
-    return project;
-  }
+  return Project;
+}();
 
-  static get(id) {
-    const partialData = Project.getAll().find(project => project.id === id);
-    return new Project(partialData);
-  }
 
-  static getAll() {
-    const partialData = JSON.parse(localStorage.getItem('projects')) || [];
-    return partialData.map(data => new Project(data));
-  }
-
-}
 
 /***/ }),
 
@@ -3587,10 +3618,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/utils */ "./src/js/utils/utils.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
-class Task {
-  constructor(props) {
+
+
+var Task = /*#__PURE__*/function () {
+  function Task(props) {
+    _classCallCheck(this, Task);
+
     this.title = props.title;
     this.id = props.id ? props.id : (0,_utils_utils__WEBPACK_IMPORTED_MODULE_1__.randomID)();
     this.projectId = props.projectId;
@@ -3601,66 +3641,74 @@ class Task {
     this.completed = props.completed ? props.completed : false;
   }
 
-  isValid() {
-    const truthy = value => Boolean(value);
+  _createClass(Task, [{
+    key: "isValid",
+    value: function isValid() {
+      var truthy = function truthy(value) {
+        return Boolean(value);
+      };
 
-    return Object.values(lodash__WEBPACK_IMPORTED_MODULE_0___default().omit(this, ['completed', 'notes'])).every(truthy);
-  }
-
-  save() {
-    if (this.isValid()) {
-      const storedTasks = Task.getAll();
-      storedTasks.push(this);
-      localStorage.setItem('tasks', JSON.stringify(storedTasks));
-      return true;
+      return Object.values(lodash__WEBPACK_IMPORTED_MODULE_0___default().omit(this, ['completed', 'notes'])).every(truthy);
     }
+  }, {
+    key: "save",
+    value: function save() {
+      if (this.isValid()) {
+        var storedTasks = Task.getAll();
+        storedTasks.push(this);
+        localStorage.setItem('tasks', JSON.stringify(storedTasks));
+        return true;
+      }
 
-    return false;
-  }
+      return false;
+    }
+  }, {
+    key: "delete",
+    value: function _delete() {
+      var allTasks = Task.getAll();
+      allTasks.splice(allTasks.indexOf(this), 1);
+      localStorage.setItem('tasks', JSON.stringify(allTasks));
+    }
+  }], [{
+    key: "createDefault",
+    value: function createDefault(projectId) {
+      return new Task({
+        title: 'Hello, I am your task manager',
+        projectId: projectId,
+        description: 'I will help you organize your plans',
+        dueDate: new Date(),
+        priority: 'low',
+        notes: 'You can delete me when you want'
+      });
+    }
+  }, {
+    key: "get",
+    value: function get(id) {
+      return Task.getAll().find(function (task) {
+        return task.id === id;
+      });
+    }
+  }, {
+    key: "getByProject",
+    value: function getByProject(projectId) {
+      return Task.getAll().filter(function (task) {
+        return task.projectId === projectId;
+      });
+    }
+  }, {
+    key: "getAll",
+    value: function getAll() {
+      var partial = JSON.parse(localStorage.getItem('tasks')) || [];
+      return partial.map(function (data) {
+        return new Task(data);
+      });
+    }
+  }]);
 
-  delete() {
-    const allTasks = Task.getAll();
-    allTasks.splice(allTasks.indexOf(this), 1);
-    localStorage.setItem('tasks', JSON.stringify(allTasks));
-  }
+  return Task;
+}();
 
-  static createWelcomeTask(projectId) {
-    return new Task({
-      title: 'Hello, I am your task manager',
-      projectId,
-      description: 'I will help you organize your plans',
-      dueDate: new Date(),
-      priority: 'low',
-      notes: 'You can delete me when you want'
-    });
-  }
 
-  static createFromFormData(formData) {
-    return new Task({
-      id: formData.get('id'),
-      title: formData.get('title'),
-      projectId: formData.get('projectId'),
-      description: formData.get('description'),
-      dueDate: formData.get('dueDate'),
-      priority: formData.get('priority'),
-      notes: formData.get('notes')
-    });
-  }
-
-  static get(id) {
-    return Task.getAll().find(task => task.id === id);
-  }
-
-  static getByProject(projectId) {
-    return Task.getAll().filter(task => task.projectId === projectId);
-  }
-
-  static getAll() {
-    const partial = JSON.parse(localStorage.getItem('tasks')) || [];
-    return partial.map(data => new Task(data));
-  }
-
-}
 
 /***/ }),
 
@@ -3681,23 +3729,37 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((() => {
-  const getActiveTab = () => document.querySelector('#project-stack .nav-link.active');
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((function () {
+  var getActiveTab = function getActiveTab() {
+    return document.querySelector('#project-stack .nav-link.active');
+  };
 
-  const getProjectForm = () => document.getElementById('projectForm');
+  var getProjectForm = function getProjectForm() {
+    return document.getElementById('projectForm');
+  };
 
-  const getProjectTabs = () => document.querySelectorAll('#project-stack .nav-link');
+  var getProjectTabs = function getProjectTabs() {
+    return document.querySelectorAll('#project-stack .nav-link');
+  };
 
-  const getProjectStack = () => document.getElementById('project-stack');
+  var getProjectStack = function getProjectStack() {
+    return document.getElementById('project-stack');
+  };
 
-  const getTaskForm = () => document.getElementById('taskForm');
+  var getTaskForm = function getTaskForm() {
+    return document.getElementById('taskForm');
+  };
 
-  const getTaskModal = () => document.getElementById('taskModal');
+  var getTaskModal = function getTaskModal() {
+    return document.getElementById('taskModal');
+  };
 
-  const getTaskPane = () => document.getElementById('task-pane');
+  var getTaskPane = function getTaskPane() {
+    return document.getElementById('task-pane');
+  };
 
   function appendTask(task) {
-    const taskPane = getTaskPane();
+    var taskPane = getTaskPane();
     taskPane.appendChild((0,_components_taskCard__WEBPACK_IMPORTED_MODULE_0__.default)(task));
 
     if (!taskPane.firstElementChild.classList.contains('task-card')) {
@@ -3706,40 +3768,42 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   function loadTasks(project) {
-    const tasks = project.getTasks();
+    var tasks = project.getTasks();
     getTaskPane().innerHTML = '';
 
     if (tasks.length) {
-      tasks.forEach(task => appendTask(task));
+      tasks.forEach(function (task) {
+        return appendTask(task);
+      });
     } else {
       getTaskPane().appendChild((0,_components_noTasks__WEBPACK_IMPORTED_MODULE_2__.default)(project));
     }
   }
 
   function setActiveTab(project) {
-    const newActiveTab = document.getElementById(project.id);
+    var newActiveTab = document.getElementById(project.id);
     getActiveTab().classList.remove('active');
     newActiveTab.classList.add('active');
   }
 
   function appendProject(project) {
-    const projectNav = (0,_components_projectTab__WEBPACK_IMPORTED_MODULE_1__.default)(project);
+    var projectNav = (0,_components_projectTab__WEBPACK_IMPORTED_MODULE_1__.default)(project);
     if (project.name.match(/general/i)) projectNav.classList.add('active');
     projectNav.onclick = loadTasks.bind(undefined, project);
     getProjectStack().appendChild(projectNav);
   }
 
   return {
-    appendProject,
-    appendTask,
-    getProjectForm,
-    getActiveTab,
-    getProjectTabs,
-    getProjectStack,
-    getTaskForm,
-    getTaskModal,
-    loadTasks,
-    setActiveTab
+    appendProject: appendProject,
+    appendTask: appendTask,
+    getProjectForm: getProjectForm,
+    getActiveTab: getActiveTab,
+    getProjectTabs: getProjectTabs,
+    getProjectStack: getProjectStack,
+    getTaskForm: getTaskForm,
+    getTaskModal: getTaskModal,
+    loadTasks: loadTasks,
+    setActiveTab: setActiveTab
   };
 })());
 
@@ -3754,21 +3818,28 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "parser": () => (/* binding */ parser),
 /* harmony export */   "generateRandomStr": () => (/* binding */ generateRandomStr),
 /* harmony export */   "randomID": () => (/* binding */ randomID),
 /* harmony export */   "setAttributes": () => (/* binding */ setAttributes)
 /* harmony export */ });
-function generateRandomStr(length = 1) {
-  const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
+var parser = Range.prototype.createContextualFragment.bind(document.createRange());
+function generateRandomStr() {
+  var length = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  var characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
   return characters.charAt(Math.floor(Math.random() * length));
 }
 function randomID() {
-  const digits = Math.floor(Math.random(425367) * 10000000000);
-  const char = generateRandomStr();
-  return char + digits.toString();
+  var digits = Math.floor(Math.random(425367) * 10000000000);
+
+  var _char = generateRandomStr();
+
+  return _char + digits.toString();
 }
 function setAttributes(el, attrs) {
-  Object.entries(attrs).forEach(entry => el.setAttribute(entry[0], entry[1]));
+  Object.entries(attrs).forEach(function (entry) {
+    return el.setAttribute(entry[0], entry[1]);
+  });
 }
 
 /***/ }),
@@ -29033,33 +29104,33 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const storageClear = document.getElementById('storageClear');
-const newTaskButton = document.getElementById('addNewTask');
-const {
-  appendProject,
-  appendTask,
-  getProjectForm,
-  getActiveTab,
-  getTaskForm,
-  getTaskModal,
-  loadTasks,
-  setActiveTab
-} = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default; // Always add Default project if it's unavailable
+var storageClear = document.getElementById('storageClear');
+var newTaskButton = document.getElementById('addNewTask');
+var appendProject = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendProject,
+    appendTask = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.appendTask,
+    getProjectForm = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getProjectForm,
+    getActiveTab = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getActiveTab,
+    getTaskForm = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getTaskForm,
+    getTaskModal = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.getTaskModal,
+    loadTasks = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.loadTasks,
+    setActiveTab = _js_utils_domWorker__WEBPACK_IMPORTED_MODULE_6__.default.setActiveTab; // Always add Default project if it's unavailable
 
 if (localStorage.length < 1) {
-  const defaultProject = _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.createDefaultProject();
-  const newTask = _js_models_task__WEBPACK_IMPORTED_MODULE_5__.default.createWelcomeTask(defaultProject.id);
+  var defaultProject = _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.createDefault();
+  var newTask = _js_models_task__WEBPACK_IMPORTED_MODULE_5__.default.createDefault(defaultProject.id);
   if (defaultProject.save()) appendProject(defaultProject);
   if (newTask.save()) appendTask(newTask);
 } else {
-  _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.getAll().forEach(project => appendProject(project));
+  _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.getAll().forEach(function (project) {
+    return appendProject(project);
+  });
   loadTasks(_js_models_project__WEBPACK_IMPORTED_MODULE_4__.default.get(getActiveTab().id));
 }
 
-getProjectForm().onsubmit = event => {
+getProjectForm().onsubmit = function (event) {
   event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  const newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({
+  var formData = new FormData(event.currentTarget);
+  var newProject = new _js_models_project__WEBPACK_IMPORTED_MODULE_4__.default({
     name: formData.get('name')
   });
 
@@ -29073,17 +29144,25 @@ getProjectForm().onsubmit = event => {
 }; // Display empty form for new task
 
 
-newTaskButton.onclick = () => {
-  const taskModal = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal(getTaskModal());
-  const modalBody = getTaskModal().querySelector('.modal-body');
+newTaskButton.onclick = function () {
+  var taskModal = new bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal(getTaskModal());
+  var modalBody = getTaskModal().querySelector('.modal-body');
   modalBody.appendChild((0,_js_components_taskForm__WEBPACK_IMPORTED_MODULE_3__.default)());
   taskModal.show();
 
-  getTaskForm().onsubmit = event => {
+  getTaskForm().onsubmit = function (event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const task = _js_models_task__WEBPACK_IMPORTED_MODULE_5__.default.createFromFormData(formData);
-    const taskModal = bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal.getInstance(getTaskModal());
+    var formData = new FormData(event.currentTarget);
+    var task = new _js_models_task__WEBPACK_IMPORTED_MODULE_5__.default({
+      id: formData.get('id'),
+      title: formData.get('title'),
+      projectId: formData.get('projectId'),
+      description: formData.get('description'),
+      dueDate: formData.get('dueDate'),
+      priority: formData.get('priority'),
+      notes: formData.get('notes')
+    });
+    var taskModal = bootstrap__WEBPACK_IMPORTED_MODULE_2__.Modal.getInstance(getTaskModal());
     task.projectId = getActiveTab().id;
 
     if (task.save()) {
@@ -29095,14 +29174,16 @@ newTaskButton.onclick = () => {
 }; // When task modal is hid
 
 
-getTaskModal().addEventListener('hide.bs.modal', () => getTaskForm().remove()); // Clear local storage
+getTaskModal().addEventListener('hide.bs.modal', function () {
+  return getTaskForm().remove();
+}); // Clear local storage
 
-storageClear.onclick = () => {
+storageClear.onclick = function () {
   localStorage.clear();
   window.location.reload();
 };
 
-document.querySelector('.navbar-brand').onclick = event => {
+document.querySelector('.navbar-brand').onclick = function (event) {
   event.preventDefault();
   window.location.reload();
 };
