@@ -1,17 +1,22 @@
 {
   "name": "todo-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple task manager web application to help you organize your tasks according to a category.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
     "build": "webpack",
-    "watch": "webpack --watch --mode=development",
-    "serve": "webpack serve"
+    "build:watch": "webpack --watch --mode=development",
+    "serve": "webpack serve",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "task-manager",
+    "todo-app",
+    "task-organizer"
+  ],
+  "author": "CY Kalu",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.15",
