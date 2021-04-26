@@ -21,7 +21,7 @@ This application is built with the following tools and libraries:
 
 ## Live Demo
 
-You can check out a live demo of this application [here](https://cykalu.me/todo-app/dist/index.html)
+You can check out a live demo of this application [here](https://cykalu.me/todo-app/)
 
 ## Getting Started
 
