@@ -1,15 +1,8 @@
 export const parser = Range.prototype.createContextualFragment.bind(document.createRange());
 
-export function generateRandomStr(length = 1) {
-  const characters = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase();
-
-  return characters.charAt(Math.floor(Math.random() * length));
-}
-
 export function randomID() {
-  const digits = Math.floor(Math.random(425367) * 10000000000);
-  const char = generateRandomStr();
-  return char + digits.toString();
+  const digits = String(Math.random()).split('.')[1].substr(0, 10);
+  return `ID${digits}`;
 }
 
 export function setAttributes(el, attrs) {

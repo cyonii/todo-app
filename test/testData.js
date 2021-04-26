@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-export const IDPattern = /^[A-Z]{1}\d{8,10}$/;
+export const IDPattern = /^ID\d{10}$/;
 
 export function fakerTaskData() {
   const priorities = ['low', 'mid', 'high'];

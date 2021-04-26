@@ -9,15 +9,11 @@ describe('parser', () => {
   });
 });
 
-describe('generateRandomStr', () => {
-  it('generates string with length of passed argument', () => {
-    expect(utils.generateRandomStr().length).toEqual(1);
-  });
-});
-
 describe('randomID', () => {
   it('generates a random ID matching pattern', () => {
-    expect(utils.randomID()).toMatch(IDPattern);
+    for (let i = 0; i < 100; i += 1) {
+      expect(utils.randomID()).toMatch(IDPattern);
+    }
   });
 });
 
